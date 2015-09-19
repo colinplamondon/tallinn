@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>{% block title %} Wingman {% endblock %}</title>
+</head>
+<body>
+
+{% block header %}
+This is the default header content
+<hr>
+{% endblock %}
+
+<section class="main">
+  {% block main %}
+  This is ithe main content
+  {% endblock %}
+</section>
