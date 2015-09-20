@@ -1,0 +1,35 @@
+// via https://medium.com/@fat/mediums-css-is-actually-pretty-fucking-good-b8e2a6c78b06
+//
+// z-index.less
+// Z-index values should always be defined in z-index.less. This
+// allows us to at a glance determine relative layers of our application and prevents bugs
+// arrising from arbitrary z-index values. Do not edit the z-index scale! Only add application
+// scoped z-index values.
+
+// Z-Index Scale (private vars)
+// --------------------------------------------------
+@zIndex-1:   100;
+@zIndex-2:   200;
+@zIndex-3:   300;
+@zIndex-4:   400;
+@zIndex-5:   500;
+@zIndex-6:   600;
+@zIndex-7:   700;
+@zIndex-8:   800;
+@zIndex-9:   900;
+@zIndex-10: 1000;
+
+
+// Z-Index Applications
+// --------------------------------------------------
+@zIndex-1--ex:                              @zIndex-1;
+@zIndex-2--ex:                              @zIndex-2;
+@zIndex-3--ex:                              @zIndex-3;
+@zIndex-4--ex:                              @zIndex-4;
+@zIndex-4--navbar: 							@zIndex-4;
+@zIndex-5--ex:                              @zIndex-5;
+@zIndex-6--ex:                              @zIndex-6;
+@zIndex-7--ex:                              @zIndex-7;
+@zIndex-8--ex:                              @zIndex-8;
+@zIndex-9--ex:                              @zIndex-9;
+@zIndex-10--ex:                             @zIndex-10;
