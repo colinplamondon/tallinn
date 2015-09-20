@@ -1,0 +1,41 @@
+.nav {
+	padding-top: 40px;
+}
+
+.nav-box {
+	display: block;
+	float: left;
+
+	width: 85px;
+	height: 85px;
+	
+	text-align: center;
+	background: @color-darkBlue0;
+	span {
+		width: 100%;
+		&.number {
+			font-size: @type-medLarge;
+			font-weight: 700;
+		}
+		
+	}
+
+	&.active {
+		background: @color-darkGreen0;
+	}
+}
+
+.nav .flow-arrow {
+	float: left;
+	display: block;
+
+	width: 40px;
+	height: 100px;
+	text-align: center;
+	i {
+		padding: 10px;
+		padding-top: 30px;
+
+		color: @color-darkBlue0;
+	}
+}

@@ -1,0 +1,75 @@
+html {
+  height: 100%;
+}
+body {
+  background: #4a90e2;
+  color: #ffffff;
+  font-family: "Cabin", "Helvetica", sans-serif;
+  margin: 0;
+  height: 100%;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+}
+p,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+span {
+  font-family: "Cabin", "Helvetica", sans-serif;
+}
+hr {
+  -moz-border-bottom-colors: none;
+  -moz-border-image: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  border-color: #ede9e9;
+  border-style: solid none;
+  border-width: 1px 0;
+  margin: 18px 0;
+}
+.wrap-full-width {
+  width: 100%;
+  float: left;
+  display: block;
+}
+.nav {
+  padding-top: 40px;
+}
+.nav-box {
+  display: block;
+  float: left;
+  width: 85px;
+  height: 85px;
+  text-align: center;
+  background: #0c62c8;
+}
+.nav-box span {
+  width: 100%;
+}
+.nav-box span.number {
+  font-size: 36px;
+  font-weight: 700;
+}
+.nav-box.active {
+  background: #00c891;
+}
+.nav .flow-arrow {
+  float: left;
+  display: block;
+  width: 40px;
+  height: 100px;
+  text-align: center;
+}
+.nav .flow-arrow i {
+  padding: 10px;
+  padding-top: 30px;
+  color: #0c62c8;
+}
+a {
+  text-decoration: inherit;
+}

@@ -45,12 +45,14 @@ html {
 }
 
 body {
-    background:#F6F6EF;
+    background: @color-blue;
+    color: @color-white;
     font-family: @font-default;
     margin: 0;
     height: 100%;
-    font-weight: 300;
+    font-weight: 400;
     font-style: normal;
+    font-size: @type-small;
 }
 
 p, a, h1, h2, h3, h4, h5, span {
@@ -77,8 +79,9 @@ hr {
 
 
 
+
 // @import "components/footer.less";
 // @import "components/hero.less";
-// @import "components/nav.less";
+@import "components/nav.less";
 // @import "libs/jquery.smartbanner.less";
 // @import "libs/audiojs.css";
