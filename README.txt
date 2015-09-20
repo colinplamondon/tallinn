@@ -8,4 +8,4 @@ TINDER MATCHES FOR ALL
 4) `grunt install`
 5) `grunt watch` to automatically build and concat frontend JS/LESSin
 /dev/js/* and /dev/less/*.
-6) `grunt s` to star the server
+6) `grunt s` to start the server
