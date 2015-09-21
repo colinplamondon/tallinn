@@ -1,9 +1,29 @@
 {% extends "base.html" %}
 
-{% block title %}Index!{% endblock %}
+{% block title %}Index{% endblock %}
 
 {% block content %}
-Yo
-Test variable:
-<strong>{{ title  }}</strong>
+<h3>Get your facebook access token:</h3>
+<ol>
+  <li>Open new browswer window</li>
+  <li>Open chrome dev tools in window</li>
+  <li>Set tools to record browser history. Go to following URL:</li>
+  <li>https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token</li>
+</ol>
+<hr>
+<h3>Get facebook Id:</h3>
+<ol>
+  <li>Go here:</li>
+  <li>https://developers.facebook.com/tools/debug/</li>
+  <li>Enter facebook token</li>
+</ol>
+<hr>
+<form method="POST" action="/login">
+  <p>Facebook access token:</p>
+  <input type="text" name="token" size="250">
+  <p>Facebook ID:<input type="text" name="fbid" size="30">
+  <p>
+    <button type="submit">Login</button>
+  </p>
+</form>
 {% endblock %}

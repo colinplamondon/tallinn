@@ -1,0 +1,17 @@
+{% extends "parent.html" %}
+
+{% block title %}Recommendations!{% endblock %}
+
+{% block main %}
+<p>Found <strong>{{ recommendations.length }}</strong> recommendations.</p>
+
+{% for rec in recommendations %}
+  <div class="rec" style="display: inline-block; border: 1px; margin-right: 5px;">
+    <img src="{{ utils.recommendationImage(rec, 172) }}" width="172" height="172">
+    <br>
+    {{ rec.name }}<br>
+    {{ rec.distance_mi}} miles away.
+  </div>
+
+{% endfor %}
+{% endblock %}

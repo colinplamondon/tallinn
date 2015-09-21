@@ -7,6 +7,7 @@ bodyParser = require('body-parser')
 nunjucks = require('nunjucks')
 
 routes = require('./routes/routes-main')
+utils = require('./utils')
 
 app = express()
 
@@ -17,6 +18,7 @@ nunjucks.configure('views', {
   autoescape: true,
   express: app
 })
+app.locals.utils = utils
 
 # uncomment after placing your favicon in /public
 #app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
