@@ -6,7 +6,7 @@ cookieParser = require('cookie-parser')
 bodyParser = require('body-parser')
 nunjucks = require('nunjucks')
 
-routes = require('./routes/index')
+routes = require('./routes/routes-main')
 
 app = express()
 
