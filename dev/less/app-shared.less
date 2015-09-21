@@ -121,6 +121,37 @@ hr {
 
 }
 
+.match-bar-wrap {
+  padding-right: 0;
+}
+
+.match-bar {
+  height: 85px;
+  background: @color-lightBlue0;
+
+  margin-top: 40px;
+  margin-right: 0;
+
+  .matches {
+    display: block;
+    float: left;
+  } 
+  .match-el {
+    height: 85px;
+    width: 120px;
+    display: block;
+    
+    position: relative;
+    left: 0;
+
+    background-position:50% 50%;  /* Sets reference point to scale from */
+    background-size:cover;
+  }
+}
+
+
+
+
 // @import "components/footer.less";
 // @import "components/hero.less";
 @import "components/nav.less";

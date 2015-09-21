@@ -75,6 +75,29 @@ hr {
   color: #9ec5f4;
   line-height: 14px;
 }
+.match-bar-wrap {
+  padding-right: 0;
+}
+.match-bar {
+  height: 85px;
+  background: #9ec5f4;
+  margin-top: 40px;
+  margin-right: 0;
+}
+.match-bar .matches {
+  display: block;
+  float: left;
+}
+.match-bar .match-el {
+  height: 85px;
+  width: 120px;
+  display: block;
+  position: relative;
+  left: 0;
+  background-position: 50% 50%;
+  /* Sets reference point to scale from */
+  background-size: cover;
+}
 .nav {
   padding-top: 40px;
 }

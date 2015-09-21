@@ -4,6 +4,7 @@ function SubpagesClass() {
 
   };
 
+
   this.installObservers = function() {
   };
 

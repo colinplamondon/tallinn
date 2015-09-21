@@ -1,15 +1,20 @@
 express = require('express')
+socket_io = require( "socket.io" )
 path = require('path')
 favicon = require('serve-favicon')
 logger = require('morgan')
 cookieParser = require('cookie-parser')
 bodyParser = require('body-parser')
 nunjucks = require('nunjucks')
-
 routes = require('./routes/routes-main')
 utils = require('./utils')
 
 app = express()
+
+# Socket.io
+io = socket_io()
+app.io = io
+require('./routes/mock')(app)
 
 # view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -30,6 +35,12 @@ app.use(express.static(path.join(__dirname, 'static')))
 
 app.use('/', routes)
 
+# socket.io events
+io.on( "connection", ( socket ) ->
+    console.log( "A user connected" )
+)
+
+
 # catch 404 and forward to error handler
 app.use( (req, res, next) ->
   err = new Error('Not Found')
@@ -38,6 +49,8 @@ app.use( (req, res, next) ->
 )
 
 # error handlers
+
+# 
 
 # development error handler
 # will print stacktrace
