@@ -49,6 +49,32 @@ hr {
   cursor: pointer;
   background: #2878d7;
 }
+.footer {
+  width: 300px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  padding-bottom: 15px;
+}
+.footer span {
+  width: 100%;
+  display: block;
+}
+.footer span.app-title {
+  /* Wingman: */
+  font-size: 24px;
+  color: #ffffff;
+  line-height: 29px;
+  font-weight: 700;
+}
+.footer span.app-subtitle {
+  /* gym.travel.tinder.: */
+  font-style: italic;
+  font-size: 10px;
+  color: #9ec5f4;
+  line-height: 14px;
+}
 .nav {
   padding-top: 40px;
 }
