@@ -2,17 +2,48 @@
 	padding-top: 40px;
 }
 
+.nav i, label {
+	color: @color-lightBlue0;
+}
+
+.nav input.city-filter {
+	width: 100%;
+	padding: 5px;
+
+	background: @color-blue;
+	border: 2px solid @color-lightBlue0;
+
+	color: @color-lightBlue0;
+	font-size: @type-small;
+
+	&:active, &:focus {
+		outline: none;
+		border: 2px solid @color-lightBlue1;
+	}
+}
+
+.nav .cp-btn {
+	margin-top: 20px;
+}
+
+
 .nav-box {
 	display: block;
 	float: left;
 
-	width: 85px;
-	height: 85px;
+	width: 100px;
+	height: 100px;
 	
+	padding-top: 20px;
+
 	text-align: center;
 	background: @color-darkBlue0;
+	color: @color-lightBlue0;
 	span {
 		width: 100%;
+		display: block;
+		line-height: @lineHeight-tight;
+
 		&.number {
 			font-size: @type-medLarge;
 			font-weight: 700;
@@ -22,6 +53,11 @@
 
 	&.active {
 		background: @color-darkGreen0;
+		color: @color-white;
+	}
+
+	&.likes {
+		margin-left: 50px;
 	}
 }
 
@@ -32,10 +68,30 @@
 	width: 40px;
 	height: 100px;
 	text-align: center;
+	margin-left: 15px;
+	margin-right: 15px;
 	i {
 		padding: 10px;
-		padding-top: 30px;
+		padding-top: 40px;
 
 		color: @color-darkBlue0;
 	}
+}
+
+.nav .user-profile-pic {
+	float: left;
+	display:inline;
+
+	width: 30px;
+	height: 30px;
+}
+
+.nav .account-link {
+	float: left;
+	font-size: @type-smaller;
+	color: @color-white;
+	display: inline;
+
+	padding-left: 10px;
+	padding-top: 3px;
 }
