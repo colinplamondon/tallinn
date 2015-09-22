@@ -91,12 +91,26 @@ hr {
 .match-bar .match-el {
   height: 85px;
   width: 120px;
-  display: block;
-  position: relative;
-  left: 0;
+  display: inline-block;
+  position: absolute;
   background-position: 50% 50%;
   /* Sets reference point to scale from */
   background-size: cover;
+  -webkit-transition: all 0.7s ease-out;
+  -moz-transition: all 0.7s ease-out;
+  -o-transition: all 0.7s ease-out;
+  transition: all 0.7s ease-out;
+}
+.match-bar .match-el.animate-in {
+  left: 0px;
+}
+.match-bar .match-el.animate-out {
+  -ms-transform: translate(-300px, 0px);
+  /* IE 9 */
+  -webkit-transform: translate(-300px, 0px);
+  /* IE 9 */
+  transform: translate(-300px, 0px);
+  /* IE 9 */
 }
 .nav {
   padding-top: 40px;

@@ -139,13 +139,29 @@ hr {
   .match-el {
     height: 85px;
     width: 120px;
-    display: block;
+    display: inline-block;
     
-    position: relative;
-    left: 0;
+    position: absolute;
 
     background-position:50% 50%;  /* Sets reference point to scale from */
     background-size:cover;
+
+    -webkit-transition: all 0.7s ease-out;
+    -moz-transition: all 0.7s ease-out;
+    -o-transition: all 0.7s ease-out;
+    transition: all 0.7s ease-out;
+
+    &.animate-in {
+      left: 0px;
+    }
+
+    &.animate-out {
+      -ms-transform: translate(-300px, 0px); /* IE 9 */
+      -webkit-transform: translate(-300px, 0px); /* IE 9 */
+      transform: translate(-300px, 0px); /* IE 9 */
+    }
+
+
   }
 }
 

@@ -17,7 +17,7 @@ dispatchMatches = ->
 		'match_data': {}
 	})
 
-	next_timing = returnRandomInt(2500, 5000)
+	next_timing = returnRandomInt(500, 2000)
 	setTimeout(dispatchMatches, next_timing)
 
 testData = {
