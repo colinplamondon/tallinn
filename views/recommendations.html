@@ -1,8 +1,8 @@
-{% extends "parent.html" %}
+{% extends "base.html" %}
 
 {% block title %}Recommendations!{% endblock %}
 
-{% block main %}
+{% block content %}
 <p>Found <strong>{{ recommendations.length }}</strong> recommendations.</p>
 
 {% for rec in recommendations %}

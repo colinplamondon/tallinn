@@ -1,5 +1,6 @@
 express = require('express')
 socket_io = require( "socket.io" )
+Promise = require('bluebird')
 path = require('path')
 favicon = require('serve-favicon')
 logger = require('morgan')
@@ -43,14 +44,17 @@ io.on( "connection", ( socket ) ->
 
 # catch 404 and forward to error handler
 app.use( (req, res, next) ->
-  err = new Error('Not Found')
+  err = new Error('404: Route not not Found')
   err.status = 404
   next(err)
 )
 
 # error handlers
+Promise.onPossiblyUnhandledRejection (error) ->
+  console.log 'unhandled rejection!'
+  throw error
 
-# 
+#
 
 # development error handler
 # will print stacktrace
