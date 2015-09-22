@@ -7,10 +7,13 @@
 
 {% for rec in recommendations %}
   <div class="rec" style="display: inline-block; border: 1px; margin-right: 5px;">
-    <img src="{{ utils.recommendationImage(rec, 172) }}" width="172" height="172">
-    <br>
-    {{ rec.name }}<br>
-    {{ rec.distance_mi}} miles away.
+    <a href="/heart/{{ rec._id }}"  onclick="window.open(this.href, 'mywin',
+    'left=20,top=20,width=200,height=200,toolbar=1,resizable=0'); return false;">
+      <img src="{{ utils.recommendationImage(rec, 172) }}" width="172" height="172">
+      <br>
+      {{ rec.name }}<br>
+      {{ rec.distance_mi}} miles away.
+    </a>
   </div>
 
 {% endfor %}

@@ -18,19 +18,14 @@ router.get('/like', (req, res, next) ->
 	res.render('like')
 )
 
-
+missing = (param) -> not (param?.length > 0)
 showRecommendationsHandler = (req, res, next) ->
   { token, fbid } = req.body
   { xAuthToken } = req.params
 
   if not xAuthToken?
-    token = token?.trim()
-    fbid = fbid?.trim()
-
-    if not (token?.length > 0)
-      return res.send "Please enter a valid token."
-    if not (fbid?.length > 0)
-      return res.send "Please enter a valid fbid."
+    if missing token then return res.send "Please enter a valid token."
+    if missing fbid then return res.send "Please enter a valid fbid."
 
     start = client.authorizeAsync token, fbid
   else
@@ -41,6 +36,7 @@ showRecommendationsHandler = (req, res, next) ->
   start
     .then ->
       console.log("Authorization complete.")
+      res.cookie 'tat', client.getAuthToken()
       client.getRecommendationsAsync 30
     .then (data) ->
       { results } = data
@@ -58,6 +54,18 @@ router.route('/recommendations/:xAuthToken?')
   .get showRecommendationsHandler
   .post showRecommendationsHandler
 
+router.get '/heart/:theirId', (req, res, next) ->
+  { theirId } = req.params
+  if missing theirId then return res.send "invalid theirId"
+
+  client.setAuthToken req.cookies.tat
+  client.likeAsync theirId
+    .then ({ match, likes_remaining }) ->
+      # TODO: handle likes_remaining = 0
+      if match
+        res.send "Congrats, a match! Remaining likes: #{likes_remaining}"
+      else
+        res.send "No match yet. Remaining likes: #{likes_remaining}"
 
 router.get '/authorize', (req, res, next) ->
 
