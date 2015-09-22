@@ -23,133 +23,304 @@
 }
 
 Global = new GlobalClass();
- /*jshint multistr: true */
-function LikeClass() {
-  this.matchQueue = [];
-  this.matchQueueOn = false;
-  this.matchElWidth = 120;
+ function RiverUI() {
 
-  this.deleteTest = true;
+  // riverParams: DICT with:
+    // parentObject: JQUERY OBJECT, the element containing the entire river zone.
+    // elementWrap: JQUERY OBJECT, the wrapper WITHIN parent_object to contain
+      // appended elements.
+    // elementClass: STR, for desired class to identify each appended element
+    // by
+    // elementWidth: INT, width of each element, in pixels
+    // transitionOutPx: INT, number of pixels to transition items being deleted
+    // by
 
-  this.init = function() {
-  	Like.installWatchers();
-    Like.maxMatchesInRow = Like.returnMaxMatchesInRow();
-  };
-
-  this.returnMaxMatchesInRow = function() {
-    var viewport_width = $(window).width();
-    var bar_width = $('.match-bar').width();
-    var bar_left_offset = $('.match-bar').offset().left;
-
-    var max_matches = Math.floor( bar_width / Like.matchElWidth );
-    return max_matches;
-  };
-
-  this.addNextMatch = function() {
-    var next = Like.matchQueue.shift();
-    console.log('adding next: ' + next)
-
-    // var css = $(next).attr('style');
-    // var addition = css+'left:'+left_offset+'px;';
-    // var addition = css+'left:0px;';
-    // $(next).attr('style', addition)
-
-    // $('.match-bar .matches').append(next).addClass('animate-in');
-
-    var match_num = $('.match-el').length;
-    console.log("match num: "+match_num);
-    console.log('max matches: '+Like.maxMatchesInRow)
+  // socketioParams: DICT with:
+    // "channel", STR for channel to listen to
+    // "html": DICT the Jquery element construction
+        // {
+        //    'class':'match-el',
+        //    'style':'background-image:url("'+profile_pic+'");',
+        // }
+    // "img_preload_array": optional, ARRAY of image url strings to preload.
     
-    if ( $('.match-el').length >= Like.maxMatchesInRow ) {
-      var to_delete = match_num - this.maxMatchesInRow;
+
+  
+
+
+  this.init = function(riverParams, socketioParams) {
+
+    this.elementQueue = [];
+    console.log(this.elementQueue);
+    this.queueOn = false;
+
+    this.parentObject = riverParams.parentObject;
+    this.elementWrap = riverParams.elementWrap;
+    this.elementClass = riverParams.elementClass;
+    this.elementWidth = riverParams.elementWidth;
+    this.transitionOutPx = riverParams.transitionOutPx;
+
+    this.maxElements = this.returnMaxElementsInRow();
+
+    this.installWatchers(socketioParams);
+    this.installObservers();
+  };
+
+  this.returnMaxElementsInRow = function() {
+    var viewport_width = $(window).width();
+    var bar_width = $(this.parentObject).width();
+    console.log(this.parentObject);
+    var bar_left_offset = $(this.parentObject).offset().left;
+
+    var max_elements = Math.floor( bar_width / this.elementWidth );
+    return max_elements;
+  };
+
+  this.addNextElement = function() {
+    var next = $( this.elementQueue.shift() );
+
+    var element_num = $("."+this.elementClass).length;
+    console.log("element num: "+element_num);
+    console.log('max elements: '+this.maxElements)
+    
+    if ( $("."+this.elementClass).length >= this.maxElements ) {
+      var to_delete = element_num - this.maxElements;
       console.log("number to delete: " + to_delete);
       var count = 1;
 
       while ( count < to_delete  ) {
         console.log("current count: " + count)
         count++;
-        match_num = $('.match-el').length;
-        var target = $('.match-el').first();
+        element_num = $("."+this.elementClass).length;
+        var target = $("."+this.elementClass).first();
         console.log(target);
         // $(target).transition({ 'x': -300})
         $(target).transition({
-          'left': "-="+150,
+          'left': "-="+this.transitionOutPx,
           "opacity": 0
         });
 
         setTimeout(function(){
             $(target).remove();
         }, 500);
-        $('.match-el').each(function(idx){
-          // $(this).css({'left': target_position});
-          $(this).transition({'x':"-="+Like.matchElWidth});
-          // $(this).css({ translate: [-Like.matchElWidth,0] });
+        var self = this;
+        $("."+this.elementClass).each(function(idx, el){
+          $(el).transition({'x':"-="+self.elementWidth});
         });
       }
 
     };
 
-
     var css = $(next).attr('style');
-    var hide_location = $(window).width() + Like.matchElWidth;
+    var hide_location = $(window).width() + this.elementWidth;
 
-    var match_offset = (match_num * Like.matchElWidth);
-    var animation_distance = (hide_location - match_offset) * -1;
+    var element_offset = (element_num * this.elementWidth);
+    var animation_distance = (hide_location - element_offset) * -1;
     var addition = css+'left:'+hide_location+'px;';
 
     $(next).attr('style', addition);
+
+    // TODO: should pass in ID explicitly, otherwise default to an ObjectID
     $(next).attr('id', Global.getRandomInt(1, 1000));
-    var new_match = $(next).appendTo('.match-bar .matches');
+    var new_element = $(next).appendTo(this.elementWrap);
 
     setTimeout(function(){
-      $(new_match).transition({'x':animation_distance});
+      $(new_element).transition({'x':animation_distance});
     }, 250);
 
-    if(Like.matchQueue.length) {
-      setTimeout(Like.addNextMatch, 1000);
+    if(this.elementQueue.length) {
+      setTimeout(this.addNextElement, 1000);
     } else {
-      Like.matchQueueOn = false;
+      this.queueOn = false;
     };
   }
 
-  this.determineLeftPosition = function(){
+  var renderMatch = function(msg) {
+    return "<img src=\"" + msg.url + "\">";
   };
+    var renderRec = function(msg) {
+    };
 
-  this.installWatchers = function() {
-  	Socket.on('new-match', function(msg){
-  		var profile_pic = msg['profile_pic'];
+  this.installWatchers = function(params) {
+    var self = this;
+    Socket.on( params['channel'], function(msg){
 
-  		Global.preloadImages([profile_pic]);
+      if ( params.hasOwnProperty('img_preload_array') ) {
 
-      var html = $('<div/>', {
-          'class':'match-el',
-          'style':'background-image:url("'+profile_pic+'");',
-      })
-      console.log(html);
-      Like.matchQueue.push(html);
-
-      console.log(Like.matchQueue);
-
-      if(!Like.matchQueueOn) {
-        Like.matchQueueOn = true;
-        Like.addNextMatch();
+        // Using the token in the img_preload array, load
+        // the image we want from the msg
+        $.each( params['img_preload_array'], function(e){
+          Global.preloadImages( msg[e] );
+        })
       }
 
-  	});
+      var html = params['html_func'](msg['profile_pic'])
+      console.log(html);
+
+      console.log(self.elementQueue);
+
+      self.elementQueue.push(html);
+
+      if(!self.queueOn) {
+        self.queueOn = true;
+        self.addNextElement();
+      }
+
+    });
   };
-
-
-  this.find_matches = function() {
-
-  };
-
 
   this.installObservers = function() {
     $(window).resize(function(){
-        Like.maxMatchesInRow = Like.returnMaxMatchesInRow();
+        this.maxElements = this.returnMaxElementsInRow();
     });
     
   };
+
+} /*jshint multistr: true */
+function LikeClass() {
+
+  this.init = function() {
+
+    var matchRiverParams = {
+      parentObject: $('.match-bar'),
+      elementWrap: $('.match-bar .matches'),
+      elementClass: 'match-el',
+      elementWidth: 120,
+      transitionOutPx: 150
+    }
+
+    var matchHtml = function(insert_token) {
+      var html1 = "<div class='match-el' style='"
+      var html2 = html1+ "background-image:url(\""+insert_token+"\");'></div>"
+
+      return html2
+    }
+
+    var matchSocketParams = {
+      channel: "new-match",
+      html_func: matchHtml,
+      tokens_from_msg: ['profile-pic'],
+      img_preload_array: ['profile-pic'] 
+    }
+    matchRiver = new RiverUI();
+    matchRiver.init(matchRiverParams, matchSocketParams);
+
+  };
+
+  // this.returnMaxMatchesInRow = function() {
+  //   var viewport_width = $(window).width();
+  //   var bar_width = $('.match-bar').width();
+  //   var bar_left_offset = $('.match-bar').offset().left;
+
+  //   var max_matches = Math.floor( bar_width / Like.matchElWidth );
+  //   return max_matches;
+  // };
+
+  // this.addNextMatch = function() {
+  //   var next = Like.matchQueue.shift();
+  //   console.log('adding next: ' + next)
+
+  //   // var css = $(next).attr('style');
+  //   // var addition = css+'left:'+left_offset+'px;';
+  //   // var addition = css+'left:0px;';
+  //   // $(next).attr('style', addition)
+
+  //   // $('.match-bar .matches').append(next).addClass('animate-in');
+
+  //   var match_num = $('.match-el').length;
+  //   console.log("match num: "+match_num);
+  //   console.log('max matches: '+Like.maxMatchesInRow)
+    
+  //   if ( $('.match-el').length >= Like.maxMatchesInRow ) {
+  //     var to_delete = match_num - this.maxMatchesInRow;
+  //     console.log("number to delete: " + to_delete);
+  //     var count = 1;
+
+  //     while ( count < to_delete  ) {
+  //       console.log("current count: " + count)
+  //       count++;
+  //       match_num = $('.match-el').length;
+  //       var target = $('.match-el').first();
+  //       console.log(target);
+  //       // $(target).transition({ 'x': -300})
+  //       $(target).transition({
+  //         'left': "-="+150,
+  //         "opacity": 0
+  //       });
+
+  //       setTimeout(function(){
+  //           $(target).remove();
+  //       }, 500);
+  //       $('.match-el').each(function(idx){
+  //         // $(this).css({'left': target_position});
+  //         $(this).transition({'x':"-="+Like.matchElWidth});
+  //         // $(this).css({ translate: [-Like.matchElWidth,0] });
+  //       });
+  //     }
+
+  //   };
+
+
+  //   var css = $(next).attr('style');
+  //   var hide_location = $(window).width() + Like.matchElWidth;
+
+  //   var match_offset = (match_num * Like.matchElWidth);
+  //   var animation_distance = (hide_location - match_offset) * -1;
+  //   var addition = css+'left:'+hide_location+'px;';
+
+  //   $(next).attr('style', addition);
+  //   $(next).attr('id', Global.getRandomInt(1, 1000));
+  //   var new_match = $(next).appendTo('.match-bar .matches');
+
+  //   setTimeout(function(){
+  //     $(new_match).transition({'x':animation_distance});
+  //   }, 250);
+
+  //   if(Like.matchQueue.length) {
+  //     setTimeout(Like.addNextMatch, 1000);
+  //   } else {
+  //     Like.matchQueueOn = false;
+  //   };
+  // }
+
+  // this.determineLeftPosition = function(){
+  // };
+
+  // this.installWatchers = function() {
+  // 	Socket.on('new-match', function(msg){
+  // 		var profile_pic = msg['profile_pic'];
+
+  // 		Global.preloadImages([profile_pic]);
+
+  //     var html = $('<div/>', {
+  //         'class':'match-el',
+  //         'style':'background-image:url("'+profile_pic+'");',
+  //     })
+  //     console.log(html);
+  //     Like.matchQueue.push(html);
+
+  //     console.log(Like.matchQueue);
+
+  //     if(!Like.matchQueueOn) {
+  //       Like.matchQueueOn = true;
+  //       Like.addNextMatch();
+  //     }
+
+  // 	});
+  // };
+
+
+  // this.find_matches = function() {
+
+  // };
+
+
+  // this.installObservers = function() {
+  //   $(window).resize(function(){
+  //       Like.maxMatchesInRow = Like.returnMaxMatchesInRow();
+  //   });
+    
+  // };
 
 }
 Like = new LikeClass();

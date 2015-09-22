@@ -25,6 +25,7 @@ module.exports = function(grunt) {
       staticJS: {
         src: ['dev/js/libs/*.js',
               'dev/js/global.js',
+              'dev/js/components/*.js',
               'dev/js/pages/*',
               'dev/js/pages.js',
               'dev/js/subpages.js'
