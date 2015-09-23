@@ -112,6 +112,24 @@ hr {
   transform: translate(-300px, 0px);
   /* IE 9 */
 }
+::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: #9ec5f4;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #9ec5f4;
+  opacity: 1;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #9ec5f4;
+  opacity: 1;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #9ec5f4;
+}
 .nav {
   padding-top: 40px;
 }
@@ -131,6 +149,34 @@ label {
 .nav input.city-filter:focus {
   outline: none;
   border: 2px solid #6fa7eb;
+}
+.pac-container {
+  background: #4a90e2;
+  color: #ffffff;
+}
+.pac-container .pac-icon {
+  display: none;
+}
+.pac-container .pac-item-query {
+  color: #9ec5f4;
+  font-size: 18px;
+}
+.pac-container .pac-item {
+  color: #ffffff;
+  color: #9ec5f4;
+  font-size: 10px;
+}
+.pac-container .pac-item:hover {
+  background: #0c62c8;
+}
+.pac-container .pac-item-selected {
+  background: #0c62c8;
+}
+.city-search-error span {
+  font-size: 14px;
+  line-height: 1.1;
+  display: block;
+  padding: 4px;
 }
 .nav .cp-btn {
   margin-top: 20px;

@@ -78,6 +78,7 @@ function RiverUI() {
         setTimeout(function(){
             $(target).remove();
         }, 500);
+        
         var self = this;
         $("."+this.elementClass).each(function(idx, el){
           $(el).transition({'x':"-="+self.elementWidth});

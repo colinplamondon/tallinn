@@ -13,6 +13,8 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
 
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA42hlM1KP9FNVsgLBuSh-DjNdLSB1oTrM&libraries=places"></script>
+
     {% block page_css %}
     <link href="/css/application.css" rel="stylesheet">
     {% endblock %}
@@ -38,8 +40,11 @@
 						<label>Active City</label>
 					</div>
 					<div class="col-md-5">
-						<input class="city-filter" type="text" value="Tallinn, EE" /><br />
-						<div class="cp-btn">or, show all</div>
+						<input id="js-city-search" class="city-filter controls" type="text" placeholder="Enter a location..." /><br />
+
+						<div class="city-search-error">
+							<span class="js-city-error" style="display:none;"></span>
+						</div>
 					</div>
 				</div>
 			</div>

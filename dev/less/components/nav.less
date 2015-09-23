@@ -22,6 +22,44 @@
 	}
 }
 
+// autocomplete widget
+.pac-container {
+	background: @color-blue;
+	color: @color-white;
+
+	.pac-icon {
+		// The icon displayed to the left of each item in the list of predictions.
+		display:none;
+	}
+
+	.pac-item-query {
+		// A span inside a pac-item that is the main part of the prediction
+		color: @color-lightBlue0;
+		font-size: @type-smaller;
+	}
+	.pac-item {
+		// An item in the list of predictions supplied by the Autocomplete or SearchBox widget.
+		color: @color-white;
+		color: @color-lightBlue0;
+		font-size: @type-micro;
+		&:hover {
+			background: @color-darkBlue0;
+		}
+	}
+	.pac-item-selected {
+		background: @color-darkBlue0;
+	}
+
+	
+}
+
+.city-search-error span {
+	font-size: @type-smallest;
+	line-height: @lineHeight-tight;
+	display: block;
+	padding: 4px;
+}
+
 .nav .cp-btn {
 	margin-top: 20px;
 }
