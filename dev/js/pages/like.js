@@ -2,6 +2,7 @@
 function LikeClass() {
 
   this.init = function() {
+    this.originalHovercardY = $('.match-hovercard').css('top');
     this.locationSearch();
     this.installObservers();
 
@@ -12,39 +13,21 @@ function LikeClass() {
     }
   };
 
-    
-
-  this.activateMatchHovercard = function(){
-    var blur_els = $(".nav, .like-ui, .rec-bar-wrap, .footer");
-    // $(blur_els).foggy({
-    //   blurRadius: 5,
-    //   opacity: .9
-    // });
-
-    $({blurRadius: 0}).animate({blurRadius: 15}, {
-      duration: 1300,
-      easing: 'swing', // or "linear"
-                       // use jQuery UI or Easing plugin for more options
-      step: function() {
-        console.log(this.blurRadius);
-        $(blur_els).css({
-          "-webkit-filter": "blur("+this.blurRadius+"px)",
-          "filter": "blur("+this.blurRadius+"px)"
-        });
+  this.installObservers = function() {
+    $('.matches').on('mouseenter', ".match-el", function(){
+      if( !$('.match-hovercard').is(":visible") ) {
+        Like.matchRiver.queueOn = false;
+        Like.activateMatchHovercard();
       }
     });
 
-    setTimeout(function(){
-      $('.black-overlay').hide().css('opacity', 0);
-      $('.black-overlay').show().transition({
-        "opacity": 0.45
-      }, 700);
-    }, 200);
-  };
+    var exit_hoverzones = '.nav, .rec-bar-wrap, .footer';
 
-  this.installObservers = function() {
-    $('.matches').on('mouseenter', ".match-el", function(){
-        Like.matchRiver.queueOn = false;
+    $(".black-overlay").click(function() {
+      if ( $('.match-hovercard').is(":visible") ) {
+        Like.matchRiver.queueOn = true;
+        Like.deactivateMatchHovercard();
+      }
     });
 
     var self = this;
@@ -158,6 +141,90 @@ function LikeClass() {
     Like.matchRiver = new RiverUI();
     Like.matchRiver.init(matchRiverParams, matchSocketParams);
   };
+
+
+
+  this.activateMatchHovercard = function(){
+    $('.match-hovercard').css({
+      'opacity':0,
+      "y": "-=60px"
+    }).show();
+
+    $('.match-hovercard').transition({
+      'opacity': 1,
+      "y": "+=60px"
+    }, 600);
+
+
+    var blur_els = $(".nav, .like-ui, .rec-bar-wrap, .footer");
+    // $(blur_els).foggy({
+    //   blurRadius: 5,
+    //   opacity: .9
+    // });
+
+    $({blurRadius: 0}).animate({blurRadius: 15}, {
+      duration: 1300,
+      easing: 'swing', // or "linear"
+                       // use jQuery UI or Easing plugin for more options
+      step: function() {
+        $(blur_els).css({
+          "-webkit-filter": "blur("+this.blurRadius+"px)",
+          "filter": "blur("+this.blurRadius+"px)"
+        });
+      }
+    });
+
+    setTimeout(function(){
+      $('.black-overlay').hide().css('opacity', 0);
+      $('.black-overlay').show().transition({
+        "opacity": 0.45
+      }, 700);
+    }, 200);
+  };
+
+  this.deactivateMatchHovercard = function(){
+    var self = this;
+    $('.match-hovercard').transition({
+      'opacity': 0,
+      "y": "-=60px",
+      "complete": function(){
+        $('.match-hovercard').hide();
+        $('.match-hovercard').css({
+          'top': self.originalHovercardY,
+          'transform': 0
+        });
+      }
+    }, 600);
+
+
+    var blur_els = $(".nav, .like-ui, .rec-bar-wrap, .footer");
+    // $(blur_els).foggy({
+    //   blurRadius: 5,
+    //   opacity: .9
+    // });
+
+    $({blurRadius: 10}).animate({blurRadius: 0}, {
+      duration: 1300,
+      easing: 'swing', // or "linear"
+                       // use jQuery UI or Easing plugin for more options
+      step: function() {
+        $(blur_els).css({
+          "-webkit-filter": "blur("+this.blurRadius+"px)",
+          "filter": "blur("+this.blurRadius+"px)"
+        });
+      }
+    });
+
+    setTimeout(function(){
+      $('.black-overlay').show().transition({
+        "opacity": 0,
+        "complete": function() {
+          $('.black-overlay').hide();
+        }
+      }, 700);
+    }, 200);
+  };
+
 
   // ---------------------
   // ---------------------

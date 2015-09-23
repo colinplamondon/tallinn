@@ -429,3 +429,6 @@ a {
   float: left;
   display: block;
 }
+.match-el:hover {
+  cursor: pointer;
+}
