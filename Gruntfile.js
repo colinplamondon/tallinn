@@ -37,7 +37,9 @@ module.exports = function(grunt) {
     // Lint your JS
     jshint: {
       files: ['Gruntfile.js',
-              'dev/js/*.js'],
+              'dev/js/*.js',
+              'dev/js/components/*.js',
+              'dev/js/pages/*.js'],
       options: {
         // options here to override JSHint defaults
         "node": true,

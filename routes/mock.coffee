@@ -11,13 +11,18 @@ dispatchMatches = ->
 	
 	result = photos[random];
 
-	app.io.emit('new-match',{
+	app.io.emit('new-rec',{
 		'profile_pic': result,
 		'all_pics': [],
 		'match_data': {}
 	})
 
-	next_timing = returnRandomInt(500, 2000)
+	app.io.emit('new-match',{
+		'profile_pic': result,
+		'all_pics': [],
+		'match_data': {}
+	})
+	next_timing = returnRandomInt(5000, 15000)
 	setTimeout(dispatchMatches, next_timing)
 
 testData = {
@@ -71,4 +76,4 @@ app = null
 module.exports = (newApp) ->
 	app = newApp
 
-setTimeout(dispatchMatches, 5000)
+setTimeout(dispatchMatches, 2000)

@@ -1,3 +1,6 @@
+// Disabling warning for Don't make functions within a loop.
+/*jshint -W083 */
+
 function RiverUI() {
 
   // riverParams: DICT with:
@@ -19,15 +22,11 @@ function RiverUI() {
         // }
     // "img_preload_array": optional, ARRAY of image url strings to preload.
     
-
-  
-
-
   this.init = function(riverParams, socketioParams) {
 
     this.elementQueue = [];
     console.log(this.elementQueue);
-    this.queueOn = false;
+    this.queueOn = true;
 
     this.parentObject = riverParams.parentObject;
     this.elementWrap = riverParams.elementWrap;
@@ -39,36 +38,47 @@ function RiverUI() {
 
     this.installWatchers(socketioParams);
     this.installObservers();
+
+    var self = this;
+    self.queueJob = setInterval(function(){
+      self.queueRunner(self);
+    },1000);
+
+    setInterval(self.queueRunner, 1000);
   };
 
   this.returnMaxElementsInRow = function() {
     var viewport_width = $(window).width();
     var bar_width = $(this.parentObject).width();
-    console.log(this.parentObject);
+
     var bar_left_offset = $(this.parentObject).offset().left;
 
     var max_elements = Math.floor( bar_width / this.elementWidth );
     return max_elements;
   };
 
+  this.queueRunner = function(self) {
+    var q_length = self.elementQueue.length;
+    $('.js-queue-length').html(q_length);
+    $('.js-queue-state').html(self.queueOn);
+    if( self.queueOn && self.elementQueue.length > 0) {
+      self.addNextElement();
+    }
+  };
+
   this.addNextElement = function() {
     var next = $( this.elementQueue.shift() );
 
     var element_num = $("."+this.elementClass).length;
-    console.log("element num: "+element_num);
-    console.log('max elements: '+this.maxElements)
     
     if ( $("."+this.elementClass).length >= this.maxElements ) {
       var to_delete = element_num - this.maxElements;
-      console.log("number to delete: " + to_delete);
       var count = 1;
 
       while ( count < to_delete  ) {
-        console.log("current count: " + count)
         count++;
         element_num = $("."+this.elementClass).length;
         var target = $("."+this.elementClass).first();
-        console.log(target);
         // $(target).transition({ 'x': -300})
         $(target).transition({
           'left': "-="+this.transitionOutPx,
@@ -84,8 +94,7 @@ function RiverUI() {
           $(el).transition({'x':"-="+self.elementWidth});
         });
       }
-
-    };
+    }
 
     var css = $(next).attr('style');
     var hide_location = $(window).width() + this.elementWidth;
@@ -103,51 +112,31 @@ function RiverUI() {
     setTimeout(function(){
       $(new_element).transition({'x':animation_distance});
     }, 250);
-
-    if(this.elementQueue.length) {
-      setTimeout(this.addNextElement, 1000);
-    } else {
-      this.queueOn = false;
-    };
-  }
-
-  var renderMatch = function(msg) {
-    return "<img src=\"" + msg.url + "\">";
   };
-    var renderRec = function(msg) {
-    };
 
   this.installWatchers = function(params) {
     var self = this;
-    Socket.on( params['channel'], function(msg){
+    Socket.on( params.channel, function(msg){
 
       if ( params.hasOwnProperty('img_preload_array') ) {
 
         // Using the token in the img_preload array, load
         // the image we want from the msg
-        $.each( params['img_preload_array'], function(e){
+        $.each( params.img_preload_array, function(e){
           Global.preloadImages( msg[e] );
-        })
+        });
       }
 
-      var html = params['html_func'](msg['profile_pic'])
-      console.log(html);
-
-      console.log(self.elementQueue);
-
+      var html = params.html_func( msg.profile_pic );
+      
       self.elementQueue.push(html);
-
-      if(!self.queueOn) {
-        self.queueOn = true;
-        self.addNextElement();
-      }
-
     });
   };
 
   this.installObservers = function() {
+    var self = this;
     $(window).resize(function(){
-        this.maxElements = this.returnMaxElementsInRow();
+        this.maxElements = self.returnMaxElementsInRow();
     });
     
   };

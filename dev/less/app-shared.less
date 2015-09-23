@@ -123,20 +123,37 @@ hr {
 
 .match-bar-wrap {
   padding-right: 0;
+  margin-top: 40px;
+
+  position: relative;
+  z-index: 8;
+  .icon {
+    text-align: center;
+  }
+  i.fa-heart {
+    margin: 0 auto;
+    margin-top: 20px;
+    font-size: @type-larger;
+    color: @color-lightBlue0;
+  }
 }
 
-.match-bar {
+.match-bar-wrap, .rec-bar-wrap {
+  padding-left: 0;
+  padding-right:0;
+}
+
+.UIRiver {
   height: 85px;
   background: @color-lightBlue0;
 
-  margin-top: 40px;
   margin-right: 0;
 
-  .matches {
+  .el-wrap {
     display: block;
     float: left;
   } 
-  .match-el {
+  .el-wrap div {
     height: 85px;
     width: 120px;
     display: inline-block;
@@ -161,7 +178,14 @@ hr {
       transform: translate(-300px, 0px); /* IE 9 */
     }
 
+  }
 
+  &.rec-river {
+    height: 50px;
+    .el-wrap div {
+      width: 80px;
+      height:50px;
+    }
   }
 }
 

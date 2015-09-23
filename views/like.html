@@ -3,9 +3,15 @@
 {% block content %}
 
 <div class="container-fluid match-bar-wrap">
-  <div class="col-md-1"></div>
-	<div class="match-bar col-md-11 col-md-offset-1">
-    <div class="matches">
+  <div class="col-md-1">
+    <div class="icon">
+      <i class="fa fa-heart"></i>
+      <span class="js-queue-length"></span>
+      <span class="js-queue-state"></span>
+    </div>
+  </div>
+	<div class="match-river UIRiver col-md-11">
+    <div class="matches el-wrap">
     </div>
   </div>
 </div>
@@ -81,9 +87,38 @@
 
 </div>
 
-<div class="container-fluid">
-	<div class="rec-bar col-md-11"></div>
+<div class="container-fluid rec-bar-wrap">
+  <div class="rec-river UIRiver col-md-12">
+    <div class="recommendations el-wrap">
+    </div>
+  </div>
 </div>
 
+<div class="match-hovercard container-fluid wrap-full-width" style="display:none;">
+  <div class="col-md-4">
+    <div class="row">
+      <h2><span class="js-match-name">Linda</span>, <span class="js-match-age">23</span></h2>
+      <h3><span class="js-miles-away">2 miles away</span></h3>
+      <h4>last online <span class="js-last-online">5 minutes</span> ago</h4>
+      <p>I'm New in town let's meet up and explore the town! I'm also not into texting for ages , I think it would be cooler to meet in person... How otherwise can we discover the town and taste the flavors of Estonia. 178cm</p>
+      <p>Kolisin Tallinnasse ja oleks tore tutvuda inimestega!</p>
+    </div>
+    <div class="row">
+    </div>
+    <div class="row">
+      <div class="cp-btn js-unmatch" data-target-match="1232141">
+        unmatch
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <img src="http://images.gotinder.com/55f440924cd371e82f56dad2/712121d3-c252-4e58-8759-2016272416f9.jpg" />
+    <img src="http://images.gotinder.com/55f440924cd371e82f56dad2/b168b1c7-1962-4b0e-91a3-8d13680c9cd6.jpg" />
+    <img src="http://images.gotinder.com/55f440924cd371e82f56dad2/795bb1eb-b7aa-4a12-8cd3-a7a9b9bc3086.jpg" />
+  </div>
+</div>
+
+<div class="black-overlay" style="display:none;">
+</div>
 
 {% endblock %}
