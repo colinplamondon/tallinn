@@ -502,7 +502,7 @@ function LikeClass() {
     var self = this;
     $('.match-hovercard').transition({
       'opacity': 0,
-      "y": "-=60px",
+      "y": "+=60px",
       "complete": function(){
         $('.match-hovercard').hide();
         $('.match-hovercard').css({
