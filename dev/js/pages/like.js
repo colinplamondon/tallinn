@@ -2,10 +2,67 @@
 function LikeClass() {
 
   this.init = function() {
-    // var service = new google.maps.places.PlacesService();
-    // console.log(service);
+    this.locationSearch();
+    this.installObservers();
+
+    if(Global.likeInProgress) {
+      this.uiSwap('blocker');
+    }
+  };
+
+  this.installObservers = function() {
+
+    var self = this;
+    $('.js-like').click(function(){
+      var to_like = $(this).data('like-num');
+      Global.likeInProgress = true;
+      self.uiSwap('blocker');
+
+    });
+  };
+
+  this.uiSwap = function(to_activate) {
+    // to_activate: STR for "blocker" or "liking"
+
+    var to_hide = $('.action');
+    var to_show = $('.action-blocked')
+
+    if(to_activate == 'liking') {
+      to_hide = $('.action-blocked');
+      to_show = $('.action')
+      return
+    } 
+
+    var animate_out = false;
+    var activate_animation = function() {
+      // make sure we dont animate out multiple times
+      if(!animate_out) {
+        animate_out = true
+      } else {
+        return
+      }
+
+      $(to_show).css({
+        'opacity':0,
+        "y": "-=20px"
+      }).show();
+
+      $(to_show).transition({
+        'opacity': 1,
+        "y": "+=60px"
+      }, 1200);
+    }
+    
+    $(to_hide).transition({
+      'opacity': 0,
+      "y": "+=40px",
+      "complete": activate_animation
+    }, 450);
 
 
+  }
+
+  this.locationSearch = function() {
     var input = /** @type {!HTMLInputElement} */(
     document.getElementById('js-city-search'));
 
@@ -37,10 +94,8 @@ function LikeClass() {
       Global.currentCoords = {
         "lat": coord_lat,
         "long": coord_long
-      };
-
+      };      
     });
-
   };
 
   this.matchRiverStart = function(){

@@ -82,7 +82,7 @@ module.exports = function(grunt) {
                 'dev/less/components/*.less',
                 'dev/less/base/*.less',
                 'dev/less/libs/*',
-                'dev/less/pages/*'],
+                'dev/less/pages/*.less'],
         tasks: ['css', 'concat'],
         options: {
           livereload: 1337

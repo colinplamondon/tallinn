@@ -238,3 +238,107 @@ label {
 a {
   text-decoration: inherit;
 }
+.like-ui .stats {
+  margin-top: 70px;
+}
+.like-ui .actions {
+  min-height: 440px;
+}
+.like-ui .action {
+  text-align: center;
+}
+.like-ui .action .primary {
+  display: block;
+  margin-top: 40px;
+  background: #00c891;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  font-size: 36px;
+  font-weight: 700;
+  -webkit-transition: all 1.4s ease-out;
+  -moz-transition: all 1.4s ease-out;
+  -o-transition: all 1.4s ease-out;
+  transition: all 1.4s ease-out;
+}
+.like-ui .action .primary:hover {
+  cursor: pointer;
+  background: #01b785;
+}
+.like-ui span.or {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 24px;
+  font-style: italic;
+  font-weight: 300;
+  color: #9ec5f4;
+}
+.like-ui .action .secondary {
+  background: #6fa7eb;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: #9ec5f4;
+  -webkit-transition: all 1.4s ease-out;
+  -moz-transition: all 1.4s ease-out;
+  -o-transition: all 1.4s ease-out;
+  transition: all 1.4s ease-out;
+}
+.like-ui .action .secondary:hover {
+  background: #0c62c8;
+  cursor: pointer;
+}
+.like-ui .action-blocked {
+  text-align: center;
+}
+.like-ui .action-blocked i {
+  font-size: 72px;
+  text-align: center;
+  padding-bottom: 40px;
+  padding-top: 40px;
+}
+.like-ui .action-blocked span {
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+.like-ui .action-blocked a {
+  display: inline-block;
+  background: #01b785;
+  color: #f1f1f1;
+  padding: 5px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+.like-ui .action-blocked a:hover {
+  background: #00c891;
+  cursor: pointer;
+  text-decoration: none;
+}
+.DataBox {
+  display: block;
+  height: 110px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background: #0c62c8;
+  border: 1px solid #ffffff;
+  text-align: center;
+}
+.DataBox span {
+  display: block;
+  width: 100%;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.1;
+  font-style: italic;
+}
+.DataBox label {
+  display: block;
+  width: 100%;
+  font-style: italic;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.DataBox.DataBox--longlabel {
+  padding-top: 5px;
+}
