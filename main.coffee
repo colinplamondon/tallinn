@@ -7,10 +7,14 @@ logger = require('morgan')
 cookieParser = require('cookie-parser')
 bodyParser = require('body-parser')
 nunjucks = require('nunjucks')
+
+Connections = require './connections'
 routes = require('./routes/routes-main')
 utils = require('./utils')
 
 app = express()
+app.connections = new Connections()
+app.connections.rabbitConnect()
 
 # Socket.io
 io = socket_io()
@@ -26,6 +30,10 @@ nunjucks.configure('views', {
 })
 app.locals.utils = utils
 
+app.use  (req, res, next) ->
+  req.connections = app.connections
+  next()
+
 # uncomment after placing your favicon in /public
 #app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(logger('dev'))
@@ -33,6 +41,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser("4ijf%@pooerf)Fj4$fawfwe)"))
 app.use(express.static(path.join(__dirname, 'static')))
+
 
 app.use('/', routes)
 
@@ -52,6 +61,7 @@ app.use( (req, res, next) ->
 # error handlers
 Promise.onPossiblyUnhandledRejection (error) ->
   console.log 'unhandled rejection!'
+  console.log error
   throw error
 
 #

@@ -33,9 +33,13 @@ io.attach( server );
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+app.connections.on('connected', function() {
+  console.log("Connections established.");
+
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
+});
 
 
 
@@ -97,4 +101,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  console.log('Listening on ' + bind);
 }

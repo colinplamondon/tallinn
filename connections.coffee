@@ -16,15 +16,16 @@ this.db = mongoose.createConnection(mongoUrl)
       logger.log({ type: 'error', msg: 'disconnected', service: 'mongodb' });
       lost()
 ###
+
 class Connections extends EventEmitter
   constructor: ->
 
   rabbitConnect: ->
     rabbitUrl = 'amqp://localhost'
-    @db = jackrabbit(rabbitUrl)
+    @rabbit = jackrabbit(rabbitUrl)
       .on 'connected', =>
         logger.log({ type: 'info', msg: 'connected', service: 'rabbitmq' })
-        @channel = @db.default()
+        @channel = @rabbit.default()
         @emit('connected')
       .on 'error', (err) =>
         logger.log({ type: 'error', msg: err, service: 'rabbitmq' })
@@ -35,12 +36,12 @@ class Connections extends EventEmitter
 
   qSend: (msg) ->
     @channel
-      .publish(msg, { key: 'work' })
+      .publish(msg, { key: 'jobs' })
 
   qReceive: (cb)->
     @channel
-      .queue({ name: 'work' })
-      .consume( cb, { noAck: true })
+      .queue({ name: 'jobs' })
+      .consume( cb )
 
 module.exports = Connections
 

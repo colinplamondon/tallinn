@@ -3,7 +3,7 @@ request = require 'request'
 Promise = require 'bluebird'
 tinder = require 'tinderjs'
 url = require 'url'
-_ = require 'underscore'
+_ = require 'lodash'
 
 router = express.Router()
 
@@ -19,6 +19,8 @@ router.get('/like', (req, res, next) ->
 )
 
 missing = (param) -> not (param?.length > 0)
+
+# To authorize and receive a list of recommendations from Tinder.
 showRecommendationsHandler = (req, res, next) ->
   { token, fbid } = req.body
   { xAuthToken } = req.params
@@ -49,11 +51,11 @@ showRecommendationsHandler = (req, res, next) ->
       console.log("ERROR!")
       console.log(error)
       return res.send error
-
 router.route('/recommendations/:xAuthToken?')
   .get showRecommendationsHandler
   .post showRecommendationsHandler
 
+# To 'like' a single person.
 router.get '/heart/:theirId', (req, res, next) ->
   { theirId } = req.params
   if missing theirId then return res.send "invalid theirId"
@@ -67,10 +69,20 @@ router.get '/heart/:theirId', (req, res, next) ->
       else
         res.send "No match yet. Remaining likes: #{likes_remaining}"
 
-router.get '/authorize', (req, res, next) ->
+router.post '/like', (req, res, next) ->
+  { xAuthToken, amount } = req.body
 
-router.get '/matches', (req, res, next) ->
+  console.log "/like #{{ xAuthToken, amount }}"
+
+  # TODO: store Job in DB and get ID
+  # TODO: use userId, not auth token
+  req.connections.qSend({
+    id: Math.floor(Math.random()*10000)
+    user: xAuthToken
+    action: 'massLike'
+    iteration: 0
+    amount
+  })
+  res.json({'ok': true})
 
 module.exports = router
-
-
