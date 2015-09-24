@@ -24,7 +24,7 @@ Jobs:
 # can we test this that everything is run once at a time without
 # hitting the api?
 Promise = require 'bluebird'
-#{ RateLimiter } = require 'limiter'
+Connections = require './connections'
 
 ###
 client = new tinder.TinderClient()
@@ -98,7 +98,27 @@ client = {
       return p
 }
 
+sendLoop = (i = 0)->
+  console.log("send loop #{i}")
+  if i > 500 then return
+  setTimeout( (->
+    msg = "msg #{Math.random()}"
+    console.log "sending #{msg}!"
+    connections.qSend({"message": msg, "id":2})
+    sendLoop(++i)
+  ), 100)
 
+connections = new Connections()
+connections.on 'connected', ->
+  console.log 'connected! here'
+  sendLoop()
+  connections.qReceive (msg) ->
+    console.log("msg received!")
+    console.log(msg)
+
+connections.rabbitConnect()
+
+###
 start = Date.now()
 likeFn = (theirId) ->
   # TODO: rate limiting
@@ -112,3 +132,4 @@ client.getRecommendationsAsync 14
     Promise
       .resolve(rec._id for rec in recommendations)
       .map(likeFn, {concurrency: 1})
+###
