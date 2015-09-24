@@ -14,8 +14,9 @@ router.get('/', (req, res, next) ->
   res.render('index', { title: 'TINDER-FOR-EVERYONE!' })
 )
 
-router.get('/like', (req, res, next) ->
-	res.render('like')
+router.get('/like/:xAuthToken', (req, res, next) ->
+  { xAuthToken } = req.params
+  res.render('like', {xAuthToken})
 )
 
 missing = (param) -> not (param?.length > 0)
@@ -69,8 +70,9 @@ router.get '/heart/:theirId', (req, res, next) ->
       else
         res.send "No match yet. Remaining likes: #{likes_remaining}"
 
-router.post '/like', (req, res, next) ->
-  { xAuthToken, amount } = req.body
+router.post '/like/:xAuthToken', (req, res, next) ->
+  { amount } = req.body
+  { xAuthToken } = req.params
 
   console.log "/like #{{ xAuthToken, amount }}"
 

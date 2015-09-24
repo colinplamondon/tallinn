@@ -48,10 +48,25 @@ function LikeClass() {
 
     var self = this;
     $('.js-like').click(function(){
-      var to_like = $(this).data('like-num');
-      Global.likeInProgress = true;
-      self.uiSwap('blocker');
+      if(!Global.likeInProgress) {
+        var like_data = {
+          "amount": $(this).data('like-num')
+        };
 
+        $.ajax({
+          type: "POST",
+          url: '/like/' + Global.authToken,
+          data: like_data,
+          dataType: 'json',
+          success: function(msg) {
+            console.log(msg);
+          }
+        });
+
+        var to_like = $(this).data('like-num');
+        Global.likeInProgress = true;
+        self.uiSwap('blocker');
+      }
     });
   };
 

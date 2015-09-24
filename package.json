@@ -22,7 +22,7 @@
     "request": "^2.62.0",
     "serve-favicon": "~2.3.0",
     "socket.io": "~1.3.7",
-    "tinderjs": "git+ssh://git@github.com/jeremyis/tinderjs.git",
+    "tinderjs": "git+ssh://git@github.com/jeremyis/tinderjs.git"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
