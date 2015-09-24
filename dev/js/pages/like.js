@@ -3,6 +3,8 @@ function LikeClass() {
 
   this.init = function() {
     this.originalHovercardY = $('.match-hovercard').css('top');
+    this.blurEls = $(".nav, .like-ui, .rec-bar-wrap, .footer");
+
     this.locationSearch();
     this.installObservers();
 
@@ -14,10 +16,23 @@ function LikeClass() {
   };
 
   this.installObservers = function() {
-    $('.matches').on('mouseenter', ".match-el", function(){
+    $('.matches').on('click', ".match-el", function(){
       if( !$('.match-hovercard').is(":visible") ) {
+        var vague = $(this).Vague({
+            intensity:      2,      // Blur Intensity
+            forceSVGUrl:    false,   // Force absolute path to the SVG filter,
+            // default animation options
+            animationOptions: {
+              duration: 1000,
+              easing: 'linear' // here you can use also custom jQuery easing functions
+            }
+        });
+
+        vague.blur();
+
         Like.matchRiver.queueOn = false;
         Like.activateMatchHovercard();
+
       }
     });
 
@@ -25,6 +40,7 @@ function LikeClass() {
 
     $(".black-overlay").click(function() {
       if ( $('.match-hovercard').is(":visible") ) {
+        $('.match-el').Vague().unblur();
         Like.matchRiver.queueOn = true;
         Like.deactivateMatchHovercard();
       }
@@ -155,24 +171,34 @@ function LikeClass() {
       "y": "+=60px"
     }, 600);
 
-
-    var blur_els = $(".nav, .like-ui, .rec-bar-wrap, .footer");
     // $(blur_els).foggy({
     //   blurRadius: 5,
     //   opacity: .9
     // });
 
-    $({blurRadius: 0}).animate({blurRadius: 15}, {
-      duration: 1300,
-      easing: 'swing', // or "linear"
-                       // use jQuery UI or Easing plugin for more options
-      step: function() {
-        $(blur_els).css({
-          "-webkit-filter": "blur("+this.blurRadius+"px)",
-          "filter": "blur("+this.blurRadius+"px)"
-        });
+    var vague = $(Like.blurEls).Vague({
+      intensity:      3,      // Blur Intensity
+      forceSVGUrl:    false,   // Force absolute path to the SVG filter,
+      // default animation options
+      animationOptions: {
+        duration: 1000,
+        easing: 'linear' // here you can use also custom jQuery easing functions
       }
     });
+
+    vague.blur();
+
+    // $({blurRadius: 0}).animate({blurRadius: 15}, {
+    //   duration: 1300,
+    //   easing: 'swing', // or "linear"
+    //                    // use jQuery UI or Easing plugin for more options
+    //   step: function() {
+    //     $(Like.blurEls).css({
+    //       "-webkit-filter": "blur("+this.blurRadius+"px)",
+    //       "filter": "blur("+this.blurRadius+"px)"
+    //     });
+    //   }
+    // });
 
     setTimeout(function(){
       $('.black-overlay').hide().css('opacity', 0);
@@ -197,24 +223,27 @@ function LikeClass() {
     }, 600);
 
 
-    var blur_els = $(".nav, .like-ui, .rec-bar-wrap, .footer");
-    // $(blur_els).foggy({
+    // $(Like.blurEls).foggy({
     //   blurRadius: 5,
     //   opacity: .9
     // });
 
-    $({blurRadius: 10}).animate({blurRadius: 0}, {
-      duration: 1300,
-      easing: 'swing', // or "linear"
-                       // use jQuery UI or Easing plugin for more options
-      step: function() {
-        $(blur_els).css({
-          "-webkit-filter": "blur("+this.blurRadius+"px)",
-          "filter": "blur("+this.blurRadius+"px)"
-        });
-      }
-    });
+    // $({blurRadius: 10}).animate({blurRadius: 0}, {
+    //   duration: 1300,
+    //   easing: 'swing', // or "linear"
+    //                    // use jQuery UI or Easing plugin for more options
+    //   step: function() {
+    //     $(Like.blurEls).css({
+    //       "-webkit-filter": "blur("+this.blurRadius+"px)",
+    //       "filter": "blur("+this.blurRadius+"px)"
+    //     });
+    //   }
+    // });
 
+    $(Like.blurEls).Vague({
+      "duration": 800,
+      "easing": 'swing'
+    }).unblur();
     setTimeout(function(){
       $('.black-overlay').show().transition({
         "opacity": 0,
