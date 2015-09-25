@@ -27,9 +27,10 @@ Promise = require 'bluebird'
 tinder = require 'tinderjs'
 _ = require 'lodash'
 
-Connections = require '../connections'
+{ WorkerQueueClient } = require '../connections'
 RateLimiter = require './rateLimiter'
 
+Promise.longStackTraces()
 Promise.onPossiblyUnhandledRejection (error) ->
   console.log 'unhandled rejection!'
   console.log error.error
@@ -63,16 +64,30 @@ handleMassLike = (msg, ackFn) ->
   Promise.promisifyAll(client)
   client.setAuthToken user
 
+  left = amount
+  executeLike = (theirId) ->
+    console.log 'executelike!'
+    limit()
+      .then ->
+        console.log "YO!"
+        client.likeAsync theirId
+      .then ->
+        console.log "DONE"
+        left--
+        queueClient.pushNotification({ id, user, left: left })
+
   recommendFetchAmount = Math.min 14, amount
   limit()
     # Fetch recommendations, map to Tinder user Ids.
     .then -> client.getRecommendationsAsync recommendFetchAmount
+    # sometimes will return a { message: 'recs timeout' }
+    .tap console.log
     .then ({results}) ->
       Promise.resolve( (rec._id for rec in results)[0...amount])
     .tap console.log
 
     # Tinder-Like each user one-by-one
-    .map ((id) -> limit().then -> client.likeAsync id) , {concurrency: 1}
+    .map executeLike , {concurrency: 1}
 
     # If we have more people to like, enqueue a new job. Handle cleanup.
     .then ->
@@ -80,7 +95,7 @@ handleMassLike = (msg, ackFn) ->
       left = amount - recommendFetchAmount
       if left > 0
         newMsg = _.defaults {amount: left, iteration: ++iteration}, msg
-        connections.qSend newMsg
+        queueClient.pushJob newMsg
       else
         console.log "Finished #{id}."
 
@@ -94,9 +109,15 @@ handleMassLike = (msg, ackFn) ->
       # If done, update DB.
 
 
-connections = new Connections()
-connections.on 'connected', ->
+queueClient = new WorkerQueueClient()
+queueClient.on 'connected', ->
   console.log 'connected! here'
-  connections.qReceive onReceive
+  queueClient.listenForJobs onReceive
 
-connections.rabbitConnect()
+
+###
+  Add messages from Worker back to web for job updates.
+  Where should we listen in web?
+  Have it show up on site.
+  Fix Colins code.
+###

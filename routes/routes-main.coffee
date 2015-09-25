@@ -10,16 +10,44 @@ router = express.Router()
 client = new tinder.TinderClient()
 Promise.promisifyAll(client)
 
-router.get('/', (req, res, next) ->
-  res.render('index')
-)
-
 router.get('/reg', (req, res, next) ->
   res.render('registration')
 )
 
+router.get '/', (req, res, next) ->
+  if req.user?
+    { xAuthToken } = req.user
+    res.render('like', { userId: xAuthToken })
+  else
+    res.render('login')
+
+router.post '/login', (req, res, next) ->
+  { token, fbid } = req.body
+  { xAuthToken } = req.params
+
+  if missing token then return res.send "Please enter a valid token."
+  if missing fbid then return res.send "Please enter a valid fbid."
+
+  # TODO: handle authorization failure (fbook token is wrong or expired)
+  # AuthError: Failed to authenticate: Access Denied
+  client.authorizeAsync token, fbid
+    .then ->
+      console.log("Authorization complete.")
+
+      # TODO: confirm user with DB here.
+      req.session.userId = client.getAuthToken()
+      res.redirect '/'
+
+router.get('/poop', (req, res, next) ->
+  res.send 'yo'
+)
 router.get('/like/:xAuthToken', (req, res, next) ->
   { xAuthToken } = req.params
+
+  # TODO: how to clean up 'connection' on disconnect??
+  console.log "### setting channel on '/#{xAuthToken}'"
+
+
   res.render('like', {xAuthToken})
 )
 
@@ -74,15 +102,17 @@ router.get '/heart/:theirId', (req, res, next) ->
       else
         res.send "No match yet. Remaining likes: #{likes_remaining}"
 
-router.post '/like/:xAuthToken', (req, res, next) ->
-  { amount } = req.body
-  { xAuthToken } = req.params
+router.post '/masslike', (req, res, next) ->
+  if not req.user? then return res.redirect '/'
 
-  console.log "/like #{{ xAuthToken, amount }}"
+  { amount } = req.body
+  { xAuthToken } = req.user
+
+  console.log "/masslike #{{ xAuthToken, amount }}"
 
   # TODO: store Job in DB and get ID
   # TODO: use userId, not auth token
-  req.connections.qSend({
+  req.queueClient.pushJob({
     id: Math.floor(Math.random()*10000)
     user: xAuthToken
     action: 'massLike'
@@ -90,5 +120,8 @@ router.post '/like/:xAuthToken', (req, res, next) ->
     amount
   })
   res.json({'ok': true})
+router.get '/logout', (req, res, next) ->
+  req.session.userId = null
+  res.redirect '/'
 
 module.exports = router

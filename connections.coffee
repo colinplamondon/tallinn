@@ -17,10 +17,13 @@ this.db = mongoose.createConnection(mongoUrl)
       lost()
 ###
 
-class Connections extends EventEmitter
-  constructor: ->
 
-  rabbitConnect: ->
+# Rabbit MQ Queue to notify the worker of async jobs.
+class MessageQueueClient extends EventEmitter
+  jobsKey: 'jobs'
+  notificationsKey: 'notifications'
+
+  constructor: ->
     rabbitUrl = 'amqp://localhost'
     @rabbit = jackrabbit(rabbitUrl)
       .on 'connected', =>
@@ -34,16 +37,29 @@ class Connections extends EventEmitter
         logger.log({ type: 'error', msg: 'disconnected', service: 'rabbitmq' });
         @emit 'disconnected'
 
-  qSend: (msg) ->
+  _push: (key, msg) =>
+    @channel.publish(msg, {key})
+  _listen: (name, listener) =>
     @channel
-      .publish(msg, { key: 'jobs' })
+      .queue { name }
+      .consume( listener )
 
-  qReceive: (cb)->
-    @channel
-      .queue({ name: 'jobs' })
-      .consume( cb )
+  pushJob: (msg) =>
+    @_push(@jobsKey, msg)
 
-module.exports = Connections
+class WorkerQueueClient extends MessageQueueClient
+  listenForJobs: (listener) =>
+    @_listen @jobsKey, listener
+  pushNotification: (msg) =>
+    console.log "pushing notification: #{msg.user} #{msg.left}"
+    @_push @notificationsKey, msg
+
+class WebQueueClient extends MessageQueueClient
+  listenForNotifications: (cb) =>
+    @_listen @notificationsKey, cb
+
+
+module.exports = { WorkerQueueClient, WebQueueClient }
 
 # Consume:
 ###

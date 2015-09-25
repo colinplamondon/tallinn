@@ -49,13 +49,12 @@ function LikeClass() {
     var self = this;
     $('.js-like').click(function(){
       if(!Global.likeInProgress) {
-        var like_data = {
-          "amount": $(this).data('like-num')
-        };
+        var amount = Number($(this).data('like-num'));
+        var like_data = { "amount": amount };
 
         $.ajax({
           type: "POST",
-          url: '/like/' + Global.authToken,
+          url: '/masslike',
           data: like_data,
           dataType: 'json',
           success: function(msg) {
@@ -63,6 +62,21 @@ function LikeClass() {
           }
         });
 
+        // TODO: Colin, is this the right place for this? Probably not.
+        // One issue to keep in mind: when this mass like is over, we
+        // should probably unregister this handler so the next click
+        // doesn't have two handlers hooked up.
+        var counter = $('#mass-like-counter');
+        counter.text(amount);
+        var displayedAmount = amount;
+        Global.socket.on('mass-like-status', function(msg) {
+          var left = Number(msg.left);
+          #console.log("mass-like-status notification received:" + left);
+          if (!isNaN(left) && left !== amount && left < displayedAmount) {
+            $('#mass-like-counter').text(left);
+            displayedAmount = left;
+          }
+        });
         var to_like = $(this).data('like-num');
         Global.likeInProgress = true;
         self.uiSwap('blocker');
@@ -80,7 +94,7 @@ function LikeClass() {
       to_hide = $('.action-blocked');
       to_show = $('.action');
       return;
-    } 
+    }
 
     var animate_out = false;
     var activate_animation = function() {
@@ -102,7 +116,7 @@ function LikeClass() {
         "y": "+=60px"
       }, 1200);
     };
-    
+
     $(to_hide).transition({
       'opacity': 0,
       "y": "+=40px",
@@ -142,7 +156,7 @@ function LikeClass() {
       Global.currentCoords = {
         "lat": coord_lat,
         "long": coord_long
-      };      
+      };
     });
   };
 
@@ -166,7 +180,7 @@ function LikeClass() {
       channel: "new-match",
       html_func: matchHtml,
       tokens_from_msg: ['profile-pic'],
-      img_preload_array: ['profile-pic'] 
+      img_preload_array: ['profile-pic']
     };
 
     Like.matchRiver = new RiverUI();
@@ -294,7 +308,7 @@ function LikeClass() {
       channel: "new-rec",
       html_func: recHtml,
       tokens_from_msg: ['profile-pic'],
-      img_preload_array: ['profile-pic'] 
+      img_preload_array: ['profile-pic']
     };
 
     Like.recRiver = new RiverUI();

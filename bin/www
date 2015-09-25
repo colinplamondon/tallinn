@@ -33,8 +33,9 @@ io.attach( server );
  * Listen on provided port, on all network interfaces.
  */
 
-app.connections.on('connected', function() {
+app.queueClient.on('connected', function() {
   console.log("Connections established.");
+  app.setupSocketNotifications()
 
   server.listen(port);
   server.on('error', onError);

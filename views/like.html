@@ -25,7 +25,7 @@
         <label>likes so far in <span class="js-city"></span></label>
       </div>
     </div>
-    
+
     <div class="col-md-3">
       <div class="DataBox js-matches-so-far">
         <span class="js-stat statistic">42</span>
@@ -47,7 +47,7 @@
     </div>
 
   </div> <!-- /.stats -->
-  
+
   <div class="actions">
 
     <div class="row action-blocked" style="display:none;">
@@ -55,7 +55,7 @@
         <i class="fa fa-circle-o-notch fa-spin"></i>
       </div>
       <div class="col-md-6 col-md-offset-3">
-        <span>Easy there tiger. Still got 87 girls left to like.</span>
+        <span>Easy there tiger. Still got <span id="mass-like-counter" style="display:inline;">20</span> girls left to like.</span>
         <br />
         <span>In the meantime, work on <a href="#" class="js-goto-openers">your openers</a>, or <a href="#" class="js-goto-chat">chat with someone</a> you've already matched with.</span>
       </div>
@@ -63,7 +63,7 @@
 
     <div class="row action">
       <div class="col-md-offset-3 col-md-6">
-        <div class="js-like primary" data-like-num="100">Like 100 more girls</div>
+        <div class="js-like primary" data-like-num="20">Like 20 more girls</div>
       </div>
     </div> <!-- /.action -->
 
@@ -83,7 +83,7 @@
       </div>
     </div> <!-- /.action -->
   </div> <!-- /.actions -->
-  
+
 
 </div>
 
@@ -122,7 +122,19 @@
 </div>
 
 <script>
-  Global.authToken = "{{xAuthToken}}";
+  var socket;
+  Global.uid = "{{userId}}";
+  Global.socket = socket = io.connect('//localhost:3000');
+  socket.on('connect', function() {
+    // TODO: replace with DB userId
+    console.log("emitting auth!");
+    socket.emit('auth', {uid: "{{userId}}"});
+  });
+  socket.on('disconnect', function() {
+    console.log(arguments);
+    console.log("disconnected!");
+  });
+
 </script>
 
 {% endblock %}

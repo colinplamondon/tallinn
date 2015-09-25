@@ -1,24 +1,31 @@
 express = require('express')
-socket_io = require( "socket.io" )
 Promise = require('bluebird')
 path = require('path')
 favicon = require('serve-favicon')
 logger = require('morgan')
 cookieParser = require('cookie-parser')
+cookieSession = require('cookie-session')
 bodyParser = require('body-parser')
 nunjucks = require('nunjucks')
 
-Connections = require './connections'
+{ WebQueueClient } = require './connections'
 routes = require('./routes/routes-main')
+sockets = require('./sockets')
 utils = require('./utils')
 
 app = express()
-app.connections = new Connections()
-app.connections.rabbitConnect()
 
-# Socket.io
-io = socket_io()
-app.io = io
+socketHandler = sockets(app)
+
+app.queueClient = new WebQueueClient()
+app.setupSocketNotifications = ->
+  console.log "Setting up notificaton listener...."
+  app.queueClient.listenForNotifications (msg, ackFn) ->
+    { id, user, left } = msg
+    #console.log "Notifying user: #{id}, #{user}, #{left}"
+    socketHandler.emit(user, 'mass-like-status', msg)
+    ackFn()
+
 require('./routes/mock')(app)
 
 # view engine setup
@@ -31,7 +38,8 @@ nunjucks.configure('views', {
 app.locals.utils = utils
 
 app.use  (req, res, next) ->
-  req.connections = app.connections
+  req.queueClient = app.queueClient
+  req.io = app.io
   next()
 
 # uncomment after placing your favicon in /public
@@ -41,15 +49,20 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser("4ijf%@pooerf)Fj4$fawfwe)"))
 app.use(express.static(path.join(__dirname, 'static')))
-
-
-app.use('/', routes)
-
-# socket.io events
-io.on( "connection", ( socket ) ->
-    console.log( "A user connected" )
+app.use(cookieSession({
+  name: 'session'
+  keys: ["ex0ees5Sae7Chai6ooj)aime", "euY#az<ainaichaeNae3oocu"]
+  maxAge: (365 * 24 * 60 * 60 * 1000)
+  signed: true
+}))
+app.use( (req, res, next) ->
+  # TODO: fetch and store user object from DB
+  if req.session?.userId?
+    req.user = { xAuthToken: req.session.userId }
+  next()
 )
 
+app.use('/', routes)
 
 # catch 404 and forward to error handler
 app.use( (req, res, next) ->
