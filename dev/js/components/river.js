@@ -43,8 +43,6 @@ function RiverUI() {
     self.queueJob = setInterval(function(){
       self.queueRunner(self);
     },1000);
-
-    setInterval(self.queueRunner, 1000);
   };
 
   this.returnMaxElementsInRow = function() {
