@@ -71,7 +71,7 @@ function LikeClass() {
         var displayedAmount = amount;
         Global.socket.on('mass-like-status', function(msg) {
           var left = Number(msg.left);
-          #console.log("mass-like-status notification received:" + left);
+          //console.log("mass-like-status notification received:" + left);
           if (!isNaN(left) && left !== amount && left < displayedAmount) {
             $('#mass-like-counter').text(left);
             displayedAmount = left;
