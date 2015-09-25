@@ -21,7 +21,7 @@ function RiverUI() {
         //    'style':'background-image:url("'+profile_pic+'");',
         // }
     // "img_preload_array": optional, ARRAY of image url strings to preload.
-    
+
   this.init = function(riverParams, socketioParams) {
 
     this.elementQueue = [];
@@ -68,7 +68,7 @@ function RiverUI() {
     var next = $( this.elementQueue.shift() );
 
     var element_num = $("."+this.elementClass).length;
-    
+
     if ( $("."+this.elementClass).length >= this.maxElements ) {
       var to_delete = element_num - this.maxElements;
       var count = 1;
@@ -86,7 +86,7 @@ function RiverUI() {
         setTimeout(function(){
             $(target).remove();
         }, 500);
-        
+
         var self = this;
         $("."+this.elementClass).each(function(idx, el){
           $(el).transition({'x':"-="+self.elementWidth});
@@ -114,7 +114,7 @@ function RiverUI() {
 
   this.installWatchers = function(params) {
     var self = this;
-    Socket.on( params.channel, function(msg){
+    Global.socket.on( params.channel, function(msg){
 
       if ( params.hasOwnProperty('img_preload_array') ) {
 
@@ -126,7 +126,7 @@ function RiverUI() {
       }
 
       var html = params.html_func( msg.profile_pic );
-      
+
       self.elementQueue.push(html);
     });
   };
@@ -136,7 +136,7 @@ function RiverUI() {
     $(window).resize(function(){
         this.maxElements = self.returnMaxElementsInRow();
     });
-    
+
   };
 
 }
