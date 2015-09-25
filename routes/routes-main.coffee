@@ -11,7 +11,11 @@ client = new tinder.TinderClient()
 Promise.promisifyAll(client)
 
 router.get('/', (req, res, next) ->
-  res.render('index', { title: 'TINDER-FOR-EVERYONE!' })
+  res.render('index')
+)
+
+router.get('/reg', (req, res, next) ->
+  res.render('registration')
 )
 
 router.get('/like/:xAuthToken', (req, res, next) ->

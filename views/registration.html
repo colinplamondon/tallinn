@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block entire_page %}
+<div class="container page-reg">
+	<div class="row">
+		<div class="col-md-12">
+			<h1><b>Awesome.</b> Let's get started.</h1>
+			<h2>First, let’s create your Wingman account. Easy stuff. Email and Facebook Login.</h2>
+		</div>
+	</div>
+	
+	<div class="row email-input">
+		<div class="col-md-4">
+			<div class="row">
+				<label>First, enter your email:</label>
+			</div>
+		</div>
+		<div class="col-md-4 col-md-offset-1">
+			<div class="row">
+				<input type="text" class="js-reg-email" placeholder="you@domain.com"</div>
+				<span class="js-email-error"></span>
+			</div>
+		</div>
+	</div>
+
+	<div class="row fb-login disabled">
+		<div class="col-md-4">
+			<div class="row">
+				<label>Finally, click here:</label>
+			</div>
+		</div>
+		<div class="col-md-4 col-md-offset-1">
+			<div class="row">
+				<div class="cp-btn js-fb-login">Login with Facebook</div>
+			</div>
+			<div class="row">
+				<span class="btw">We won’t post to your wall, send any messages, or even request permissions for any of that crap.</span>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1658162321134571',
+      xfbml      : true,
+      version    : 'v2.4'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+{% endblock %}

@@ -76,4 +76,4 @@ app = null
 module.exports = (newApp) ->
 	app = newApp
 
-# setTimeout(dispatchMatches, 2000)
+setTimeout(dispatchMatches, 2000)

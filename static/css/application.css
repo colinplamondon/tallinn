@@ -261,6 +261,64 @@ label {
 a {
   text-decoration: inherit;
 }
+.page-reg h1,
+h2 {
+  /* Awesome. Let’s get s: */
+  font-weight: 700;
+  font-size: 48px;
+}
+.page-reg h1 {
+  margin-top: 100px;
+  font-weight: 400;
+}
+.page-reg h1 b {
+  font-weight: 700;
+}
+.page-reg h2 {
+  color: #9ec5f4;
+  font-weight: 400;
+}
+.page-reg .email-input {
+  margin-top: 130px;
+}
+.page-reg .email-input input {
+  display: block;
+  width: 100%;
+  background: #4a90e2;
+  border: 1px solid #ffffff;
+  font-size: 24px;
+  padding: 5px;
+  padding-left: 15px;
+}
+.page-reg .email-input,
+.page-reg .fb-login {
+  -webkit-transition: all 0.7s ease-out;
+  -moz-transition: all 0.7s ease-out;
+  -o-transition: all 0.7s ease-out;
+  transition: all 0.7s ease-out;
+  opacity: 1;
+}
+.page-reg label {
+  font-size: 36px;
+  font-weight: 400;
+}
+.page-reg .disabled {
+  opacity: 0.3;
+}
+.page-reg .fb-login {
+  margin-top: 100px;
+}
+.page-reg .fb-login .cp-btn {
+  background: #00c891;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 36px;
+  color: #ffffff;
+  text-align: center;
+}
+.page-reg .fb-login .cp-btn:hover {
+  background: #18d7a2;
+}
 .like-ui .stats {
   margin-top: 70px;
 }
