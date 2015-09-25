@@ -10,9 +10,6 @@ router = express.Router()
 client = new tinder.TinderClient()
 Promise.promisifyAll(client)
 
-router.get('/reg', (req, res, next) ->
-  res.render('registration')
-)
 
 router.get '/', (req, res, next) ->
   if req.user?
@@ -20,6 +17,14 @@ router.get '/', (req, res, next) ->
     res.render('like', { userId: xAuthToken })
   else
     res.render('login')
+
+router.get('/reg', (req, res, next) ->
+  res.render('registration')
+)
+
+router.get('/complete-reg', (req, res, next) ->
+  res.render('complete-reg')
+)
 
 router.post '/login', (req, res, next) ->
   { token, fbid } = req.body
@@ -41,6 +46,8 @@ router.post '/login', (req, res, next) ->
 router.get('/poop', (req, res, next) ->
   res.send 'yo'
 )
+
+
 router.get('/like/:xAuthToken', (req, res, next) ->
   { xAuthToken } = req.params
 

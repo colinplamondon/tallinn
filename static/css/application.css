@@ -137,21 +137,21 @@ hr {
 }
 ::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
-  color: #9ec5f4;
+  color: #ffffff;
 }
 :-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
-  color: #9ec5f4;
+  color: #ffffff;
   opacity: 1;
 }
 ::-moz-placeholder {
   /* Mozilla Firefox 19+ */
-  color: #9ec5f4;
+  color: #ffffff;
   opacity: 1;
 }
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
-  color: #9ec5f4;
+  color: #ffffff;
 }
 .nav {
   padding-top: 40px;
@@ -274,14 +274,29 @@ h2 {
 .page-reg h1 b {
   font-weight: 700;
 }
+.page-reg h1.subtitle {
+  color: #9ec5f4;
+  margin-top: 30px;
+}
+.page-reg span.btw {
+  font-style: italic;
+  color: #9ec5f4;
+  word-wrap: break-word;
+}
+.page-reg span.btw b {
+  color: #ffffff;
+}
+.page-reg span.btw b strong {
+  background: #3ce2b4;
+  color: #ffffff;
+  display: inline-block;
+  padding: 3px;
+}
 .page-reg h2 {
   color: #9ec5f4;
   font-weight: 400;
 }
-.page-reg .email-input {
-  margin-top: 130px;
-}
-.page-reg .email-input input {
+.page-reg input {
   display: block;
   width: 100%;
   background: #4a90e2;
@@ -289,6 +304,9 @@ h2 {
   font-size: 24px;
   padding: 5px;
   padding-left: 15px;
+}
+.page-reg input.email-input {
+  margin-top: 130px;
 }
 .page-reg .email-input,
 .page-reg .fb-login {
@@ -308,7 +326,7 @@ h2 {
 .page-reg .fb-login {
   margin-top: 100px;
 }
-.page-reg .fb-login .cp-btn {
+.page-reg .cp-btn {
   background: #00c891;
   padding-top: 15px;
   padding-bottom: 15px;
@@ -316,8 +334,39 @@ h2 {
   color: #ffffff;
   text-align: center;
 }
-.page-reg .fb-login .cp-btn:hover {
+.page-reg .cp-btn:hover {
   background: #18d7a2;
+}
+.page-reg .gif-directions {
+  margin-top: 90px;
+}
+.page-reg .gif-directions video {
+  margin-top: 140px;
+}
+.page-reg {
+  padding-bottom: 200px;
+}
+.page-reg-complete label {
+  color: #ffffff;
+  font-size: 36px;
+}
+.page-reg-complete label.lookatme {
+  background: #18d7a2;
+  display: block;
+  padding: 20px;
+}
+.page-reg-complete .access-key,
+.page-reg-complete .paste-token {
+  margin-top: 100px;
+}
+.page-reg-complete .paste-token input {
+  margin-bottom: 10px;
+  font-size: 36px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.page-reg-complete .paste-token .cp-btn {
+  margin-top: 80px;
 }
 .like-ui .stats {
   margin-top: 70px;

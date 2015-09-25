@@ -10,25 +10,43 @@
 	b {
 		font-weight: 700;
 	}
+	&.subtitle {
+		color: @color-lightBlue0;
+		margin-top: 30px;
+	}
 }
 
+.page-reg span.btw {
+	font-style: italic;
+	color: @color-lightBlue0;
+	word-wrap: break-word;
+	b{
+		color: @color-white;
+		strong {
+			background: @color-green;
+			color: @color-white;
+			display: inline-block;
+			padding:3px;
+		}
+	}
+}
 .page-reg h2 {
 	color: @color-lightBlue0;
 	font-weight: 400;
 }
 
-.page-reg .email-input {
-	margin-top: 130px;
+.page-reg input {
+	display: block;
+	width: 100%;
 
-	input {
-		display: block;
-		width: 100%;
+	background: @color-blue;
+	border: 1px solid @color-white;
+	font-size: @type-base;
+	padding: 5px;
+	padding-left: 15px;
 
-		background: @color-blue;
-		border: 1px solid @color-white;
-		font-size: @type-base;
-		padding: 5px;
-		padding-left: 15px;
+	&.email-input {
+		margin-top: 130px;
 	}
 }
 
@@ -52,18 +70,62 @@
 
 .page-reg .fb-login {
 	margin-top: 100px;
+}
 
-	.cp-btn {
-		background: @color-darkGreen0;
-		padding-top: 15px;
-		padding-bottom: 15px;
-		font-size: @type-medLarge;
 
-		color: @color-white;
-		text-align: center;
+.page-reg .cp-btn {
+	background: @color-darkGreen0;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	font-size: @type-medLarge;
 
-		&:hover {
-			background: @color-darkGreen1;
-		}
+	color: @color-white;
+	text-align: center;
+
+	&:hover {
+		background: @color-darkGreen1;
 	}
+}
+
+// COMPLETE REG
+
+.page-reg .gif-directions {
+	margin-top: 90px;
+
+	video {
+		margin-top: 140px;
+	}
+}
+
+.page-reg {
+	padding-bottom:200px;
+}
+.page-reg-complete label {
+	color: @color-white;
+	font-size: @type-medLarge;
+
+	&.lookatme {
+		background: @color-darkGreen1;
+		display: block;
+		padding: 20px;
+	}
+}
+
+.page-reg-complete .access-key, .page-reg-complete .paste-token {
+	margin-top: 100px;
+}
+
+.page-reg-complete .paste-token input {
+	margin-bottom: 10px;
+	font-size: @type-medLarge;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.page-reg-complete .paste-token .cp-btn {
+	margin-top: 80px;
+
+	&.active {
+	}
+
 }

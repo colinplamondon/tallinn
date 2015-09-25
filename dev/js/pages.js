@@ -15,6 +15,10 @@ function PagesClass() {
       if (window.location.pathname.indexOf("/reg") > -1) {
           this.regInit();
       }
+
+      if (window.location.pathname.indexOf("/complete-reg") > -1) {
+        this.completeRegInit();
+      }
     };
 
   this.installObservers = function() {
@@ -64,6 +68,21 @@ function PagesClass() {
     });
   };
 
+
+  this.completeRegInit = function() {
+    $('.js-get-access-key').click(function(){
+      $('.js-get-access-key').transition({
+        "opacity":0.7,
+        "background-color": "#0C62C8"
+      });
+      $('.js-paste-tinder-token').removeAttr('disabled').css({
+        "border":"1px solid #ffffff",
+        "color": "#ffffff"
+      }).addClass('active');
+      $('.paste-token').removeClass('disabled').transition();
+      $('.paste-token label').addClass('lookatme');
+    });
+  };
 
   this.regInit = function() {
     var validations ={
