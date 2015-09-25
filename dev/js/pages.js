@@ -125,7 +125,7 @@ function PagesClass() {
                 $('js-reg-email').addClass('passed-validation');
                 $('.js-fb-login').unbind();
                 self.regEmailOk();
-              },300);
+              },150);
             });
           }
         });

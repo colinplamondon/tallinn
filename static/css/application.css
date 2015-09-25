@@ -51,7 +51,7 @@ hr {
 }
 .footer {
   width: 300px;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   text-align: center;
@@ -296,6 +296,9 @@ h2 {
   color: #9ec5f4;
   font-weight: 400;
 }
+.page-reg .email-input {
+  margin-top: 80px;
+}
 .page-reg input {
   display: block;
   width: 100%;
@@ -304,9 +307,6 @@ h2 {
   font-size: 24px;
   padding: 5px;
   padding-left: 15px;
-}
-.page-reg input.email-input {
-  margin-top: 130px;
 }
 .page-reg .email-input,
 .page-reg .fb-login {
