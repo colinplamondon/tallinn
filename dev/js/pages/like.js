@@ -9,9 +9,12 @@ function LikeClass() {
     this.installObservers();
     this.installWatchers();
 
+    this.setInitialLocation();
+
     this.matchRiverStart();
     // this.recommendationRiverStart();
   };
+
 
   this.installWatchers = function() {
     // TODO: Colin, is this the right place for this? Probably not.
@@ -164,6 +167,33 @@ function LikeClass() {
     }, 450);
   };
 
+  this.setInitialLocation = function() {
+    console.log(Global.currentCoords);
+    var user_lat = Global.currentCoords.lat;
+    var user_lon = Global.currentCoords.lon;
+
+    console.log(user_lat);
+    console.log(user_lon);
+    var geocoder = new google.maps.Geocoder();
+
+    var latlng = {lat: parseFloat(user_lat), lng: parseFloat(user_lon)};
+    geocoder.geocode({'location': latlng}, function(results, status) {
+      if (status === google.maps.GeocoderStatus.OK) {
+        if (results[1]) {
+          var city = results[2].formatted_address;
+
+          $('#js-city-search').val(results[2].formatted_address);
+
+        } else {
+          window.alert('Could not find the name of your Tinder location.');
+        }
+      } else {
+        window.alert('Geocoder failed due to: ' + status);
+      }
+    });
+
+  };
+
   this.locationSearch = function() {
     var input = /** @type {!HTMLInputElement} */(
     document.getElementById('js-city-search'));
@@ -191,12 +221,39 @@ function LikeClass() {
       }
 
       var coord_lat = place.geometry.location.H;
-      var coord_long = place.geometry.location.L;
+      var coord_lon = place.geometry.location.L;
+      console.log(coord_lon);
+      $.ajax({
+          type: "POST",
+          url: '/change-location',
+          data: {
+            'xAuthToken': Global.uid,
+            'new_lat': parseFloat(coord_lat).toFixed(6),
+            'new_lon': parseFloat(coord_lon).toFixed(6)
+          },
+          dataType: 'json',
+          success: function(msg) {
+            console.log(msg);
 
-      Global.currentCoords = {
-        "lat": coord_lat,
-        "long": coord_long
-      };
+            if(msg.hasOwnProperty('error')) {
+              errors = {
+                'change_timeout': 'major position change not significant'
+              };
+
+              if(msg.error == errors.change_timeout) {
+                alert("Error - Tinder only lets you change location once every 15 minutes :(");
+              }
+            } else {
+              Global.currentCoords = {
+                "lat": coord_lat,
+                "long": coord_lon
+              };
+
+              alert("Location change successful!");
+            }
+          }
+        });
+
     });
   };
 

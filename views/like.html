@@ -123,6 +123,11 @@
 
 <script>
   var socket;
+  Global.currentCoords = {
+      "lon": "{{location.lon}}",
+      "lat": "{{location.lat}}"
+  };
+
   Global.uid = "{{userId}}";
   Global.socket = socket = io.connect('//localhost:3000');
   socket.on('connect', function() {

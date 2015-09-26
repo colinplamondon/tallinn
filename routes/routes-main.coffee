@@ -13,7 +13,10 @@ Promise.promisifyAll(client)
 router.get '/', (req, res, next) ->
   if req.user?
     { xAuthToken } = req.user
-    res.render('like', { userId: xAuthToken })
+
+    returnLocation( xAuthToken, (location) ->
+      res.render('like', { userId: xAuthToken, location: location })
+    )
   else
     res.render('login')
 
@@ -30,12 +33,25 @@ router.get('/complete-reg', (req, res, next) ->
 )
 
 router.post '/change-location', (req, res, next) ->
-  client.setAuthToken( xAuthToken )
-  client.updatePosition(30.313810, 59.940266, (feedback) ->
+  client.setAuthToken( req.body.xAuthToken )
+
+  newLon = parseFloat(req.body.coord_lon)
+  newLat = parseFloat(req.body.coord_lat)
+  console.log(req.body)
+
+  client.updatePosition(newLon, newLat, (feedback) ->
     console.log arguments
     console.log feedback
+
+    error = ''
+    if arguments['1'].hasOwnProperty('error')
+      error = arguments['1']['error']
+
+    if error
+      res.json({"ok": false, "error": error })
+    else
+      res.json({"ok": true})
   )
-  res.json({"ok": true})
 
 router.post '/login', (req, res, next) ->
   { token, fbid } = req.body
@@ -71,6 +87,17 @@ router.get('/like/:xAuthToken', (req, res, next) ->
 
 missing = (param) -> not (param?.length > 0)
 
+returnLocation = (xAuthToken, callback) ->
+  client.setAuthToken( xAuthToken )
+
+  client.getProfile( (error, data) ->
+    console.log data
+    callback({
+      lat: data.pos.lat,
+      lon: data.pos.lon
+    })
+  )
+
 # To authorize and receive a list of recommendations from Tinder.
 showRecommendationsHandler = (req, res, next) ->
   { token, fbid } = req.body
@@ -102,6 +129,7 @@ showRecommendationsHandler = (req, res, next) ->
       console.log("ERROR!")
       console.log(error)
       return res.send error
+
 router.route('/recommendations/:xAuthToken?')
   .get showRecommendationsHandler
   .post showRecommendationsHandler
@@ -139,6 +167,7 @@ router.post '/masslike', (req, res, next) ->
     amount
   })
   res.json({'ok': true})
+
 router.get '/logout', (req, res, next) ->
   req.session.userId = null
   res.redirect '/'
