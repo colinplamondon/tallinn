@@ -104,6 +104,13 @@ handleMassLike = (msg, ackFn) ->
     .catch (error) ->
       console.log "error!"
       console.log error
+
+      # TODO: Handle these errors, pass to client.
+      # if error.message == 'recs exhausted'
+      #   errorMsg = _.defaults {status: "error", "error": "recs-exhausted"}, msg
+      # if error.message == 'recs timeout'
+      #   errorMsg = _.defaults {status: "error", "error": "recs-timeout"}, msg
+
       throw error
 
       # If done, update DB.

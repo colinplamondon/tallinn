@@ -7,12 +7,62 @@ function LikeClass() {
 
     this.locationSearch();
     this.installObservers();
+    this.installWatchers();
 
     this.matchRiverStart();
     // this.recommendationRiverStart();
-    if(Global.likeInProgress) {
-      this.uiSwap('blocker');
-    }
+  };
+
+  this.installWatchers = function() {
+    // TODO: Colin, is this the right place for this? Probably not.
+    // One issue to keep in mind: when this mass like is over, we
+    // should probably unregister this handler so the next click
+    // doesn't have two handlers hooked up.
+
+    // States:
+    // COMPLETION: If number WAS greater than 1 and NOW is 9, show
+    // completion animation.
+
+    // IN PROGRESS: Number is greater than 1, new number is not 0.
+
+    // CAN LIKE: Number is 0
+
+    var self = this;
+    Global.socket.on('mass-like-status', function(msg) {
+      console.log(msg);
+      var left = Number(msg.left);
+      console.log("left: "+left);
+
+      var starting_number = Number( $('#mass-like-counter').text() );
+      //console.log("mass-like-status notification received:" + left);
+
+      if(isNaN(left)) {
+        return;
+      }
+      console.log("starting number was: " + starting_number);
+      console.log("left is: "+ left);
+      console.log(left===0);
+      if (starting_number > 0 && left === 0) {
+        // COMPLETION STATE
+        Global.likeInProgress = false;
+        $('#mass-like-counter').text(left);
+
+        self.uiSwap('liking');
+
+      } else if (left > 0) {
+        // IN PROGRESS
+        Global.likeInProgress = true;
+
+        $('#mass-like-counter').text(left);
+        self.uiSwap('blocker');
+
+      } else {
+        // DEACTIVATED
+        Global.likeInProgress = false;
+        self.uiSwap('liking');
+      }
+
+    });
   };
 
   this.installObservers = function() {
@@ -52,6 +102,7 @@ function LikeClass() {
         var amount = Number($(this).data('like-num'));
         var like_data = { "amount": amount };
 
+        self.uiSwap('blocker');
         $.ajax({
           type: "POST",
           url: '/masslike',
@@ -62,24 +113,6 @@ function LikeClass() {
           }
         });
 
-        // TODO: Colin, is this the right place for this? Probably not.
-        // One issue to keep in mind: when this mass like is over, we
-        // should probably unregister this handler so the next click
-        // doesn't have two handlers hooked up.
-        var counter = $('#mass-like-counter');
-        counter.text(amount);
-        var displayedAmount = amount;
-        Global.socket.on('mass-like-status', function(msg) {
-          var left = Number(msg.left);
-          //console.log("mass-like-status notification received:" + left);
-          if (!isNaN(left) && left !== amount && left < displayedAmount) {
-            $('#mass-like-counter').text(left);
-            displayedAmount = left;
-          }
-        });
-        var to_like = $(this).data('like-num');
-        Global.likeInProgress = true;
-        self.uiSwap('blocker');
       }
     });
   };
@@ -93,6 +126,10 @@ function LikeClass() {
     if(to_activate == 'liking') {
       to_hide = $('.action-blocked');
       to_show = $('.action');
+      return;
+    }
+
+    if($(to_show).is(":visible")) {
       return;
     }
 

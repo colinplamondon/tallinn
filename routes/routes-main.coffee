@@ -10,13 +10,16 @@ router = express.Router()
 client = new tinder.TinderClient()
 Promise.promisifyAll(client)
 
-
 router.get '/', (req, res, next) ->
   if req.user?
     { xAuthToken } = req.user
     res.render('like', { userId: xAuthToken })
   else
     res.render('login')
+
+router.get('/login', (req, res, next) ->
+  res.render('login')
+)
 
 router.get('/reg', (req, res, next) ->
   res.render('registration')
@@ -109,6 +112,7 @@ router.get '/heart/:theirId', (req, res, next) ->
       else
         res.send "No match yet. Remaining likes: #{likes_remaining}"
 
+# Mass-like X number of recommendations
 router.post '/masslike', (req, res, next) ->
   if not req.user? then return res.redirect '/'
 
