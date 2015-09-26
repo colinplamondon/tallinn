@@ -31,21 +31,19 @@ function LikeClass() {
     Global.socket.on('mass-like-status', function(msg) {
       console.log(msg);
       var left = Number(msg.left);
-      console.log("left: "+left);
 
-      var starting_number = Number( $('#mass-like-counter').text() );
+      var starting_number = Number( $('.js-mass-like-counter').text() );
       //console.log("mass-like-status notification received:" + left);
 
       if(isNaN(left)) {
         return;
       }
-      console.log("starting number was: " + starting_number);
-      console.log("left is: "+ left);
-      console.log(left===0);
+
       if (starting_number > 0 && left === 0) {
         // COMPLETION STATE
+
         Global.likeInProgress = false;
-        $('#mass-like-counter').text(left);
+        $('.js-mass-like-counter').text(left);
 
         self.uiSwap('liking');
 
@@ -53,7 +51,7 @@ function LikeClass() {
         // IN PROGRESS
         Global.likeInProgress = true;
 
-        $('#mass-like-counter').text(left);
+        $('.js-mass-like-counter').text(left);
         self.uiSwap('blocker');
 
       } else {
@@ -102,6 +100,8 @@ function LikeClass() {
         var amount = Number($(this).data('like-num'));
         var like_data = { "amount": amount };
 
+        $('.js-mass-like-counter').text(amount);
+
         self.uiSwap('blocker');
         $.ajax({
           type: "POST",
@@ -122,11 +122,12 @@ function LikeClass() {
 
     var to_hide = $('.action');
     var to_show = $('.action-blocked');
+    var show_slide_distance = 60;
 
     if(to_activate == 'liking') {
       to_hide = $('.action-blocked');
       to_show = $('.action');
-      return;
+      show_slide_distance = 20;
     }
 
     if($(to_show).is(":visible")) {
@@ -143,6 +144,8 @@ function LikeClass() {
       }
 
       $(to_hide).hide();
+      $(to_hide).css('transform','');
+
       $(to_show).css({
         'opacity':0,
         "y": "-=20px"
@@ -150,7 +153,7 @@ function LikeClass() {
 
       $(to_show).transition({
         'opacity': 1,
-        "y": "+=60px"
+        "y": "+="+show_slide_distance+"px"
       }, 1200);
     };
 

@@ -29,6 +29,14 @@ router.get('/complete-reg', (req, res, next) ->
   res.render('complete-reg')
 )
 
+router.post '/change-location', (req, res, next) ->
+  client.setAuthToken( xAuthToken )
+  client.updatePosition(30.313810, 59.940266, (feedback) ->
+    console.log arguments
+    console.log feedback
+  )
+  res.json({"ok": true})
+
 router.post '/login', (req, res, next) ->
   { token, fbid } = req.body
   { xAuthToken } = req.params

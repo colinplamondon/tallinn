@@ -33,7 +33,7 @@ RateLimiter = require './rateLimiter'
 Promise.longStackTraces()
 Promise.onPossiblyUnhandledRejection (error) ->
   console.log 'unhandled rejection!'
-  console.log error.error
+  console.log error
   throw error
 
 ###
@@ -105,7 +105,7 @@ handleMassLike = (msg, ackFn) ->
       console.log "error!"
       console.log error
 
-      # TODO: Handle these errors, pass to client.
+      # TODO: Handle these errors, pass to
       # if error.message == 'recs exhausted'
       #   errorMsg = _.defaults {status: "error", "error": "recs-exhausted"}, msg
       # if error.message == 'recs timeout'
