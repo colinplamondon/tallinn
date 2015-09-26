@@ -35,7 +35,6 @@ io.attach( server );
 
 app.queueClient.on('connected', function() {
   console.log("Connections established.");
-  app.setupSocketNotifications()
 
   server.listen(port);
   server.on('error', onError);

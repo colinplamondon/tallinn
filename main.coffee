@@ -9,6 +9,7 @@ bodyParser = require('body-parser')
 nunjucks = require('nunjucks')
 
 { WebQueueClient } = require './lib/connections'
+{ NotificationsDispatcher} = require './lib/notifications'
 routes = require('./routes/routes-main')
 sockets = require('./lib/sockets')
 utils = require('./lib/utils')
@@ -17,14 +18,11 @@ app = express()
 
 socketHandler = sockets(app)
 
+# TODO: make a more general load dependency class, for MessageQueues,
+# mongo, and socket and notifications.
 app.queueClient = new WebQueueClient()
-app.setupSocketNotifications = ->
-  console.log "Setting up notificaton listener...."
-  app.queueClient.listenForNotifications (msg, ackFn) ->
-    { id, user, left } = msg
-    #console.log "Notifying user: #{id}, #{user}, #{left}"
-    socketHandler.emit(user, 'mass-like-status', msg)
-    ackFn()
+dispatcher = new NotificationsDispatcher(app.queueClient, socketHandler)
+app.queueClient.on('connected', dispatcher.init.bind dispatcher)
 
 require('./routes/mock')(app)
 
