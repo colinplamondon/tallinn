@@ -41,7 +41,7 @@ function PagesClass() {
     // for FB.getLoginStatus().
     if (resp.status === 'connected') {
       // Logged into your app and Facebook.
-      window.location.href = '/complete-reg'; 
+      window.location.href = '/complete-reg';
       //relative to domain
     } else if (resp.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
@@ -101,7 +101,7 @@ function PagesClass() {
 
     // Check all the input fields of type email. This function will handle all the email addresses validations
     $(".js-reg-email").keyup( function(){
-      // Set the regular expression to validate the email 
+      // Set the regular expression to validate the email
       validation = new RegExp(validations.email[0]);
       // validate the email value against the regular expression
       if (!validation.test(this.value)){
