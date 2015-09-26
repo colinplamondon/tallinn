@@ -35,9 +35,8 @@ router.get('/complete-reg', (req, res, next) ->
 router.post '/change-location', (req, res, next) ->
   client.setAuthToken( req.body.xAuthToken )
 
-  newLon = parseFloat(req.body.coord_lon)
-  newLat = parseFloat(req.body.coord_lat)
-  console.log(req.body)
+  newLon = parseFloat(req.body.new_lon)
+  newLat = parseFloat(req.body.new_lat)
 
   client.updatePosition(newLon, newLat, (feedback) ->
     console.log arguments
