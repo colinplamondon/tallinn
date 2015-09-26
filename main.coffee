@@ -8,10 +8,10 @@ cookieSession = require('cookie-session')
 bodyParser = require('body-parser')
 nunjucks = require('nunjucks')
 
-{ WebQueueClient } = require './connections'
+{ WebQueueClient } = require './lib/connections'
 routes = require('./routes/routes-main')
-sockets = require('./sockets')
-utils = require('./utils')
+sockets = require('./lib/sockets')
+utils = require('./lib/utils')
 
 app = express()
 

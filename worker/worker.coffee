@@ -27,7 +27,7 @@ Promise = require 'bluebird'
 tinder = require 'tinderjs'
 _ = require 'lodash'
 
-{ WorkerQueueClient } = require '../connections'
+{ WorkerQueueClient } = require '../lib/connections'
 RateLimiter = require './rateLimiter'
 
 Promise.longStackTraces()
