@@ -84,13 +84,26 @@ router.get('/like/:xAuthToken', (req, res, next) ->
   res.render('like', {xAuthToken})
 )
 
+
+router.get('/intros', (req, res, next) ->
+  if req.user?
+    { xAuthToken } = req.user
+
+    returnLocation( xAuthToken, (location) ->
+      res.render('intros', { userId: xAuthToken, location: location })
+    )
+  else
+    res.render('login')
+
+
+)
+
 missing = (param) -> not (param?.length > 0)
 
 returnLocation = (xAuthToken, callback) ->
   client.setAuthToken( xAuthToken )
 
   client.getProfile( (error, data) ->
-    console.log data
     callback({
       lat: data.pos.lat,
       lon: data.pos.lon

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid match-bar-wrap">
+  <div class="col-md-1">
+    <div class="icon">
+      <i class="fa fa-heart"></i>
+      <span class="js-queue-length"></span>
+      <span class="js-queue-state"></span>
+    </div>
+  </div>
+  <div class="match-river UIRiver col-md-11">
+    <div class="matches el-wrap">
+    </div>
+  </div>
+</div>
+
+<div class="page-intros">
+  <div class="intro-perf wrap-full-width">
+      <div class="container">
+        <div class="row">
+          <p class="recipients col-md-6 col-md-offset-3">
+            <span class="js-intro-recipients">0</span> girls from Tallinn received your intro:
+          </p>
+        </div>
+        <div class="row">
+          <div class="active-message col-md-8 col-md-offset-2">
+            <span class="js-intro-message">“Hey what’s the funniest estonian stereotype?”</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2 col-md-offset-3">
+            <div class="DataBox js-databox-sends">
+              <span class="js-stat statistic">82</span>
+              <label>sends</label>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="DataBox js-databox-responses">
+              <span class="js-stat statistic">15</span>
+              <label>responses</label>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="DataBox js-databox-sends">
+              <span class="js-stat statistic">18.2%</span>
+              <label>response rate</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 col-md-offset-2">
+            <a href="#" class="primary cp-btn">Edit Intro Message</a>
+          </div>
+          <div class="col-md-4">
+            <a href="#" class="secondary cp-btn">Pause Sending</a>
+          </div>
+        </div>
+
+      </div>
+  </div>
+
+  <div class="intro-unmessaged wrap-full-width">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <p class="unmessaged">
+            There's also <span class="js-intro-unmessaged">33</span> girls in Tallinn you haven't messaged yet.
+          </p>
+          <span class="btw">Send your intro to them?</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+          <a href="#" class="js-send-unmessaged cp-btn secondary" data-message-number="">Send to all <span class="js-intro-unmessaged">33</span></a>
+        </div>
+        <div class="col-md-4 col-md-offset-4">
+          <a href="#" class="js-send-unmessaged cp-btn secondary" data-message-number="5">Or, just 5 for now.</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container-fluid rec-bar-wrap">
+  <div class="rec-river UIRiver col-md-12">
+    <div class="recommendations el-wrap">
+    </div>
+  </div>
+</div>
+
+<div class="black-overlay" style="display:none;">
+</div>
+
+<script>
+  var socket;
+  Global.currentCoords = {
+      "lon": "{{location.lon}}",
+      "lat": "{{location.lat}}"
+  };
+
+  Global.uid = "{{userId}}";
+  Global.socket = socket = io.connect('//localhost:3000');
+  socket.on('connect', function() {
+    // TODO: replace with DB userId
+    console.log("emitting auth!");
+    socket.emit('auth', {uid: "{{userId}}"});
+  });
+  socket.on('disconnect', function() {
+    console.log(arguments);
+    console.log("disconnected!");
+  });
+
+</script>
+
+{% endblock %}

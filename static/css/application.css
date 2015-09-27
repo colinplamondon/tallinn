@@ -135,6 +135,33 @@ hr {
   width: 80px;
   height: 50px;
 }
+.DataBox {
+  display: block;
+  height: 110px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background: #0c62c8;
+  border: 1px solid #ffffff;
+  text-align: center;
+}
+.DataBox span {
+  display: block;
+  width: 100%;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.1;
+  font-style: italic;
+}
+.DataBox label {
+  display: block;
+  width: 100%;
+  font-style: italic;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.DataBox.DataBox--longlabel {
+  padding-top: 5px;
+}
 ::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
   color: #ffffff;
@@ -437,33 +464,6 @@ h2 {
   cursor: pointer;
   text-decoration: none;
 }
-.DataBox {
-  display: block;
-  height: 110px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  background: #0c62c8;
-  border: 1px solid #ffffff;
-  text-align: center;
-}
-.DataBox span {
-  display: block;
-  width: 100%;
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 1.1;
-  font-style: italic;
-}
-.DataBox label {
-  display: block;
-  width: 100%;
-  font-style: italic;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-.DataBox.DataBox--longlabel {
-  padding-top: 5px;
-}
 .black-overlay {
   position: fixed;
   width: 100%;
@@ -530,4 +530,96 @@ h2 {
 }
 .match-el:hover {
   cursor: pointer;
+}
+.page-intros .intro-perf {
+  margin-top: 40px;
+  background: #0c62c8;
+  padding-top: 45px;
+  padding-bottom: 45px;
+  text-align: center;
+}
+.page-intros .intro-perf p.recipients {
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 700;
+}
+.page-intros .intro-perf .active-message span {
+  display: block;
+  color: #9ec5f4;
+  font-size: 48px;
+  font-weight: 700;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.page-intros .intro-perf .DataBox {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  height: 80px;
+}
+.page-intros .intro-perf .DataBox span {
+  font-size: 28px;
+}
+.page-intros .intro-perf .DataBox label {
+  font-size: 14px;
+  color: #ffffff;
+  font-style: italic;
+}
+.page-intros .intro-perf .primary,
+.page-intros .intro-perf .secondary {
+  margin-top: 40px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 24px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.page-intros .intro-perf .primary:hover,
+.page-intros .intro-perf .secondary:hover {
+  text-decoration: none;
+}
+.page-intros .intro-perf .primary {
+  background: #00c891;
+}
+.page-intros .intro-perf .primary:hover {
+  background: #01b785;
+}
+.page-intros .intro-perf .secondary {
+  background: #6fa7eb;
+}
+.page-intros .intro-perf .secondary:hover {
+  background: #2878d7;
+}
+.intro-unmessaged {
+  height: 500px;
+  margin-top: 70px;
+  text-align: center;
+}
+.intro-unmessaged p.unmessaged {
+  width: 100%;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+}
+.intro-unmessaged span.btw {
+  width: 100%;
+  color: #9ec5f4;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.intro-unmessaged .secondary {
+  background: #6fa7eb;
+  color: #ffffff;
+  margin-top: 20px;
+  font-weight: 700;
+  font-size: 24px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.intro-unmessaged .secondary:hover {
+  text-decoration: none;
+  background: #2878d7;
 }
