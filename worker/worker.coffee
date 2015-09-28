@@ -1,26 +1,3 @@
-###
-Get matches:
-  - when a user signs up, fetch all their matches.
-  - Record last activity date.
-  - Use this when fetching updates.
-  - if we match with someone when liking them, do we still get that activity returned? I think so.
-  - maybe hit every ~5 secs
-
-Jobs:
-  Like 500 users
-    Ping rec
-    For each returned, like the following
-  Message 10 users with this msg: "yoyo"
-    Get matches. (how???)
-    For the top 10 matches, like them
-
-  Like 500 users, 100 messaged so far,  messaging: "yoyo"
-    Ping rec,
-    For each returned, like the following
-    Check for updates
-    If updates, message each.
-###
-
 # can we test this that everything is run once at a time without
 # hitting the api?
 Promise = require 'bluebird'
@@ -48,8 +25,6 @@ client = new tinder.TinderClient()
 
 # TODO: add rate limiting
 
-i = 0
-
 # Add logging, so we know whats happening at each step.
 # Hit once from client and make sure output is correct.
 
@@ -60,6 +35,7 @@ class Cache
     @contents = {}
   add: (key, val) -> @contents[key] = val
   get: (key) -> @contents[key]
+  size: => _.size @contents
 cache = new Cache()
 rememberRecommendations = (user, {results: matches}) ->
   for match in matches
@@ -83,7 +59,6 @@ handleMassLike = (msg, ackFn) ->
 
   left = amount
   executeLike = (theirId) ->
-    console.log 'executelike!'
     limit()
       .then ->
         client.likeAsync theirId
@@ -113,10 +88,10 @@ handleMassLike = (msg, ackFn) ->
 
     # If we have more people to like, enqueue a new job. Handle cleanup.
     .then ->
+      left = amount - cache.size()
       cache.clear()
 
       # Create new job if necessary
-      left = amount - recommendFetchAmount
       if left > 0
         newMsg = _.defaults {amount: left, iteration: ++iteration}, msg
         queueClient.pushJob newMsg
@@ -142,7 +117,7 @@ handleMassLike = (msg, ackFn) ->
 
 queueClient = new WorkerQueueClient()
 queueClient.on 'connected', ->
-  console.log 'connected! here'
+  console.log "Worker connected. Listening for Jobs!"
   queueClient.listenForJobs onReceive
 
 
