@@ -394,6 +394,7 @@ h2 {
 }
 .page-reg-complete .paste-token .cp-btn {
   margin-top: 80px;
+  min-height: 50px;
 }
 .like-ui .stats {
   margin-top: 70px;

@@ -15,7 +15,6 @@ router.get '/', (req, res, next) ->
     { xAuthToken } = req.user
 
     returnLocation( xAuthToken, (location) ->
-      console.log("Got location as: "+location)
       res.render('like', { userId: xAuthToken, location: location })
     )
   else
@@ -40,9 +39,6 @@ router.post '/change-location', (req, res, next) ->
   newLat = parseFloat(req.body.new_lat)
 
   client.updatePosition(newLon, newLat, (feedback) ->
-    console.log arguments
-    console.log feedback
-
     error = ''
     if arguments['1'].hasOwnProperty('error')
       error = arguments['1']['error']
@@ -57,8 +53,8 @@ router.post '/login', (req, res, next) ->
   { token, fbid } = req.body
   { xAuthToken } = req.params
 
-  if missing token then return res.send "Please enter a valid token."
-  if missing fbid then return res.send "Please enter a valid fbid."
+  if missing token then return res.json({'ok': false, 'msg': "Please enter a valid token."})
+  if missing fbid then return res.json({'ok': false, 'msg':"Please enter a valid fbid."});
 
   # TODO: handle authorization failure (fbook token is wrong or expired)
   # AuthError: Failed to authenticate: Access Denied
@@ -68,7 +64,7 @@ router.post '/login', (req, res, next) ->
 
       # TODO: confirm user with DB here.
       req.session.userId = client.getAuthToken()
-      res.redirect '/'
+      res.json({'ok': true, 'redirect': '/'})
 
 router.get('/poop', (req, res, next) ->
   res.send 'yo'
@@ -93,7 +89,6 @@ router.get('/intros', (req, res, next) ->
     returnLocation( xAuthToken, (location) ->
 
       getCurrentCityMatches( xAuthToken, (matches) ->
-        console.log(matches)
         res.render('intros', { 
           "userId": xAuthToken, 
           "location": location,
@@ -178,7 +173,6 @@ returnLocation = (xAuthToken, callback) ->
   client.setAuthToken( xAuthToken )
 
   client.getProfile( (error, data) ->
-    console.log(data)
     callback({
       lat: data.pos.lat,
       lon: data.pos.lon

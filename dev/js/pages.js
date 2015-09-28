@@ -6,29 +6,22 @@ function PagesClass() {
   };
 
   this.router = function() {
-      // -----------------------------------
-      // -----------------------------------
-      // ABOUT PAGE
-      // TODO: we have to do something smarter than this.
+    // -----------------------------------
+    // -----------------------------------
+    // ABOUT PAGE
+    // TODO: we have to do something smarter than this.
 
-      if (window.location.pathname.indexOf("/reg") > -1) {
-          this.regInit();
-      }
+    if (window.location.pathname.indexOf("/reg") > -1) {
+        this.regInit();
+    }
 
-      if (window.location.pathname.indexOf("/complete-reg") > -1) {
-        this.completeRegInit();
-      }
-    };
+    if (window.location.pathname.indexOf("/complete-reg") > -1) {
+      this.completeRegInit();
+    }
+  };
 
   this.installObservers = function() {
 
-  };
-
-  this.getParameterByName = function(name) {
-      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-          results = regex.exec(location.search);
-      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   };
 
   this.fbCheckLoginResponse = function(resp) {
@@ -40,7 +33,11 @@ function PagesClass() {
     // for FB.getLoginStatus().
     if (resp.status === 'connected') {
       // Logged into your app and Facebook.
-      window.location.href = '/complete-reg';
+      var token = resp.authResponse.accessToken;
+      var userId = resp.authResponse.userID;
+      var email = $('.js-reg-email').val();
+
+      window.location.href = '/complete-reg?email='+email+'&fbToken='+token+'&fbUser='+userId;
       //relative to domain
     } else if (resp.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
@@ -74,12 +71,71 @@ function PagesClass() {
         "opacity":0.7,
         "background-color": "#0C62C8"
       });
+
       $('.js-paste-tinder-token').removeAttr('disabled').css({
         "border":"1px solid #ffffff",
         "color": "#ffffff"
       }).addClass('active');
+
       $('.paste-token').removeClass('disabled').transition();
       $('.paste-token label').addClass('lookatme');
+    });
+
+    $('.js-submit-tinderkey').click(function(){
+      var tinder_token = $('.js-paste-tinder-token').val();
+      var email = Global.getParameterByName('email');
+      var facebookId = Global.getParameterByName('fbUser');
+
+      var login_data = {
+        'email': email,
+        'token': tinder_token,
+        'fbid': facebookId,
+      };
+
+      function submitForm(loginData, btn) {
+        $.ajax({
+          type: "POST",
+          url: '/login',
+          data: login_data,
+          dataType: 'json',
+          success: function(msg) {
+            console.log(msg);
+            if(msg.ok) {
+              $(btn).find('.submitting').transition({
+                'opacity':0
+              }, 200, function(){
+                $(btn).find('.success').css('opacity',0).show();
+                $(btn).find('.submitting').hide();
+                $(btn).find('.success').transition({
+                  opacity: 1
+                }, 300, function(){
+                  setTimeout(function(){
+                    // alert('redirect!');
+                    window.location.href = msg.redirect;
+                  }, 600);
+                });
+              });
+            } else {
+              alert(msg.msg);
+            }
+          }
+        });
+      }
+      var should_submit = false;
+
+      var btn = this;
+      $(btn).find('.unsubmitted').transition({
+        'opacity': 0
+      }, 300,function() {
+        $(this).hide();
+        $(btn).find('.submitting').css('opacity', 0).show().transition({
+          'opacity': 1
+        }, 200, function(){
+          // ANIMATION COMPLETE
+          submitForm(login_data, btn);
+
+        });
+      });
     });
   };
 
