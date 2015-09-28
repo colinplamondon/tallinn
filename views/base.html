@@ -38,16 +38,18 @@
 		<div class="row">
 			<div class="col-md-3">
 				<div class="row">
-					<div class="col-md-5 col-md-offset-2">
-						<i class="fa fa-globe"></i>
-						<label>Active City</label>
-					</div>
-					<div class="col-md-5">
-						<input id="js-city-search" class="city-filter controls" type="text" placeholder="Enter a location..." /><br />
+					<div class="col-md-offset-1 col-md-11">
+						<input id="js-city-search" class="city-filter controls" type="text" placeholder="Looking up Tinder location..." /><br />
 
 						<div class="city-search-error">
 							<span class="js-city-error" style="display:none;"></span>
 						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-offset-1 col-md-11">
+						<i class="fa fa-globe"></i>
+						<label>Active City</label>
 					</div>
 				</div>
 			</div>
@@ -104,6 +106,7 @@
 
 <script type="text/javascript">
 	Global.likeInProgress = false;
+	Global.init();
 </script>
 
 <div class="js-hidden-area" style="display:none;">
