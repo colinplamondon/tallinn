@@ -28,7 +28,10 @@ tinder = require 'tinderjs'
 _ = require 'lodash'
 
 { WorkerQueueClient } = require '../lib/connections'
+notifications = require '../lib/notifications'
 RateLimiter = require './rateLimiter'
+
+{ Recommendation, Unrequited, Match, MassLikeStatus } = notifications
 
 Promise.longStackTraces()
 Promise.onPossiblyUnhandledRejection (error) ->
@@ -50,6 +53,20 @@ i = 0
 # Add logging, so we know whats happening at each step.
 # Hit once from client and make sure output is correct.
 
+class Cache
+  constructor: ->
+    @contents = {}
+  clear: ->
+    @contents = {}
+  add: (key, val) -> @contents[key] = val
+  get: (key) -> @contents[key]
+cache = new Cache()
+rememberRecommendations = (user, {results: matches}) ->
+  for match in matches
+    rec = new Recommendation().populate(match)
+    rec.user = user
+    cache.add rec.id, rec
+
 rateLimiter = new RateLimiter(500, 600)
 limit = Promise.promisify(rateLimiter.limit, rateLimiter)
 
@@ -69,12 +86,16 @@ handleMassLike = (msg, ackFn) ->
     console.log 'executelike!'
     limit()
       .then ->
-        console.log "YO!"
         client.likeAsync theirId
-      .then ->
-        console.log "DONE"
+      .then ({match}) ->
         left--
-        queueClient.pushNotification({ id, user, left: left })
+
+        recommendation = if match then new Match() else new Unrequited()
+        recommendation.fromRecommendation cache.get(theirId)
+        queueClient.pushNotification(recommendation)
+
+        status = new MassLikeStatus(id, user, left)
+        queueClient.pushNotification(status)
 
   recommendFetchAmount = Math.min 14, amount
   limit()
@@ -82,6 +103,7 @@ handleMassLike = (msg, ackFn) ->
     .then -> client.getRecommendationsAsync recommendFetchAmount
     # sometimes will return a { message: 'recs timeout' }
     .tap console.log
+    .tap rememberRecommendations.bind(null, user)
     .then ({results}) ->
       Promise.resolve( (rec._id for rec in results)[0...amount])
     .tap console.log
@@ -91,6 +113,8 @@ handleMassLike = (msg, ackFn) ->
 
     # If we have more people to like, enqueue a new job. Handle cleanup.
     .then ->
+      cache.clear()
+
       # Create new job if necessary
       left = amount - recommendFetchAmount
       if left > 0

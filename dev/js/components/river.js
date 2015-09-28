@@ -40,9 +40,12 @@ function RiverUI() {
     this.installObservers();
 
     var self = this;
+    // Colin, there is probably a smarter way to do this. Talk to me.
+    /*
     self.queueJob = setInterval(function(){
       self.queueRunner(self);
     },1000);
+    */
   };
 
   this.returnMaxElementsInRow = function() {
@@ -125,9 +128,10 @@ function RiverUI() {
         });
       }
 
-      var html = params.html_func( msg.profile_pic );
+      var html = params.html_func( msg.photos[0] );
 
       self.elementQueue.push(html);
+      self.queueRunner(self);
     });
   };
 

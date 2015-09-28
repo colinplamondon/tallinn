@@ -50,8 +50,9 @@ class MessageQueueClient extends EventEmitter
 class WorkerQueueClient extends MessageQueueClient
   listenForJobs: (listener) =>
     @_listen @jobsKey, listener
-  pushNotification: (msg) =>
-    console.log "pushing notification: #{msg.user} #{msg.left}"
+  pushNotification: (notification) =>
+    msg = notification.toWireform()
+    console.log "pushing notification: #{msg.user} #{msg.key} #{msg}"
     @_push @notificationsKey, msg
 
 class WebQueueClient extends MessageQueueClient
