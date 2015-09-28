@@ -60,7 +60,6 @@ function RiverUI() {
   };
 
   this.queueRunner = function(self) {
-    var q_length = self.elementQueue.length;
     if( self.queueOn && self.elementQueue.length > 0) {
       self.addNextElement();
     }

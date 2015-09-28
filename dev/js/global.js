@@ -5,7 +5,12 @@ function GlobalClass() {
       this.locationSearch();
       this.setInitialLocation();
       this.installAuthedObservers();
+
+      // style active nav box
+      $('.nav-box').removeClass('active');
+      $('.nav-box[data-page="'+this.currentPage+'"]').addClass('active');
     }
+
 	};
 
 	this.installObservers = function(){
@@ -14,6 +19,21 @@ function GlobalClass() {
   this.installAuthedObservers = function() {
     $('#js-city-search').click(function(){
       $(this).select();
+    });
+
+    $('.nav-box').click(function(){
+      var target_page = $(this).data('page');
+
+      switch(target_page) {
+        case "likes":
+          window.location.href = Like.url;
+          break;
+        case "intros":
+          window.location.href = Intros.url;
+          break;
+        default:
+          window.location.href = Like.url;
+      }
     });
   };
 

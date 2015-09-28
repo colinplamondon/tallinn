@@ -123,6 +123,7 @@
       "lat": "{{location.lat}}"
   };
 
+  Global.currentPage = 'likes';
   Global.uid = "{{userId}}";
   Global.socket = socket = io.connect('//localhost:3000');
   socket.on('connect', function() {

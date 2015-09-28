@@ -1,4 +1,6 @@
 function IntrosClass() {
+  this.url = "/intros";
+
   this.init = function(){
     this.installObservers();
 	};

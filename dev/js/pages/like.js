@@ -1,6 +1,6 @@
 /*jshint multistr: true */
 function LikeClass() {
-
+  this.url = "/";
   this.init = function() {
     this.originalHovercardY = $('.match-hovercard').css('top');
     this.blurEls = $(".nav, .like-ui, .rec-bar-wrap, .footer");

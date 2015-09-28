@@ -257,6 +257,10 @@ label {
 .nav-box.likes {
   margin-left: 50px;
 }
+.nav-box:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
 .nav .flow-arrow {
   float: left;
   display: block;
