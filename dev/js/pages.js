@@ -10,7 +10,6 @@ function PagesClass() {
       // -----------------------------------
       // ABOUT PAGE
       // TODO: we have to do something smarter than this.
-      Like.init();
 
       if (window.location.pathname.indexOf("/reg") > -1) {
           this.regInit();

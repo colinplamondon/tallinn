@@ -15,6 +15,7 @@ router.get '/', (req, res, next) ->
     { xAuthToken } = req.user
 
     returnLocation( xAuthToken, (location) ->
+      console.log("Got location as: "+location)
       res.render('like', { userId: xAuthToken, location: location })
     )
   else
@@ -88,15 +89,88 @@ router.get('/like/:xAuthToken', (req, res, next) ->
 router.get('/intros', (req, res, next) ->
   if req.user?
     { xAuthToken } = req.user
-
+    console.log xAuthToken
     returnLocation( xAuthToken, (location) ->
-      res.render('intros', { userId: xAuthToken, location: location })
+
+      getCurrentCityMatches( xAuthToken, (matches) ->
+        console.log(matches)
+        res.render('intros', { 
+          "userId": xAuthToken, 
+          "location": location,
+          "matches": matches,
+          "match_num": matches.length
+        })
+      )
     )
   else
     res.render('login')
-
-
 )
+
+getCurrentCityMatches = (xAuthToken, callback) ->
+  client.setAuthToken( xAuthToken )
+
+  city_matches = []
+
+  # GET MATCHES
+  # For each match, get the profile
+
+  # 2015-08-27T00:00:00+0000
+
+  client.getHistory( '2015-09-25T00:00:00+0000', (error, data) ->
+    length = data['matches'].length
+    count = 1
+
+    match_list = []
+
+    getMatchArray(xAuthToken, (matches) ->
+      for m in matches
+        if m.hasOwnProperty('person') 
+          if m.person.hasOwnProperty('_id')
+            match_list.push(m.person._id)
+
+      filterMatchesForCity(match_list, xAuthToken, (city_matches) ->
+        callback(city_matches)
+      )
+    )
+
+  )
+
+filterMatchesForCity = (matches, xAuthToken, callback) ->
+  match_data = []
+
+  target_profiles = matches.length
+  count = 1
+
+  filter_data = (all_matches, cb) ->
+    city_matches = []
+    for m in all_matches
+      if m.distance_mi < 20
+        city_matches.push(m)
+    cb(city_matches)
+
+  for m in matches
+    client.setAuthToken( xAuthToken )
+    client.getUser(m, (error, data) ->
+      if !data
+        target_profiles--
+
+      if data
+        count++
+        match_data.push(data['results'])
+
+      if count == target_profiles
+        filter_data(match_data, callback)
+    )
+
+
+
+getMatchArray = (xAuthToken, callback) ->
+  client.setAuthToken( xAuthToken )
+  client.getHistory( '2015-09-25T00:00:00+0000', (error, data) ->
+    callback (data['matches'])
+  )
+
+
 
 missing = (param) -> not (param?.length > 0)
 
@@ -104,6 +178,7 @@ returnLocation = (xAuthToken, callback) ->
   client.setAuthToken( xAuthToken )
 
   client.getProfile( (error, data) ->
+    console.log(data)
     callback({
       lat: data.pos.lat,
       lon: data.pos.lon
