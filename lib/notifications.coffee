@@ -71,6 +71,7 @@ class Recommendation extends Notification
 class Match extends Recommendation
   constructor: () ->
     super('new-match')
+
 class Unrequited extends Recommendation
   constructor: () ->
     super('new-unrequited')

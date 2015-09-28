@@ -28,6 +28,7 @@ function RiverUI() {
     console.log(this.elementQueue);
     this.queueOn = true;
 
+    this.elementInfo = {};
     this.parentObject = riverParams.parentObject;
     this.elementWrap = riverParams.elementWrap;
     this.elementClass = riverParams.elementClass;
@@ -60,8 +61,6 @@ function RiverUI() {
 
   this.queueRunner = function(self) {
     var q_length = self.elementQueue.length;
-    $('.js-queue-length').html(q_length);
-    $('.js-queue-state').html(self.queueOn);
     if( self.queueOn && self.elementQueue.length > 0) {
       self.addNextElement();
     }
@@ -107,7 +106,6 @@ function RiverUI() {
     $(next).attr('style', addition);
 
     // TODO: should pass in ID explicitly, otherwise default to an ObjectID
-    $(next).attr('id', Global.getRandomInt(1, 1000));
     var new_element = $(next).appendTo(this.elementWrap);
 
     setTimeout(function(){
@@ -128,8 +126,9 @@ function RiverUI() {
         });
       }
 
-      var html = params.html_func( msg.photos[0] );
+      var html = params.html_func( [msg.id, msg.photos[0]] );
 
+      self.elementInfo[msg.id] = msg;
       self.elementQueue.push(html);
       self.queueRunner(self);
     });

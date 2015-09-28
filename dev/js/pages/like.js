@@ -66,8 +66,30 @@ function LikeClass() {
     });
   };
 
+  this.fillHovercardFromData = function(data) {
+    var eraseElements = [$('.js-match-name'), $('.js-miles-away'),$('.js-last-online'), $('.js-hovercard-bio'), $('.js-hovercard-photos')];
+    $.each(eraseElements, function(idx, val){
+      $(this).html('');
+    });
+
+    $('.js-match-name').html(data.name);
+    $('.js-miles-away').html(data.distance);
+    $('.js-last-online').html(data.last_online);
+    $('.js-hovercard-bio').html(data.bio);
+    $('.match-hovercard .js-unmatch').data('target-match', data.id);
+
+    $.each(data.large_photos, function(idx, val){
+      $('.js-hovercard-photos').append("<img src='"+val+"' />");
+    });
+
+  };
+
   this.installObservers = function() {
+    var self = this;
     $('.matches').on('click', ".match-el", function(){
+      var match_id = $(this).attr('id');
+      var match_data = self.matchRiver.elementInfo[match_id];
+      self.fillHovercardFromData( match_data );
       if( !$('.match-hovercard').is(":visible") ) {
         var vague = $(this).Vague({
             intensity:      2,      // Blur Intensity
@@ -97,7 +119,6 @@ function LikeClass() {
       }
     });
 
-    var self = this;
     $('.js-like').click(function(){
       if(!Global.likeInProgress) {
         var amount = Number($(this).data('like-num'));
@@ -266,12 +287,14 @@ function LikeClass() {
       transitionOutPx: 150
     };
 
-    var matchHtml = function(insert_token) {
-      var html1 = "<div class='match-el' style='";
-      var html2 = html1+ "background-image:url(\""+insert_token+"\");'></div>";
+    var matchHtml = function(tokens) {
+      var html1 = "<div id='"+tokens[0]+"' class='match-el' style='";
+      var html2 = html1+ "background-image:url(\""+token[1]+"\");'></div>";
 
       return html2;
     };
+
+    var photosToLoad = ['large_photos'];
 
     var matchSocketParams = {
       channel: "new-match",
@@ -385,6 +408,52 @@ function LikeClass() {
   // ---------------------
   // ---------------------
 
+  this.testData1 = {
+    "bio": "",
+    "id": "55cb8de4c31219c85f5d620a",
+    "large_photos": [
+      "http://images.gotinder.com/55cb8de4c31219c85f5d620a/640x640_bcd6bd1f-d8e6-4a1b-b4e2-376908f6558a.jpg",
+      "http://images.gotinder.com/55cb8de4c31219c85f5d620a/640x640_6b71a8fb-5d0f-476d-89fb-437ae8695301.jpg",
+      "http://images.gotinder.com/55cb8de4c31219c85f5d620a/640x640_62bc9574-134c-4129-858f-0a5b4ffd6465.jpg",
+      "http://images.gotinder.com/55cb8de4c31219c85f5d620a/640x640_ca5f7895-17f9-43bb-8a9b-09b71f995d46.jpg",
+      "http://images.gotinder.com/55cb8de4c31219c85f5d620a/640x640_edd57868-7c15-4d21-8b0d-4c9457160756.jpg"
+    ],
+    "last_online": "43 minutes ago",
+    "miles_away": 12,
+    "name": "Elina",
+    "photos": [
+      "http://images.gotinder.com/55cb8de4c31219c85f5d620a/320x320_bcd6bd1f-d8e6-4a1b-b4e2-376908f6558a.jpg",
+      "http://images.gotinder.com/55cb8de4c31219c85f5d620a/320x320_6b71a8fb-5d0f-476d-89fb-437ae8695301.jpg",
+      "http://images.gotinder.com/55cb8de4c31219c85f5d620a/320x320_62bc9574-134c-4129-858f-0a5b4ffd6465.jpg",
+      "http://images.gotinder.com/55cb8de4c31219c85f5d620a/320x320_ca5f7895-17f9-43bb-8a9b-09b71f995d46.jpg",
+      "http://images.gotinder.com/55cb8de4c31219c85f5d620a/320x320_edd57868-7c15-4d21-8b0d-4c9457160756.jpg"
+    ]
+  };
+
+  this.testData2 = {
+    "bio": "178 cm.",
+    "id": "545e7ba5b014ddb879ebfcb4",
+    "large_photos": [
+      "http://images.gotinder.com/545e7ba5b014ddb879ebfcb4/640x640_331ac626-b293-48e1-8db1-b552243402b6.jpg",
+      "http://images.gotinder.com/545e7ba5b014ddb879ebfcb4/640x640_f5210d8a-f81e-4220-85a7-66f33e6233b5.jpg",
+      "http://images.gotinder.com/545e7ba5b014ddb879ebfcb4/640x640_4c33db1c-10a1-467d-8c32-45c9accab42d.jpg",
+      "http://images.gotinder.com/545e7ba5b014ddb879ebfcb4/640x640_55498925-6b1c-44b3-98bb-9738acd32446.jpg",
+      "http://images.gotinder.com/545e7ba5b014ddb879ebfcb4/640x640_af244d2a-1def-4e16-88eb-95b63b65de63.jpg",
+      "http://images.gotinder.com/545e7ba5b014ddb879ebfcb4/640x640_71caddd1-6e87-4e64-9d07-ea8e5f220f87.jpg"
+    ],
+    "last_online": "a day ago",
+    "miles_away": 6,
+    "name": "Alla",
+    "photos": [
+      "http://images.gotinder.com/545e7ba5b014ddb879ebfcb4/320x320_331ac626-b293-48e1-8db1-b552243402b6.jpg",
+      "http://images.gotinder.com/545e7ba5b014ddb879ebfcb4/320x320_f5210d8a-f81e-4220-85a7-66f33e6233b5.jpg",
+      "http://images.gotinder.com/545e7ba5b014ddb879ebfcb4/320x320_4c33db1c-10a1-467d-8c32-45c9accab42d.jpg",
+      "http://images.gotinder.com/545e7ba5b014ddb879ebfcb4/320x320_55498925-6b1c-44b3-98bb-9738acd32446.jpg",
+      "http://images.gotinder.com/545e7ba5b014ddb879ebfcb4/320x320_af244d2a-1def-4e16-88eb-95b63b65de63.jpg",
+      "http://images.gotinder.com/545e7ba5b014ddb879ebfcb4/320x320_71caddd1-6e87-4e64-9d07-ea8e5f220f87.jpg"
+    ]
+  };
+
   this.recommendationRiverStart = function() {
     var recRiverParams = {
       parentObject: $('.rec-river'),
@@ -394,15 +463,16 @@ function LikeClass() {
       transitionOutPx: 150
     };
 
-    var recHtml = function(insert_token) {
-      var html1 = "<div class='rec-el' style='";
-      var html2 = html1+ "background-image:url(\""+insert_token+"\");'></div>";
+    var recHtml = function(tokens) {
+      var html1 = "<div id='"+tokens[0]+"' class='rec-el' style='";
+      var html2 = html1+ "background-image:url(\""+tokens[1]+"\");'></div>";
 
       return html2;
     };
 
     var recSocketParams = {
       channel: "new-unrequited",
+      token_num: 2,
       html_func: recHtml,
       tokens_from_msg: ['profile-pic'],
       img_preload_array: ['profile-pic']
