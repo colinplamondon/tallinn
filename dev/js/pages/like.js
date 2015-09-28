@@ -12,7 +12,7 @@ function LikeClass() {
     this.setInitialLocation();
 
     this.matchRiverStart();
-    // this.recommendationRiverStart();
+    this.recommendationRiverStart();
   };
 
 
@@ -402,7 +402,7 @@ function LikeClass() {
     };
 
     var recSocketParams = {
-      channel: "new-rec",
+      channel: "new-unrequited",
       html_func: recHtml,
       tokens_from_msg: ['profile-pic'],
       img_preload_array: ['profile-pic']
