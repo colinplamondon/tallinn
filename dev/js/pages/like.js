@@ -197,7 +197,7 @@ function LikeClass() {
 
     var matchHtml = function(tokens) {
       var html1 = "<div id='"+tokens[0]+"' class='match-el' style='";
-      var html2 = html1+ "background-image:url(\""+token[1]+"\");'></div>";
+      var html2 = html1+ "background-image:url(\""+tokens[1]+"\");'></div>";
 
       return html2;
     };
