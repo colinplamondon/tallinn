@@ -37,7 +37,7 @@ function GlobalClass() {
     });
   };
 
-  this.setInitialLocation = function() {
+  this.returnCurrentCity = function(callback) {
     var user_lat = Global.currentCoords.lat;
     var user_lon = Global.currentCoords.lon;
 
@@ -47,16 +47,25 @@ function GlobalClass() {
     geocoder.geocode({'location': latlng}, function(results, status) {
       if (status === google.maps.GeocoderStatus.OK) {
         if (results[1]) {
-          var city = results[3].formatted_address;
-          console.log(results);
-          $('#js-city-search').val(results[3].formatted_address);
-
+          // "Riga, Latvia"
+          full_name = results[3];
+          // "Riga"
+          just_city = full_name.address_components[0].long_name;
+          callback(full_name.formatted_address, just_city);
         } else {
           window.alert('Could not find the name of your Tinder location.');
+          return false;
         }
       } else {
         window.alert('Geocoder failed due to: ' + status);
+        return false;
       }
+    });
+  };
+
+  this.setInitialLocation = function() {
+    this.returnCurrentCity(function(full_name, city_name){
+      $('#js-city-search').val(full_name);
     });
   };
 

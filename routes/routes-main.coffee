@@ -1,3 +1,4 @@
+stringify = require 'node-stringify'
 express = require 'express'
 request = require 'request'
 Promise = require 'bluebird'
@@ -86,18 +87,42 @@ router.get('/intros', (req, res, next) ->
     console.log xAuthToken
     returnLocation( xAuthToken, (location) ->
 
-      getCurrentCityMatches( xAuthToken, (matches) ->
+      getCurrentCityMatches( xAuthToken, (matches, message_lookup) ->
+
+        unmessaged = returnUnmessagedMatches(matches, message_lookup)
         res.render('intros', {
           "userId": xAuthToken,
           "location": location,
           "matches": matches,
-          "match_num": matches.length
+          "match_num": matches.length,
+          "unmessaged": unmessaged,
+          "unmessaged_num": unmessaged.length
         })
       )
     )
   else
     res.render('login')
 )
+
+returnUnmessagedMatches = (matches, message_lookup) ->
+  unmessaged = []
+
+  count = 0
+  console.log("Have " + matches.length)
+
+  have_messaged = (match) ->
+    messages_exist = message_lookup[match._id]?
+    if messages_exist && message_lookup[match._id].length > 0
+      return true
+    return false
+
+  for m in matches
+    if !have_messaged(m)
+      unmessaged.push(JSON.stringify(m._id))
+
+  return unmessaged
+
+
 
 getCurrentCityMatches = (xAuthToken, callback) ->
   client.setAuthToken( xAuthToken )
@@ -109,20 +134,22 @@ getCurrentCityMatches = (xAuthToken, callback) ->
 
   # 2015-08-27T00:00:00+0000
 
-  client.getHistory( '2015-09-25T00:00:00+0000', (error, data) ->
+  client.getHistory( '2015-09-26T00:00:00+0000', (error, data) ->
+
+    message_lookup = {}
     length = data['matches'].length
     count = 1
 
     match_list = []
 
     getMatchArray(xAuthToken, (matches) ->
-      for m in matches
-        if m.hasOwnProperty('person')
-          if m.person.hasOwnProperty('_id')
-            match_list.push(m.person._id)
+
+      for m in matches when m.person?._id?
+        match_list.push(m.person._id)
+        message_lookup[m.person._id] = m.messages
 
       filterMatchesForCity(match_list, xAuthToken, (city_matches) ->
-        callback(city_matches)
+        callback(city_matches, message_lookup)
       )
     )
 

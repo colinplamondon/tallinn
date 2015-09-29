@@ -21,7 +21,7 @@
       <div class="container">
         <div class="row">
           <p class="recipients col-md-6 col-md-offset-3">
-            <span class="js-intro-recipients">0</span> girls from Tallinn received your intro:
+            <span class="js-intro-recipients">0</span> girls from <span class="js-current-city"></span> received your intro:
           </p>
         </div>
         <div class="row">
@@ -68,7 +68,7 @@
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
           <p class="unmessaged">
-            There's also <span class="js-intro-unmessaged">33</span> girls in Tallinn you haven't messaged yet.
+            There's also <span class="js-intro-unmessaged">33</span> girls in <span class="js-current-city"></span> you haven't messaged yet.
           </p>
           <span class="btw">Send your intro to them?</span>
         </div>
@@ -118,6 +118,9 @@
   });
   Intros.init();
   var match_num = {{match_num}};
+  Intros.unmessaged_num = {{unmessaged_num}};
+  Intros.unmessaged = JSON.parse({{"{{unmessaged}}"}});
+
 </script>
 
 {% endblock %}
