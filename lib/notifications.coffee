@@ -48,9 +48,6 @@ class Recommendation extends Notification
       'pingTime': @_convertTime
     }
   populate: (source) ->
-    console.log 'create recommendation'
-    console.log source
-
     @photos = @_extractPhotos(320, source)
     @largePhotos = @_extractPhotos(640, source)
     { @name, distance_mi: @miles, ping_time: @pingTime, @bio, _id: @id } = source
