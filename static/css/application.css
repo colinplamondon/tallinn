@@ -178,7 +178,7 @@ hr {
   padding: 20px;
 }
 .page-auth .access-key,
-.page-reg-complete .paste-token {
+.page-auth .paste-token {
   margin-top: 100px;
 }
 .page-auth .paste-token input {
@@ -186,6 +186,10 @@ hr {
   font-size: 36px;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+.page-auth .submit-form .cp-btn {
+  margin-top: 40px;
+  min-height: 50px;
 }
 ::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
@@ -392,13 +396,10 @@ h2 {
 }
 .page-reg .cp-btn:hover {
   background: #18d7a2;
+  text-decoration: none;
 }
 .page-reg {
   padding-bottom: 200px;
-}
-.page-reg-complete .submit-form .cp-btn {
-  margin-top: 40px;
-  min-height: 50px;
 }
 .like-ui .stats {
   margin-top: 70px;

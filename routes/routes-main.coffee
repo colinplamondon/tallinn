@@ -33,6 +33,10 @@ router.get('/complete-reg', (req, res, next) ->
   res.render('complete-reg')
 )
 
+router.get('/reauth', (req, res, next) ->
+  res.render('reauth')
+)
+
 router.post '/change-location', (req, res, next) ->
   client.setAuthToken( req.body.xAuthToken )
 
