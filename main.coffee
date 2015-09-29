@@ -61,6 +61,13 @@ app.use( (req, res, next) ->
 )
 
 app.use('/', routes)
+app.use (err, req, res, next) ->
+  { status } = err
+  if status is 401
+    res.redirect '/reg'
+    next()
+  else
+    next(err)
 
 # catch 404 and forward to error handler
 app.use( (req, res, next) ->

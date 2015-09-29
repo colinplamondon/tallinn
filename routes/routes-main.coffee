@@ -11,14 +11,14 @@ client = new tinder.TinderClient()
 Promise.promisifyAll(client)
 
 router.get '/', (req, res, next) ->
-  if req.user?
-    { xAuthToken } = req.user
-
-    returnLocation( xAuthToken, (location) ->
-      res.render('like', { userId: xAuthToken, location: location })
-    )
-  else
-    res.render('login')
+  if not req.user?
+    return res.render('login')
+  { xAuthToken } = req.user
+  client.setAuthToken xAuthToken
+  client.getProfileAsync()
+    .then ({pos: {lat, lon: lon}}) ->
+      res.render('like', { userId: xAuthToken, location: {lat, lon} })
+    .error next
 
 router.get('/login', (req, res, next) ->
   res.render('login')
@@ -70,7 +70,6 @@ router.get('/poop', (req, res, next) ->
   res.send 'yo'
 )
 
-
 router.get('/like/:xAuthToken', (req, res, next) ->
   { xAuthToken } = req.params
 
@@ -81,7 +80,6 @@ router.get('/like/:xAuthToken', (req, res, next) ->
   res.render('like', {xAuthToken})
 )
 
-
 router.get('/intros', (req, res, next) ->
   if req.user?
     { xAuthToken } = req.user
@@ -89,8 +87,8 @@ router.get('/intros', (req, res, next) ->
     returnLocation( xAuthToken, (location) ->
 
       getCurrentCityMatches( xAuthToken, (matches) ->
-        res.render('intros', { 
-          "userId": xAuthToken, 
+        res.render('intros', {
+          "userId": xAuthToken,
           "location": location,
           "matches": matches,
           "match_num": matches.length
@@ -119,7 +117,7 @@ getCurrentCityMatches = (xAuthToken, callback) ->
 
     getMatchArray(xAuthToken, (matches) ->
       for m in matches
-        if m.hasOwnProperty('person') 
+        if m.hasOwnProperty('person')
           if m.person.hasOwnProperty('_id')
             match_list.push(m.person._id)
 
@@ -157,15 +155,11 @@ filterMatchesForCity = (matches, xAuthToken, callback) ->
         filter_data(match_data, callback)
     )
 
-
-
 getMatchArray = (xAuthToken, callback) ->
   client.setAuthToken( xAuthToken )
   client.getHistory( '2015-09-25T00:00:00+0000', (error, data) ->
     callback (data['matches'])
   )
-
-
 
 missing = (param) -> not (param?.length > 0)
 
