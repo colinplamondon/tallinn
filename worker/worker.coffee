@@ -43,7 +43,7 @@ rememberRecommendations = (user, {results: matches}) ->
     rec.user = user
     cache.add rec.id, rec
 
-rateLimiter = new RateLimiter(500, 600)
+rateLimiter = new RateLimiter(250, 300)
 limit = Promise.promisify(rateLimiter.limit, rateLimiter)
 
 onReceive = (msg, ackFn) ->
