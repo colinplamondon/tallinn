@@ -140,17 +140,18 @@ hr {
   height: 110px;
   padding-top: 20px;
   padding-bottom: 20px;
-  background: #0c62c8;
-  border: 1px solid #ffffff;
+  background: none;
+  border: 1px solid #9ec5f4;
   text-align: center;
 }
 .DataBox span {
   display: block;
   width: 100%;
   font-size: 36px;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.1;
   font-style: italic;
+  color: #9ec5f4;
 }
 .DataBox label {
   display: block;
@@ -158,6 +159,7 @@ hr {
   font-style: italic;
   padding-left: 20px;
   padding-right: 20px;
+  color: #9ec5f4;
 }
 .DataBox.DataBox--longlabel {
   padding-top: 5px;
@@ -208,6 +210,98 @@ hr {
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #ffffff;
+}
+.switch {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  width: 140px;
+}
+.switch > label {
+  display: block;
+  position: relative;
+  height: 55px;
+  line-height: 50px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #bbb;
+  text-align: center;
+  text-transform: uppercase;
+  background: white;
+  border: 2px solid #2878d7;
+  border-radius: 28px;
+  transition: all 0.15s ease-out;
+}
+.switch > label:before {
+  content: attr(data-off);
+  position: absolute;
+  top: 0;
+  right: 3px;
+  width: 85px;
+}
+.switch > label:after {
+  content: '';
+  display: block;
+  margin: 2px;
+  width: 47px;
+  height: 47px;
+  background: #2878d7;
+  border-radius: 28px;
+}
+.switch > input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  opacity: 0;
+  -webkit-appearance: none;
+}
+.switch > input:focus {
+  outline: none;
+}
+.switch > input:focus + label {
+  color: #2060ac;
+  border-color: #2878d7;
+}
+.switch > input:focus + label:after {
+  background: #2878d7;
+}
+.switch > input:checked + label {
+  padding-left: 85px;
+  color: white;
+  background: #2878d7;
+  border-color: #2878d7;
+}
+.switch > input:checked + label:before {
+  content: attr(data-on);
+  left: 1px;
+}
+.switch > input:checked + label:after {
+  margin: 1px;
+  width: 49px;
+  height: 49px;
+  background: white;
+}
+.switch > input:checked:focus + label {
+  background: #2060ac;
+  border-color: #2060ac;
+}
+.switch-square > label {
+  border-radius: 2px;
+}
+.switch-square > label:before {
+  width: 66px;
+}
+.switch-square > label:after {
+  width: 62px;
+  border-radius: 1px;
+}
+.switch-square > input:checked + label {
+  padding-left: 70px;
+}
+.switch-square > input:checked + label:after {
+  width: 64px;
 }
 .nav {
   padding-top: 40px;
@@ -401,16 +495,71 @@ h2 {
 .page-reg {
   padding-bottom: 200px;
 }
-.like-ui .stats {
+.page-likes .switch-bar p {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+}
+.page-likes .switch-bar .description p {
+  color: #4a90e2;
+  font-size: 18px;
+  font-weight: 400;
+}
+.page-likes .switch-bar.off p {
+  color: #2878d7;
+}
+.page-likes .row.desc {
+  margin-top: 90px;
+}
+.page-likes .intro-el label {
+  width: 100%;
+  display: block;
+}
+.page-likes .intro-el textarea {
+  display: block;
+  padding: 10px;
+  background: #ffffff;
+  color: #747474;
+  font-size: 24px;
+  font-weight: 400;
+  width: 100%;
+}
+.page-likes .like-num-el {
+  background: #6fa7eb;
+  color: #9ec5f4;
+  display: inline-block;
+  float: left;
+  text-align: center;
+  width: 80px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+.page-likes .like-num-el:hover {
+  background: #2878d7;
+  cursor: pointer;
+}
+.page-likes .like-num-el.active {
+  background: #00c891;
+  color: #ffffff;
+}
+.page-likes .action-bar {
+  background: #0c62c8;
+  margin-top: 70px;
+  padding-top: 40px;
+  padding-bottom: 70px;
+}
+.page-likes .stats {
   margin-top: 70px;
 }
-.like-ui .actions {
+.page-likes .actions {
   min-height: 440px;
 }
-.like-ui .action {
+.page-likes .action {
   text-align: center;
 }
-.like-ui .action .primary {
+.page-likes .action .primary {
   display: block;
   margin-top: 40px;
   background: #00c891;
@@ -418,12 +567,13 @@ h2 {
   padding-bottom: 40px;
   font-size: 36px;
   font-weight: 700;
+  width: 100%;
 }
-.like-ui .action .primary:hover {
+.page-likes .action .primary:hover {
   cursor: pointer;
   background: #01b785;
 }
-.like-ui span.or {
+.page-likes span.or {
   display: block;
   margin-top: 10px;
   margin-bottom: 15px;
@@ -433,31 +583,31 @@ h2 {
   font-weight: 300;
   color: #9ec5f4;
 }
-.like-ui .action .secondary {
+.page-likes .action .secondary {
   background: #6fa7eb;
   padding-top: 15px;
   padding-bottom: 15px;
   color: #9ec5f4;
 }
-.like-ui .action .secondary:hover {
+.page-likes .action .secondary:hover {
   background: #2878d7;
   cursor: pointer;
 }
-.like-ui .action-blocked {
+.page-likes .action-blocked {
   text-align: center;
 }
-.like-ui .action-blocked i {
+.page-likes .action-blocked i {
   font-size: 72px;
   text-align: center;
   padding-bottom: 40px;
   padding-top: 40px;
 }
-.like-ui .action-blocked span {
+.page-likes .action-blocked span {
   width: 100%;
   display: block;
   text-align: center;
 }
-.like-ui .action-blocked a {
+.page-likes .action-blocked a {
   display: inline-block;
   background: #01b785;
   color: #f1f1f1;
@@ -465,7 +615,7 @@ h2 {
   padding-top: 1px;
   padding-bottom: 1px;
 }
-.like-ui .action-blocked a:hover {
+.page-likes .action-blocked a:hover {
   background: #00c891;
   cursor: pointer;
   text-decoration: none;

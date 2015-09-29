@@ -1,20 +1,20 @@
-{% extends "base.html" %}
+1{% extends "base.html" %}
 
 {% block content %}
-
-<div class="container-fluid match-bar-wrap">
-  <div class="col-md-1">
-    <div class="icon">
-      <i class="fa fa-heart"></i>
+<div class="page-likes">
+  <div class="container-fluid match-bar-wrap">
+    <div class="col-md-1">
+      <div class="icon">
+        <i class="fa fa-heart"></i>
+      </div>
+    </div>
+  	<div class="match-river UIRiver col-md-11">
+      <div class="matches el-wrap">
+      </div>
     </div>
   </div>
-	<div class="match-river UIRiver col-md-11">
-    <div class="matches el-wrap">
-    </div>
-  </div>
-</div>
 
-<div class="container like-ui">
+<div class="container like-stats">
 
   <div class="row stats">
     <div class="col-md-3">
@@ -45,45 +45,69 @@
     </div>
 
   </div> <!-- /.stats -->
-
-  <div class="actions">
-
-    <div class="row action-blocked" style="display:none;">
-      <div class="col-md-12">
-        <i class="fa fa-circle-o-notch fa-spin"></i>
-      </div>
-      <div class="col-md-6 col-md-offset-3">
-        <span>Easy there tiger. Still got <span class="js-mass-like-counter" style="display:inline;">20</span> girls left to like.</span>
-        <br />
-        <span>In the meantime, work on <a href="#" class="js-goto-openers">your openers</a>, or <a href="#" class="js-goto-chat">chat with someone</a> you've already matched with.</span>
-      </div>
-    </div> <!-- ./action-blocked -->
-
-    <div class="row action">
-      <div class="col-md-offset-3 col-md-6">
-        <div class="js-like primary" data-like-num="20">Like 20 more girls</div>
-      </div>
-    </div> <!-- /.action -->
-
-    <div class="row action">
-      <div class="col-md-12">
-        <span class="or">or</span>
-      </div>
-
-      <div class="col-md-2 col-md-offset-3">
-        <div class="js-like secondary" data-like-num="5">Like 5</div>
-      </div>
-      <div class="col-md-2">
-        <div class="js-like secondary" data-like-num="100">Like 100</div>
-      </div>
-      <div class="col-md-2">
-        <div class="js-like secondary" data-like-num="250">Like 250</div>
-      </div>
-    </div> <!-- /.action -->
-  </div> <!-- /.actions -->
-
-
 </div>
+
+<div class="action-bar wrap-full-width">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5">
+        <div class="switch-bar on">
+          <div class="row">
+            <p>Intro messages are <span class="js-intro-message-status"></span></p>
+            <span class="switch switch-square">
+              <input type="checkbox" id="s1">
+              <label for="s1" data-on="I" data-off="O"></label>
+            </span>
+          </div>
+
+          <div class="row description">
+            <p>Whatever you put in below will be sent about a minute after you match.  Including if you match a week from now,  So, best avoid stuff about weekend plans, since most matches happen 3-5 days after you like someone.</p>
+          </div>
+
+          <div class="row intro-el">
+            <label>Intro #1</label>
+            <textarea class="js-intro-input" data-intro-num="1" val="">just got in from bellevue, what’s up</textarea>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-md-offset-1 actions">
+      <div class="row desc">
+        <span>Change number of girls to like:</span>
+      </div>
+      <div class="row js-select-like-num">
+        <div class="like-num-el" data-num="5">5</div>
+        <div class="like-num-el" data-num="20">20</div>
+        <div class="like-num-el active" data-num="50">50</div>
+        <div class="like-num-el" data-num="100">100</div>
+        <div class="like-num-el" data-num="250">250</div>
+        <div class="like-num-el" data-num="500">500</div>
+      </div>
+      <div class="row action">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="js-like primary" data-like-num="50">Swipe right on <span class="js-swipe-num">50</span></div>
+          </div>
+        </div>
+
+    </div>
+    </div> <!-- /.action -->
+</div>
+<div class="actions">
+
+  <div class="row action-blocked" style="display:none;">
+    <div class="col-md-12">
+      <i class="fa fa-circle-o-notch fa-spin"></i>
+    </div>
+    <div class="col-md-6 col-md-offset-3">
+      <span>Easy there tiger. Still got <span class="js-mass-like-counter" style="display:inline;">20</span> girls left to like.</span>
+      <br />
+      <span>In the meantime, work on <a href="#" class="js-goto-openers">your openers</a>, or <a href="#" class="js-goto-chat">chat with someone</a> you've already matched with.</span>
+    </div>
+  </div> <!-- ./action-blocked -->
+
+
+</div> <!-- /.actions -->
 
 <div class="container-fluid rec-bar-wrap">
   <div class="rec-river UIRiver col-md-12">
@@ -111,6 +135,7 @@
   </div>
   <div class="col-md-8 js-hovercard-photos">
   </div>
+</div>
 </div>
 
 <div class="black-overlay" style="display:none;">

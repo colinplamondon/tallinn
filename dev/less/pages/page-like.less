@@ -1,4 +1,74 @@
-.like-ui {
+.page-likes {
+
+
+  .switch-bar {
+    p {
+      color: @color-white;
+      font-size: @type-base;
+      font-weight: 700;
+    }
+
+    .description p {
+      color: @color-blue;
+      font-size: @type-smaller;
+      font-weight: 400;
+    }
+
+    &.off {
+      p {
+        color: @color-darkBlue1;
+      }
+    }
+  }
+
+  .row.desc {
+    margin-top: 90px;
+  }
+  .intro-el {
+    label {
+      width: 100%;
+      display: block;
+    }
+    textarea {
+      display: block;
+      padding: 10px;
+      background: @color-white;
+      color: #747474;
+      font-size: @type-base;
+      font-weight: 400;
+      width: 100%;
+    }
+  }
+
+  .like-num-el {
+    background: @color-lightBlue1;
+    color: @color-lightBlue0;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    width: 80px;
+    padding-top:10px;
+    padding-bottom:10px;
+
+    margin-left: 1px;
+    margin-right: 1px;
+    &:hover {
+      background: @color-darkBlue1;
+      cursor: pointer;
+    }
+    &.active {
+      background: @color-darkGreen0;
+      color: @color-white;
+    }
+  }
+
+  .action-bar {
+    background: @color-darkBlue0;
+    margin-top: 70px;
+    padding-top: 40px;
+    padding-bottom: 70px;
+  }
+
   .stats {
     margin-top: 70px;
   }
@@ -22,6 +92,7 @@
 
     font-size: @type-medLarge;
     font-weight: 700;
+    width: 100%;
 
     &:hover {
       cursor: pointer;
