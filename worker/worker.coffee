@@ -4,7 +4,7 @@ Promise = require 'bluebird'
 tinder = require 'tinderjs'
 _ = require 'lodash'
 
-{ WorkerQueueClient } = require '../lib/connections'
+{ WorkerQueueClient } = require '../lib/messagequeues'
 notifications = require '../lib/notifications'
 RateLimiter = require './rateLimiter'
 

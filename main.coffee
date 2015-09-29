@@ -8,7 +8,7 @@ cookieSession = require('cookie-session')
 bodyParser = require('body-parser')
 nunjucks = require('nunjucks')
 
-{ WebQueueClient } = require './lib/connections'
+{ WebQueueClient } = require './lib/messagequeues'
 { NotificationsDispatcher} = require './lib/notifications'
 routes = require('./routes/routes-main')
 sockets = require('./lib/sockets')
