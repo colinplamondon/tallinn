@@ -1,4 +1,5 @@
 express = require('express')
+mongoose = require 'mongoose'
 Promise = require('bluebird')
 path = require('path')
 favicon = require('serve-favicon')
@@ -18,11 +19,7 @@ app = express()
 
 socketHandler = sockets(app)
 
-# TODO: make a more general load dependency class, for MessageQueues,
-# mongo, and socket and notifications.
-app.queueClient = new WebQueueClient()
-dispatcher = new NotificationsDispatcher(app.queueClient, socketHandler)
-app.queueClient.on('connected', dispatcher.init.bind dispatcher)
+
 
 require('./routes/mock')(app)
 
@@ -106,5 +103,26 @@ app.use( (err, req, res, next) ->
   })
 )
 ###
+
+queueClient = new WebQueueClient()
+dispatcher = new NotificationsDispatcher(queueClient, socketHandler)
+waitingDependency = 2
+ready = ->
+  if --waitingDependency is 0
+    dispatcher.init()
+    app.emit('ready')
+
+queueClient.on('connected', ready)
+db = mongoose.connect 'mongodb://localhost/wingman'
+db.connection
+  .once 'open', ->
+    console.log 'Mongo DB connected'
+    ready()
+  .on 'error', ->
+    console.log 'mongo error!'
+    console.log arguments
+  .on 'disconnected', ->
+    console.log 'mongo disconnected!'
+    console.log arguments
 
 module.exports = app

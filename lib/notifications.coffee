@@ -1,6 +1,11 @@
 _ = require 'lodash'
 moment = require 'moment'
 
+###
+A notification is a message send from the Worker to the Client
+over the notifications message queue.
+###
+
 class NotificationsDispatcher
   constructor: (@messageQueue, @socketHandler) ->
 
