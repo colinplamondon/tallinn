@@ -28,6 +28,15 @@ function RegCompleteClass() {
       $('.paste-token').removeClass('disabled').transition();
       $('.paste-token label').addClass('lookatme');
     });
+
+    $('.js-paste-tinder-token').on('paste', function(){
+      // on paste fires upon control-v, NOT the actual
+      // paste being in the input...
+      setTimeout(function(){
+        $('.lookatme').removeClass('lookatme');
+        $('.submit-form').removeClass('disabled');
+      }, 150);
+    });
 	};
 
 	this.emailWatcher = function() {
@@ -130,7 +139,6 @@ function RegCompleteClass() {
 		    }, 200, function(){
 		      // ANIMATION COMPLETE
 		      submitForm(login_data, btn);
-
 		    });
 		  });
 		});
