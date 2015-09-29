@@ -11,6 +11,7 @@ nunjucks = require('nunjucks')
 
 { WebQueueClient } = require './lib/messagequeues'
 { NotificationsDispatcher} = require './lib/notifications'
+{ User } = require './lib/models'
 routes = require('./routes/routes-main')
 sockets = require('./lib/sockets')
 utils = require('./lib/utils')
@@ -19,6 +20,8 @@ app = express()
 
 socketHandler = sockets(app)
 
+# Mongo DB listening
+# Web server listening
 
 
 require('./routes/mock')(app)
@@ -53,8 +56,12 @@ app.use(cookieSession({
 app.use( (req, res, next) ->
   # TODO: fetch and store user object from DB
   if req.session?.userId?
-    req.user = { xAuthToken: req.session.userId }
-  next()
+    User.findById(req.session.userId).exec().then (user) ->
+        if not user then res.send 400, "No user"
+        req.user = user
+        next()
+  else
+    next()
 )
 
 app.use('/', routes)

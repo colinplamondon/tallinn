@@ -1,4 +1,3 @@
-stringify = require 'node-stringify'
 express = require 'express'
 request = require 'request'
 Promise = require 'bluebird'
@@ -25,16 +24,77 @@ router.get('/login', (req, res, next) ->
   res.render('login')
 )
 
+# Login / Register
+# Register:
+#  - Get Auth token
+# Login:
+# - does Authing the token work?
 router.get('/reg', (req, res, next) ->
   res.render('registration')
 )
 
-router.get('/complete-reg', (req, res, next) ->
-  res.render('complete-reg')
+router.post('/reg', (req, res, next) ->
+  { fbToken, fbId } = req.body
+  # TODO: we should be doing a server side Facebook Auth. Anyone can pass
+  # any facebook token.
+  console.log "Find facebookId: #{fbId}"
+  if not fbId?
+    return res.json({error: "No fbId"})
+  User.find({facebookId: fbId}).exec().then ([user]) ->
+    console.log "user"
+    console.log user
+    if user?
+      req.session.userId = user._id
+      return res.json({ok: true})
+
+    user = new User({
+      facebookId: fbId
+    })
+    # TODO: how to promisify?
+    .save (error, user) ->
+      console.log ('NEW user')
+      console.log (arguments)
+      req.session.userId = user._id
+      res.json({ok: true})
+    .error (error) ->
+      res.json({error})
 )
 
 router.get('/reauth', (req, res, next) ->
   res.render('reauth')
+)
+router.get '/complete-reg', (req, res, next) ->
+  res.render('complete-reg')
+
+router.post '/complete-reg', (req, res, next) ->
+  { token, email } = req.body
+  if not req.user? then return res.json({'error': 'no user'})
+
+  user = req.user
+  user.setTinderFbookToken token
+
+  # TODO: handle authorization failure (fbook token is wrong or expired)
+  # AuthError: Failed to authenticate: Access Denied
+  client.authorizeAsync token, token.tinderFbookToken
+    .then ->
+      user.tinderToken = client.getAuthToken()
+      console.log 'token authorized, saving...'
+      # RETURNING 400 for some reaosn??
+
+      # TODO how to promisify
+      user.save (error, user) ->
+        if error then return res.json({'error': 'cannot save user'})
+        res.json({ok: true})
+    .error next
+
+router.get('/like/:xAuthToken', (req, res, next) ->
+  { xAuthToken } = req.params
+
+  # TODO: how to clean up 'connection' on disconnect??
+  console.log "### setting channel on '/#{xAuthToken}'"
+
+
+  res.render('like', {xAuthToken})
 )
 
 router.post '/change-location', (req, res, next) ->
@@ -53,37 +113,6 @@ router.post '/change-location', (req, res, next) ->
     else
       res.json({"ok": true})
   )
-
-router.post '/login', (req, res, next) ->
-  { token, fbid } = req.body
-  { xAuthToken } = req.params
-
-  if missing token then return res.json({'ok': false, 'msg': "Please enter a valid token."})
-  if missing fbid then return res.json({'ok': false, 'msg':"Please enter a valid fbid."});
-
-  # TODO: handle authorization failure (fbook token is wrong or expired)
-  # AuthError: Failed to authenticate: Access Denied
-  client.authorizeAsync token, fbid
-    .then ->
-      console.log("Authorization complete.")
-
-      # TODO: confirm user with DB here.
-      req.session.userId = client.getAuthToken()
-      res.json({'ok': true, 'redirect': '/'})
-
-router.get('/poop', (req, res, next) ->
-  res.send 'yo'
-)
-
-router.get('/like/:xAuthToken', (req, res, next) ->
-  { xAuthToken } = req.params
-
-  # TODO: how to clean up 'connection' on disconnect??
-  console.log "### setting channel on '/#{xAuthToken}'"
-
-
-  res.render('like', {xAuthToken})
-)
 
 router.get('/intros', (req, res, next) ->
   if req.user?

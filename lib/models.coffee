@@ -11,8 +11,10 @@ userSchema = new Schema {
   email: String
 }
 userSchema.plugin timestamps
+userSchema.methods.setTinderFbookToken = (token) ->
+  @tinderFbookToken = token
+  @tinderFbookTokenCreatedAt = Date.now()
 
 module.exports = {
   User: mongoose.model 'User', userSchema
 }
-

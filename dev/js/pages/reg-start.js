@@ -26,18 +26,23 @@ function RegStartClass() {
     // for FB.getLoginStatus().
     if (resp.status === 'connected') {
       // Logged into your app and Facebook.
-      var token = resp.authResponse.accessToken;
-      var userId = resp.authResponse.userID;
+      var options = {
+        fbToken: resp.authResponse.accessToken,
+        fbId:  resp.authResponse.userID
+      };
+      $.post('/reg', options, function(results) {
+        console.log(results);
+        if(results.ok) {
+          window.location.href = '/complete-reg';
+        } else {
+          alert("Error logging in! " + results.error);
+        }
+      });
 
-      window.location.href = '/complete-reg?fbToken='+token+'&fbUser='+userId;
       //relative to domain
     } else if (resp.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       alert('Please log into this app.');
-    } else {
-      // The person is not logged into Facebook, so we're not sure if
-      // they are logged into this app or not.
-      alert('Please log into Facebook.');
     }
 
   };

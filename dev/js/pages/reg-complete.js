@@ -77,13 +77,12 @@ function RegCompleteClass() {
 		  var login_data = {
 		    'email': email,
 		    'token': tinder_token,
-		    'fbid': facebookId,
 		  };
 
 		  function submitForm(loginData, btn) {
 		    $.ajax({
 		      type: "POST",
-		      url: '/login',
+		      url: '/complete-reg',
 		      data: login_data,
 		      dataType: 'json',
 		      success: function(msg) {
@@ -99,7 +98,7 @@ function RegCompleteClass() {
 		            }, 300, function(){
 		              setTimeout(function(){
 		                // alert('redirect!');
-		                window.location.href = msg.redirect;
+		                window.location.href = "/";
 		              }, 600);
 		            });
 		          });
