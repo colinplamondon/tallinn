@@ -5,19 +5,24 @@ tinder = require 'tinderjs'
 url = require 'url'
 _ = require 'lodash'
 
+{ User } = require '../lib/models'
+
 router = express.Router()
 
 client = new tinder.TinderClient()
 Promise.promisifyAll(client)
+Promise.promisifyAll(User)
 
 router.get '/', (req, res, next) ->
   if not req.user?
-    return res.render('login')
-  { xAuthToken } = req.user
-  client.setAuthToken xAuthToken
+    return res.redirect '/reg'
+  { tinderToken } = req.user
+  console.log "set token #{tinderToken}"
+  client.setAuthToken tinderToken
   client.getProfileAsync()
     .then ({pos: {lat, lon: lon}}) ->
-      res.render('like', { userId: xAuthToken, location: {lat, lon} })
+      console.log 'get profile async'
+      res.render('like', { userId: req.user.id, location: {lat, lon} })
     .error next
 
 router.get('/login', (req, res, next) ->
@@ -98,7 +103,7 @@ router.get('/like/:xAuthToken', (req, res, next) ->
 )
 
 router.post '/change-location', (req, res, next) ->
-  client.setAuthToken( req.body.xAuthToken )
+  client.setAuthToken( req.user.tinderToken )
 
   newLon = parseFloat(req.body.new_lon)
   newLat = parseFloat(req.body.new_lat)
@@ -288,15 +293,16 @@ router.post '/masslike', (req, res, next) ->
   if not req.user? then return res.redirect '/'
 
   { amount } = req.body
-  { xAuthToken } = req.user
+  { id, tinderToken } = req.user
 
-  console.log "/masslike #{{ xAuthToken, amount }}"
+  console.log "/masslike #{{ id, amount }}"
 
   # TODO: store Job in DB and get ID
   # TODO: use userId, not auth token
   req.queueClient.pushJob({
     id: Math.floor(Math.random()*10000)
-    user: xAuthToken
+    user: id
+    tinderToken: tinderToken
     action: 'massLike'
     iteration: 0
     amount

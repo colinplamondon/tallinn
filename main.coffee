@@ -19,12 +19,9 @@ utils = require('./lib/utils')
 app = express()
 
 socketHandler = sockets(app)
+queueClient = new WebQueueClient()
 
-# Mongo DB listening
-# Web server listening
-
-
-require('./routes/mock')(app)
+#require('./routes/mock')(app)
 
 # view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -36,7 +33,7 @@ nunjucks.configure('views', {
 app.locals.utils = utils
 
 app.use  (req, res, next) ->
-  req.queueClient = app.queueClient
+  req.queueClient = queueClient
   req.io = app.io
   next()
 
@@ -74,44 +71,17 @@ app.use (err, req, res, next) ->
     next(err)
 
 # catch 404 and forward to error handler
-app.use( (req, res, next) ->
+app.use( (err, req, res, next) ->
   err = new Error('404: Route not not Found')
   err.status = 404
   next(err)
 )
 
-# error handlers
 Promise.onPossiblyUnhandledRejection (error) ->
   console.log 'unhandled rejection!'
   console.log error
   throw error
 
-#
-
-# development error handler
-# will print stacktrace
-###
-if app.get('env') == 'development'
-  app.use( (err, req, res, next) ->
-    res.status(err.status || 500)
-    res.render('error', {
-      message: err.message,
-      error: err
-    })
-  )
-
-# production error handler
-# no stacktraces leaked to user
-app.use( (err, req, res, next) ->
-  res.status(err.status || 500)
-  res.render('error', {
-    message: err.message,
-    error: {}
-  })
-)
-###
-
-queueClient = new WebQueueClient()
 dispatcher = new NotificationsDispatcher(queueClient, socketHandler)
 waitingDependency = 2
 ready = ->

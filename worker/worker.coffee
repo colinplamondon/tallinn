@@ -51,11 +51,11 @@ onReceive = (msg, ackFn) ->
   handleMassLike(msg, ackFn)
 
 handleMassLike = (msg, ackFn) ->
-  { id, user, amount, iteration } = msg
+  { id, user, tinderToken, amount, iteration } = msg
 
   client = new tinder.TinderClient()
   Promise.promisifyAll(client)
-  client.setAuthToken user
+  client.setAuthToken tinderToken
 
   left = amount
   executeLike = (theirId) ->

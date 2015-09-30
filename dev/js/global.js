@@ -103,7 +103,6 @@ function GlobalClass() {
           type: "POST",
           url: '/change-location',
           data: {
-            'xAuthToken': Global.uid,
             'new_lat': parseFloat(coord_lat).toFixed(6),
             'new_lon': parseFloat(coord_lon).toFixed(6)
           },
