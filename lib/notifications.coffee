@@ -22,10 +22,14 @@ class NotificationsDispatcher
 
 class Notification
   constructor: (@key) ->
-    # Subclasses must set these.
+    # Subclasses must set these members.
+
+    # Map of (property of the notification) to (property of the payload)
     @fields = {}
     @transformers = {}
+
     @user ?= null
+    @key ?= null
 
   toWireform: =>
     { @key, @user, payload: @_makePayload() }
@@ -43,6 +47,7 @@ class Recommendation extends Notification
     @fields = {
       'name'
       'photos'
+      'age'
       'largePhotos': 'large_photos'
       'miles': 'miles_away'
       'pingTime': 'last_online'
@@ -51,11 +56,21 @@ class Recommendation extends Notification
     }
     @transformers = {
       'pingTime': @_convertTime
+      'age': @_convertAge
     }
+
+  # Populate from a Tinder JSON source
   populate: (source) ->
     @photos = @_extractPhotos(320, source)
     @largePhotos = @_extractPhotos(640, source)
-    { @name, distance_mi: @miles, ping_time: @pingTime, @bio, _id: @id } = source
+    {
+      @name
+      distance_mi: @miles
+      ping_time: @pingTime
+      @bio
+      _id: @id,
+      birth_date: @age
+    } = source
 
     return @
 
@@ -64,9 +79,13 @@ class Recommendation extends Notification
 
   _convertTime: (time) ->
     moment(time).fromNow()
+  _convertAge: (time) ->
+    moment().diff(time, 'years')
 
   fromRecommendation: (rec) ->
-    { @name, @miles, @pingTime, @bio, @id, @photos, @largePhotos, @user } = rec
+    # Copy user but not key (since superclass overrides key).
+    for field of _.extend {'user'}, @fields
+      @[field] = rec[field]
     return @
 
 
