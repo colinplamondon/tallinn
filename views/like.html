@@ -1,4 +1,4 @@
-1{% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 <div class="page-likes">
@@ -49,13 +49,24 @@
 
 <div class="action-bar wrap-full-width">
   <div class="container">
-    <div class="row">
+
+    <div class="row action-blocked" style="display:none;">
+      <div class="col-md-12">
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+      </div>
+      <div class="col-md-6 col-md-offset-3">
+        <span>Easy there tiger. Still got <span class="js-mass-like-counter" style="display:inline;">20</span> girls left to like.</span>
+        <br />
+        <span>In the meantime, work on <a href="#" class="js-goto-openers">your openers</a>, or <a href="#" class="js-goto-chat">chat with someone</a> you've already matched with.</span>
+      </div>
+    </div> <!-- ./action-blocked -->
+    <div class="row action">
       <div class="col-md-5">
         <div class="switch-bar on">
           <div class="row">
             <p>Intro messages are <span class="js-intro-message-status"></span></p>
             <span class="switch switch-square">
-              <input type="checkbox" id="s1">
+              <input type="checkbox" class="js-intro-switch" id="s1">
               <label for="s1" data-on="I" data-off="O"></label>
             </span>
           </div>
@@ -66,7 +77,8 @@
 
           <div class="row intro-el">
             <label>Intro #1</label>
-            <textarea class="js-intro-input" data-intro-num="1" val="">just got in from bellevue, what’s up</textarea>
+            <a class="js-add-intro-token js-intro-token" data-token="{first_name}" data-target-area="intro-input-1">insert first name</a>
+            <textarea class="js-intro-input" data-intro-num="1" id="intro-input-1" val="">just got in from bellevue, what’s up</textarea>
           </div>
       </div>
     </div>
@@ -76,12 +88,12 @@
         <span>Change number of girls to like:</span>
       </div>
       <div class="row js-select-like-num">
-        <div class="like-num-el" data-num="5">5</div>
-        <div class="like-num-el" data-num="20">20</div>
-        <div class="like-num-el active" data-num="50">50</div>
-        <div class="like-num-el" data-num="100">100</div>
-        <div class="like-num-el" data-num="250">250</div>
-        <div class="like-num-el" data-num="500">500</div>
+        <div class="like-num-el js-like-num-el" data-num="5">5</div>
+        <div class="like-num-el js-like-num-el" data-num="20">20</div>
+        <div class="like-num-el js-like-num-el active" data-num="50">50</div>
+        <div class="like-num-el js-like-num-el" data-num="100">100</div>
+        <div class="like-num-el js-like-num-el" data-num="250">250</div>
+        <div class="like-num-el js-like-num-el" data-num="500">500</div>
       </div>
       <div class="row action">
         <div class="col-md-12">
@@ -90,25 +102,10 @@
           </div>
         </div>
 
-    </div>
+      </div>
     </div> <!-- /.action -->
+  </div>
 </div>
-<div class="actions">
-
-  <div class="row action-blocked" style="display:none;">
-    <div class="col-md-12">
-      <i class="fa fa-circle-o-notch fa-spin"></i>
-    </div>
-    <div class="col-md-6 col-md-offset-3">
-      <span>Easy there tiger. Still got <span class="js-mass-like-counter" style="display:inline;">20</span> girls left to like.</span>
-      <br />
-      <span>In the meantime, work on <a href="#" class="js-goto-openers">your openers</a>, or <a href="#" class="js-goto-chat">chat with someone</a> you've already matched with.</span>
-    </div>
-  </div> <!-- ./action-blocked -->
-
-
-</div> <!-- /.actions -->
-
 <div class="container-fluid rec-bar-wrap">
   <div class="rec-river UIRiver col-md-12">
     <div class="recommendations el-wrap">

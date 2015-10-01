@@ -150,6 +150,43 @@ function GlobalClass() {
           results = regex.exec(location.search);
       return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   };
+
+  this.insertAtCaret = function(areaId,text) {
+    var range;
+    var txtarea = document.getElementById(areaId);
+    var scrollPos = txtarea.scrollTop;
+    var strPos = 0;
+    var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
+        "ff" : (document.selection ? "ie" : false ) );
+    if (br == "ie") {
+        txtarea.focus();
+        range = document.selection.createRange();
+        range.moveStart ('character', -txtarea.value.length);
+        strPos = range.text.length;
+    }
+    else if (br == "ff") strPos = txtarea.selectionStart;
+
+    var front = (txtarea.value).substring(0,strPos);
+    var back = (txtarea.value).substring(strPos,txtarea.value.length);
+    txtarea.value=front+text+back;
+    strPos = strPos + text.length;
+    if (br == "ie") {
+        txtarea.focus();
+        var range2;
+        range2 = document.selection.createRange();
+        range2.moveStart ('character', -txtarea.value.length);
+        range2.moveStart ('character', strPos);
+        range2.moveEnd ('character', 0);
+        range2.select();
+    }
+    else if (br == "ff") {
+        txtarea.selectionStart = strPos;
+        txtarea.selectionEnd = strPos;
+        txtarea.focus();
+    }
+    txtarea.scrollTop = scrollPos;
+};
+
 }
 
 Global = new GlobalClass();

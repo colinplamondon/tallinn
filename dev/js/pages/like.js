@@ -10,15 +10,13 @@ function LikeClass() {
 
     this.matchRiverStart();
     this.recommendationRiverStart();
+
+    this.introsOn = true;
+    $('.js-intro-message-status').text('on');
+    $('.js-intro-switch').prop('checked', true);
   };
 
-
   this.installWatchers = function() {
-    // TODO: Colin, is this the right place for this? Probably not.
-    // One issue to keep in mind: when this mass like is over, we
-    // should probably unregister this handler so the next click
-    // doesn't have two handlers hooked up.
-
     // States:
     // COMPLETION: If number WAS greater than 1 and NOW is 9, show
     // completion animation.
@@ -78,7 +76,6 @@ function LikeClass() {
     $.each(data.large_photos, function(idx, val){
       $('.js-hovercard-photos').append("<img src='"+val+"' />");
     });
-
   };
 
   this.installObservers = function() {
@@ -102,7 +99,6 @@ function LikeClass() {
 
         Like.matchRiver.queueOn = false;
         Like.activateMatchHovercard();
-
       }
     });
 
@@ -136,6 +132,45 @@ function LikeClass() {
 
       }
     });
+
+    $('.js-add-intro-token').click(function(){
+      var token = $(this).data('token');
+      console.log(token);
+      var target = $(this).data('target-area');
+      console.log(target);
+      Global.insertAtCaret(target, token);
+      return false;
+    });
+
+    $('.js-like-num-el').click(function(){
+      var target_num = $(this).data('num');
+      $('.like-num-el').removeClass('active');
+      $(this).addClass('active');
+
+      $('.js-like').data('like-num', target_num);
+      $('.js-swipe-num').text(target_num);
+    });
+
+    $('.js-intro-switch').on('change', function(){
+      var state = $(this).prop('checked');
+      if(state === true) {
+        self.activateIntros();
+      } else {
+        // false
+        self.deactivateIntros();
+      }
+    });
+  };
+
+  this.activateIntros = function() {
+    $('.switch-bar').removeClass('off').addClass('on');
+    $('.js-intro-message-status').text('on');
+    this.introsOn = true;
+  };
+  this.deactivateIntros = function() {
+    $('.switch-bar').removeClass('on').addClass('off');
+    $('.js-intro-message-status').text('off');
+    this.introsOn = false;
   };
 
   this.uiSwap = function(to_activate) {
@@ -228,11 +263,6 @@ function LikeClass() {
       "y": "+=60px"
     }, 600);
 
-    // $(blur_els).foggy({
-    //   blurRadius: 5,
-    //   opacity: .9
-    // });
-
     var vague = $(Like.blurEls).Vague({
       intensity:      3,      // Blur Intensity
       forceSVGUrl:    false,   // Force absolute path to the SVG filter,
@@ -244,18 +274,6 @@ function LikeClass() {
     });
 
     vague.blur();
-
-    // $({blurRadius: 0}).animate({blurRadius: 15}, {
-    //   duration: 1300,
-    //   easing: 'swing', // or "linear"
-    //                    // use jQuery UI or Easing plugin for more options
-    //   step: function() {
-    //     $(Like.blurEls).css({
-    //       "-webkit-filter": "blur("+this.blurRadius+"px)",
-    //       "filter": "blur("+this.blurRadius+"px)"
-    //     });
-    //   }
-    // });
 
     setTimeout(function(){
       $('.black-overlay').hide().css('opacity', 0);

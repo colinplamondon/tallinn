@@ -90,15 +90,7 @@ hr {
   }
 }
 
-.footer {
-  width: 300px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-
-  text-align: center;
-
-  padding-bottom: 15px;
+.icon {
   span {
     width: 100%;
     display: block;
@@ -123,7 +115,7 @@ hr {
 
 .match-bar-wrap {
   padding-right: 0;
-  margin-top: 40px;
+  margin-top: 10px;
 
   position: relative;
   z-index: 8;
@@ -182,6 +174,9 @@ hr {
 
   &.rec-river {
     height: 50px;
+
+    position:fixed;
+    bottom: 0;
     .el-wrap div {
       width: 80px;
       height:50px;
@@ -191,10 +186,10 @@ hr {
 
 .DataBox {
   display: block;
-  height: 110px;
+  height: 80px;
 
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 15px;
+  padding-bottom: 10px;
 
   background: none;
   border: 1px solid @color-lightBlue0;
@@ -205,7 +200,7 @@ hr {
     display: block;
     width: 100%;
 
-    font-size: @type-medLarge;
+    font-size: @type-base;
     font-weight: 400;
     line-height: @lineHeight-tight;
     font-style: italic;
@@ -221,6 +216,7 @@ hr {
     padding-right: 20px;
 
     color: @color-lightBlue0;
+    line-height: @lineHeight-tight;
   }
 
   &.DataBox--longlabel {
