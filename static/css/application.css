@@ -514,7 +514,7 @@ h2 {
   padding-bottom: 100px;
 }
 .masslike.wrap-full-width {
-  min-height: 450px;
+  min-height: 470px;
   margin-top: 30px;
   padding-top: 20px;
   padding-botom: 20px;
@@ -613,7 +613,7 @@ h2 {
   color: #4a90e2;
 }
 .masslike {
-  margin-top: 90px;
+  margin-top: 115px;
   text-align: center;
   text-align: left;
 }
@@ -640,7 +640,7 @@ h2 {
   background: #00c891;
   color: #ffffff;
 }
-.page-likes .stats {
+.page-likes .DataBox {
   margin-top: 30px;
 }
 .masslike p.desc {
@@ -668,6 +668,7 @@ h2 {
 }
 .masslike-blocked {
   text-align: center;
+  margin-top: 60px;
 }
 .masslike-blocked i {
   font-size: 72px;
