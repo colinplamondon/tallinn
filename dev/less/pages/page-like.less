@@ -31,13 +31,7 @@
 // INTRO MESSAGE COLUMN
 // ====================
 
-.masslike.wrap-full-width .description p {
-  color: @color-white;
-  opacity: 0.7;
-  font-size: @type-smaller;
-  font-weight: 400;
-
-  .transition(all 0.4s ease-out);
+.masslike.wrap-full-width {
 }
 
 .page-likes .intro {
@@ -46,9 +40,43 @@
   label {
     .transition(all 0.4s ease-out);
   }
+  .description p {
+    color: @color-white;
+    opacity: 0.7;
+    font-size: @type-smaller;
+    font-weight: 400;
+
+    .transition(all 0.4s ease-out);
+  }
 }
 
 .intro .intro-el {
+  label {
+    width: 100%;
+    display: block;
+
+    .transition(all 0.4s ease-out);
+  }
+  textarea {
+    display: block;
+    padding: 10px;
+    background: @color-white;
+    color: #747474;
+    font-size: @type-base;
+    font-weight: 400;
+    width: 100%;
+
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    .transition(all 0.4s ease-out);
+  }
+
   .cp-btn {
     float: left;
     display: block;
@@ -76,6 +104,9 @@
   .intro-el textarea {
     background: @color-blue;
     color: #72A8E8;
+    &:hover {
+      cursor: default;
+    }
   }
   .cp-btn {
     background: @color-darkBlue1;
@@ -84,173 +115,115 @@
   }
 }
 
-.page-likes {
+// =================
+// MASSLIKE
+// =================
 
+.masslike {
+  margin-top: 90px;
 
-  .row.desc {
-    margin-top: 160px;
+  text-align: center;
+  text-align: left;
+}
+
+.masslike .select-like-num {
+  margin-top: 5px;
+}
+
+.masslike .like-num-el {
+  background: @color-lightBlue1;
+  color: @color-lightBlue0;
+  display: inline-block;
+  float: left;
+  text-align: center;
+  width: 80px;
+  padding-top:10px;
+  padding-bottom:10px;
+
+  margin-left: 1px;
+  margin-right: 1px;
+  &:hover {
+    background: @color-darkBlue1;
+    cursor: pointer;
   }
-  .intro-el {
-    label {
-      width: 100%;
-      display: block;
-
-      .transition(all 0.4s ease-out);
-    }
-    textarea {
-      display: block;
-      padding: 10px;
-      background: @color-white;
-      color: #747474;
-      font-size: @type-base;
-      font-weight: 400;
-      width: 100%;
-
-      border: none;
-      overflow: auto;
-      outline: none;
-
-      -webkit-box-shadow: none;
-      -moz-box-shadow: none;
-      box-shadow: none;
-
-      .transition(all 0.4s ease-out);
-    }
-  }
-
-  .like-num-el {
-    background: @color-lightBlue1;
-    color: @color-lightBlue0;
-    display: inline-block;
-    float: left;
-    text-align: center;
-    width: 80px;
-    padding-top:10px;
-    padding-bottom:10px;
-
-    margin-left: 1px;
-    margin-right: 1px;
-    &:hover {
-      background: @color-darkBlue1;
-      cursor: pointer;
-    }
-    &.active {
-      background: @color-darkGreen0;
-      color: @color-white;
-    }
-  }
-
-  .action-bar {
-    background: @color-darkBlue0;
-    margin-top: 25px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-
-    text-align: left;
-  }
-
-  .stats {
-    margin-top: 30px;
-  }
-
-  .actions {
-    min-height: 370px;
-    text-align: left;
-  }
-
-  .masslike-intro {
-    text-align: center;
-  }
-
-  .masslike-intro p.desc {
-    text-align: center;
-    font-weight: 700;
-    color: @color-darkBlue1;
-
-    padding-top: 15px;
-    padding-bottom: 15px;
-  }
-
-	.masslike-intro .primary {
-    display: block;
-
-    margin-top: 10px;
-
+  &.active {
     background: @color-darkGreen0;
-    padding-top: 40px;
+    color: @color-white;
+  }
+}
+
+.page-likes .stats {
+  margin-top: 30px;
+}
+
+.masslike p.desc {
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  text-align: center;
+  font-weight: 700;
+  color: @color-blue;
+  font-size: @type-base;
+}
+
+.masslike .primary {
+  display: block;
+  width: 100%;
+
+  margin-top: 10px;
+
+  background: @color-darkGreen0;
+  padding-top: 40px;
+  padding-bottom: 40px;
+
+  font-size: @type-medLarge;
+  font-weight: 700;
+  text-align: center;
+
+  &:hover {
+    cursor: pointer;
+    background: @color-darkGreen2;
+  }
+}
+
+// ================
+// MASSLIKE BLOCKED
+// ================
+
+.masslike-blocked {
+  text-align: center;
+  i {
+    font-size: @type-largest;
+    text-align: center;
     padding-bottom: 40px;
-
-    font-size: @type-medLarge;
-    font-weight: 700;
+    padding-top: 40px;
+  }
+  span {
     width: 100%;
-
-    &:hover {
-      cursor: pointer;
-      background: @color-darkGreen2;
-    }
-  }
-
-  span.or {
     display: block;
-
-    margin-top: 10px;
-    margin-bottom: 15px;
-
     text-align: center;
-    font-size: @type-base;
-    font-style: italic;
-    font-weight: 300;
-
-    color: @color-lightBlue0;
-
+    // color: @color-lightBlue1;
   }
 
-  .masslike-intro .secondary {
-    background: @color-lightBlue1;
-    padding-top: 15px;
-    padding-bottom: 15px;
-
-    color: @color-lightBlue0;
-
+  a {
+    display: inline-block;
+    background: @color-darkGreen2;
+    color: #f1f1f1;
+    padding:5px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    // opacity: 0.7;
     &:hover {
-      background: @color-darkBlue1;
+      background: @color-darkGreen0;
       cursor: pointer;
-    }
-  }
-
-  .masslike-blocked {
-    text-align: center;
-    i {
-      font-size: @type-largest;
-      text-align: center;
-      padding-bottom: 40px;
-      padding-top: 40px;
-    }
-    span {
-      width: 100%;
-      display: block;
-      text-align: center;
-      // color: @color-lightBlue1;
-    }
-
-    a {
-      display: inline-block;
-      background: @color-darkGreen2;
-      color: #f1f1f1;
-      padding:5px;
-      padding-top: 1px;
-      padding-bottom: 1px;
-      // opacity: 0.7;
-      &:hover {
-        background: @color-darkGreen0;
-        cursor: pointer;
-        text-decoration: none;
-      }
+      text-decoration: none;
     }
   }
 }
 
+// ===============
 // MATCH HOVERCARD
+// ===============
 
 .black-overlay {
   position: fixed;

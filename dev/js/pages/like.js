@@ -146,15 +146,6 @@ function LikeClass() {
       }
     });
 
-    $('.js-add-intro-token').click(function(){
-      var token = $(this).data('token');
-      console.log(token);
-      var target = $(this).data('target-area');
-      console.log(target);
-      Global.insertAtCaret(target, token);
-      return false;
-    });
-
     $('.js-like-num-el').click(function(){
       var target_num = $(this).data('num');
       $('.like-num-el').removeClass('active');
@@ -179,13 +170,26 @@ function LikeClass() {
     $('.js-switch-bar').removeClass('off').addClass('on');
     $('.js-intro-message-status').text('on');
     $('.js-if-intros-on').addClass('active');
+    $('.js-intro-input').prop('disabled', false);
     this.introsOn = true;
+
+    $('.js-add-intro-token').bind('click', function(){
+      var token = $(this).data('token');
+      console.log(token);
+      var target = $(this).data('target-area');
+      console.log(target);
+      Global.insertAtCaret(target, token);
+      return false;
+    });
   };
   this.deactivateIntros = function() {
     $('.js-switch-bar').removeClass('on').addClass('off');
     $('.js-intro-message-status').text('off');
     $('.js-if-intros-on').removeClass('active');
+    $('.js-intro-input').prop('disabled', true);
     this.introsOn = false;
+
+    $('.js-add-intro-token').unbind();
   };
 
   this.uiSwap = function(to_activate) {
@@ -198,7 +202,7 @@ function LikeClass() {
     if(to_activate == 'liking') {
       to_hide = $('.js-masslike-blocked');
       to_show = $('.js-masslike-intro');
-      show_slide_distance = 20;
+      show_slide_distance = 100;
     }
 
     if($(to_show).is(":visible")) {
@@ -219,18 +223,18 @@ function LikeClass() {
 
       $(to_show).css({
         'opacity':0,
-        "y": "-=20px"
+        "x": "-=20px"
       }).show();
 
       $(to_show).transition({
         'opacity': 1,
-        "y": "+="+show_slide_distance+"px"
+        "x": "+="+show_slide_distance+"px"
       }, 1200);
     };
 
     $(to_hide).transition({
       'opacity': 0,
-      "y": "+=40px",
+      "x": "+=40px",
       "complete": activate_animation
     }, 450);
   };
