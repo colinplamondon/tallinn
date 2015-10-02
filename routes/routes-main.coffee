@@ -29,6 +29,10 @@ router.get('/login', (req, res, next) ->
   res.render('login')
 )
 
+router.get('/marketing', (req, res,next) ->
+  res.render('marketing')
+)
+
 # Login / Register
 # Register:
 #  - Get Auth token

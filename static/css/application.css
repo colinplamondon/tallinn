@@ -853,3 +853,48 @@ h2 {
   text-decoration: none;
   background: #2878d7;
 }
+.page-marketing .intro {
+  background: #0c62c8;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.page-marketing .hero-text p {
+  color: #ffffff;
+}
+.page-marketing .hero-text p.small {
+  font-weight: 700;
+  font-size: 20px;
+}
+.page-marketing .hero-text p.what {
+  color: #ADD0F6;
+  font-size: 28px;
+}
+.page-marketing .hero-text p.what strong {
+  color: #ffffff;
+}
+.page-marketing .hero-text p.closing {
+  color: #9EC5F4;
+  font-size: 20px;
+}
+.page-marketing .hero-cta span.btw {
+  display: block;
+  width: 100%;
+  color: #9ec5f4;
+  text-align: center;
+  font-size: 18px;
+  font-style: italic;
+}
+.page-marketing .primary {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-top: 45px;
+  margin-bottom: 15px;
+  background: #00c891;
+  text-align: center;
+  font-size: 48px;
+  color: #ffffff;
+}
+.page-marketing .primary:hover {
+  background: #18d7a2;
+  text-decoration: none;
+}
