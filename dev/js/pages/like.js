@@ -76,6 +76,7 @@ function LikeClass() {
     $('.js-miles-away').html(data.distance);
     $('.js-last-online').html(data.last_online);
     $('.js-hovercard-bio').html(data.bio);
+    $('.js-match-age').text(data.age);
     $('.match-hovercard .js-unmatch').data('target-match', data.id);
 
     $.each(data.large_photos, function(idx, val){
