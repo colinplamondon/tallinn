@@ -220,13 +220,14 @@ hr {
   line-height: 50px;
   font-size: 10px;
   font-weight: bold;
-  color: #bbb;
   text-align: center;
   text-transform: uppercase;
-  background: white;
   border: 2px solid #2878d7;
   border-radius: 28px;
   transition: all 0.15s ease-out;
+  background: #2878d7;
+  color: #094a98;
+  border-color: #0c62c8;
 }
 .switch > label:before {
   content: attr(data-off);
@@ -241,7 +242,7 @@ hr {
   margin: 2px;
   width: 47px;
   height: 47px;
-  background: #2878d7;
+  background: #0c62c8;
   border-radius: 28px;
 }
 .switch > input {
@@ -257,17 +258,17 @@ hr {
   outline: none;
 }
 .switch > input:focus + label {
-  color: #2060ac;
-  border-color: #2878d7;
+  color: #094a98;
+  border-color: #0c62c8;
 }
 .switch > input:focus + label:after {
-  background: #2878d7;
+  background: #0c62c8;
 }
 .switch > input:checked + label {
   padding-left: 85px;
-  color: white;
-  background: #2878d7;
-  border-color: #2878d7;
+  color: #e6e6e6;
+  background: #094a98;
+  border-color: #094a98;
 }
 .switch > input:checked + label:before {
   content: attr(data-on);
@@ -277,11 +278,7 @@ hr {
   margin: 1px;
   width: 49px;
   height: 49px;
-  background: white;
-}
-.switch > input:checked:focus + label {
-  background: #2060ac;
-  border-color: #2060ac;
+  background: #0c62c8;
 }
 .switch-square > label {
   border-radius: 2px;
@@ -498,39 +495,71 @@ h2 {
 .js-if-toggle.active {
   display: block;
 }
-.page-likes .switch-bar {
+.masslike.wrap-full-width {
+  min-height: 450px;
+  margin-top: 30px;
+  padding-top: 20px;
+  padding-botom: 20px;
+  background: #0c62c8;
   text-align: left;
+  -webkit-transition: all 0.4s ease-out;
+  -moz-transition: all 0.4s ease-out;
+  -ms-transition: all 0.4s ease-out;
+  -o-transition: all 0.4s ease-out;
 }
-.page-likes .switch-bar p {
+.masslike.wrap-full-width p {
   color: #ffffff;
   font-size: 24px;
   font-weight: 700;
 }
-.page-likes .switch-bar .description p {
-  color: #4a90e2;
+.masslike.wrap-full-width .description p {
+  color: #ffffff;
+  opacity: 0.7;
   font-size: 18px;
   font-weight: 400;
+  -webkit-transition: all 0.4s ease-out;
+  -moz-transition: all 0.4s ease-out;
+  -ms-transition: all 0.4s ease-out;
+  -o-transition: all 0.4s ease-out;
 }
-.page-likes .switch-bar .intro-el .cp-btn {
+.page-likes .intro {
+  text-align: left;
+}
+.page-likes .intro label {
+  -webkit-transition: all 0.4s ease-out;
+  -moz-transition: all 0.4s ease-out;
+  -ms-transition: all 0.4s ease-out;
+  -o-transition: all 0.4s ease-out;
+}
+.intro .intro-el .cp-btn {
   float: left;
   display: block;
   margin-top: 15px;
   background: #6fa7eb;
   color: #9ec5f4;
+  -webkit-transition: all 0.4s ease-out;
+  -moz-transition: all 0.4s ease-out;
+  -ms-transition: all 0.4s ease-out;
+  -o-transition: all 0.4s ease-out;
 }
-.page-likes .switch-bar .intro-el .cp-btn:hover {
+.intro .intro-el .cp-btn:hover {
   background: #2878d7;
   cursor: pointer;
 }
-.page-likes .switch-bar.off p {
+.page-likes .intro.off p {
   color: #2878d7;
 }
-.page-likes .switch-bar.off .intro-el label {
+.page-likes .intro.off .intro-el label {
   color: #4a90e2;
 }
-.page-likes .switch-bar.off .intro-el textarea {
+.page-likes .intro.off .intro-el textarea {
   background: #4a90e2;
   color: #72A8E8;
+}
+.page-likes .intro.off .cp-btn {
+  background: #2878d7;
+  cursor: default;
+  color: #4a90e2;
 }
 .page-likes .row.desc {
   margin-top: 160px;
@@ -538,6 +567,10 @@ h2 {
 .page-likes .intro-el label {
   width: 100%;
   display: block;
+  -webkit-transition: all 0.4s ease-out;
+  -moz-transition: all 0.4s ease-out;
+  -ms-transition: all 0.4s ease-out;
+  -o-transition: all 0.4s ease-out;
 }
 .page-likes .intro-el textarea {
   display: block;
@@ -553,6 +586,10 @@ h2 {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+  -webkit-transition: all 0.4s ease-out;
+  -moz-transition: all 0.4s ease-out;
+  -ms-transition: all 0.4s ease-out;
+  -o-transition: all 0.4s ease-out;
 }
 .page-likes .like-num-el {
   background: #6fa7eb;
@@ -588,17 +625,17 @@ h2 {
   min-height: 370px;
   text-align: left;
 }
-.page-likes .action {
+.page-likes .masslike-intro {
   text-align: center;
 }
-.page-likes .action p.desc {
+.page-likes .masslike-intro p.desc {
   text-align: center;
   font-weight: 700;
   color: #2878d7;
   padding-top: 15px;
   padding-bottom: 15px;
 }
-.page-likes .action .primary {
+.page-likes .masslike-intro .primary {
   display: block;
   margin-top: 10px;
   background: #00c891;
@@ -608,7 +645,7 @@ h2 {
   font-weight: 700;
   width: 100%;
 }
-.page-likes .action .primary:hover {
+.page-likes .masslike-intro .primary:hover {
   cursor: pointer;
   background: #01b785;
 }
@@ -622,31 +659,31 @@ h2 {
   font-weight: 300;
   color: #9ec5f4;
 }
-.page-likes .action .secondary {
+.page-likes .masslike-intro .secondary {
   background: #6fa7eb;
   padding-top: 15px;
   padding-bottom: 15px;
   color: #9ec5f4;
 }
-.page-likes .action .secondary:hover {
+.page-likes .masslike-intro .secondary:hover {
   background: #2878d7;
   cursor: pointer;
 }
-.page-likes .action-blocked {
+.page-likes .masslike-blocked {
   text-align: center;
 }
-.page-likes .action-blocked i {
+.page-likes .masslike-blocked i {
   font-size: 72px;
   text-align: center;
   padding-bottom: 40px;
   padding-top: 40px;
 }
-.page-likes .action-blocked span {
+.page-likes .masslike-blocked span {
   width: 100%;
   display: block;
   text-align: center;
 }
-.page-likes .action-blocked a {
+.page-likes .masslike-blocked a {
   display: inline-block;
   background: #01b785;
   color: #f1f1f1;
@@ -654,7 +691,7 @@ h2 {
   padding-top: 1px;
   padding-bottom: 1px;
 }
-.page-likes .action-blocked a:hover {
+.page-likes .masslike-blocked a:hover {
   background: #00c891;
   cursor: pointer;
   text-decoration: none;

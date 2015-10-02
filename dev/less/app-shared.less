@@ -40,6 +40,13 @@
 @screen-sm-max:              (@screen-md-min - 1);
 @screen-md-max:              (@screen-lg-min - 1);
 
+.transition (@transition) {
+  -webkit-transition: @transition;
+  -moz-transition:    @transition;
+  -ms-transition:     @transition;
+  -o-transition:      @transition;
+}
+
 html {
     height: 100%;
 }
@@ -283,6 +290,8 @@ hr {
 @switchWidth: 140px;
 @switchHeight: 55px;
 
+@focusColor: @color-darkBlue0;
+
 .switch {
   display: inline-block;
   vertical-align: top;
@@ -296,13 +305,16 @@ hr {
     line-height: @switchHeight - 5px;
     font-size: 10px;
     font-weight: bold;
-    color: #bbb;
     text-align: center;
     text-transform: uppercase;
-    background: white;
     border: 2px solid @color-darkBlue1;
     border-radius: ceil(@switchHeight / 2);
     transition: all .15s ease-out;
+
+    background: @color-darkBlue1;
+
+    color: darken(@focusColor, 10%);
+    border-color: @focusColor;
 
     &:before {
       content: attr(data-off);
@@ -318,7 +330,7 @@ hr {
       margin: 2px;
       width: @switchHeight - 8px;
       height: @switchHeight - 8px;
-      background: @color-darkBlue1;
+      background: @focusColor;
       border-radius: ceil(@switchHeight / 2);
     }
   }
@@ -335,8 +347,6 @@ hr {
     &:focus { outline: none; }
   }
 
-  @focusColor: @color-darkBlue1;
-
   > input:focus + label {
     color: darken(@focusColor, 10%);
     border-color: @focusColor;
@@ -346,9 +356,9 @@ hr {
 
   > input:checked + label {
     padding-left: @switchWidth - @switchHeight;
-    color: white;
-    background: @focusColor;
-    border-color: @focusColor;
+    color: darken(white, 10%);
+    background: darken(@focusColor, 10%);
+    border-color: darken(@focusColor, 10%);
 
     &:before {
       content: attr(data-on);
@@ -359,13 +369,8 @@ hr {
       margin: 1px;
       width: @switchHeight - 6px;
       height: @switchHeight - 6px;
-      background: white;
+      background: @focusColor;
     }
-  }
-
-  > input:checked:focus + label {
-    background: darken(@focusColor, 10%);
-    border-color: darken(@focusColor, 10%);
   }
 }
 

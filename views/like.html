@@ -2,20 +2,20 @@
 
 {% block content %}
 <div class="page-likes">
-  <div class="container-fluid match-bar-wrap">
-    <div class="col-md-1">
-      <div class="icon">
-        <i class="fa fa-heart"></i>
-      </div>
-    </div>
-  	<div class="match-river UIRiver col-md-11">
-      <div class="matches el-wrap">
-      </div>
+
+<div class="container-fluid match-bar-wrap">
+  <div class="col-md-1">
+    <div class="icon">
+      <i class="fa fa-heart"></i>
     </div>
   </div>
+	<div class="match-river UIRiver col-md-11">
+    <div class="matches el-wrap">
+    </div>
+  </div>
+</div>
 
 <div class="container like-stats">
-
   <div class="row stats">
     <div class="col-md-3">
       <div class="DataBox js-likes-so-far">
@@ -45,12 +45,11 @@
     </div>
 
   </div> <!-- /.stats -->
-</div>
+</div> <!-- /.like-stats -->
 
-<div class="action-bar wrap-full-width">
+<div class="masslike wrap-full-width">
   <div class="container">
-
-    <div class="row action-blocked" style="display:none;">
+    <div class="masslike-blocked js-masslike-blocked row " style="display:none;">
       <div class="col-md-12">
         <i class="fa fa-circle-o-notch fa-spin"></i>
       </div>
@@ -60,9 +59,10 @@
         <span>In the meantime, work on <a href="#" class="js-goto-openers">your openers</a>, or <a href="#" class="js-goto-chat">chat with someone</a> you've already matched with.</span>
       </div>
     </div> <!-- ./action-blocked -->
-    <div class="row action">
+
+    <div class="row masslike-intro js-masslike-intro">
       <div class="col-md-5">
-        <div class="switch-bar on">
+        <div class="intro js-switch-bar on">
           <div class="row">
             <p>Intro messages are <span class="js-intro-message-status"></span></p>
             <span class="switch switch-square">
@@ -72,7 +72,7 @@
           </div>
 
           <div class="row description">
-            <p>Whatever you put in below will sent when you actually match.  Including if you match a week from now,  So, best avoid stuff about weekend plans, since most matches happen 3-5 days after you like someone.</p>
+            <p>Whatever you put in below will sent when you actually match. Even if you match a week from now. Best avoid stuff about weekend plans - most matches happen 2-5 days after you like someone.</p>
           </div>
 
           <div class="row intro-el">

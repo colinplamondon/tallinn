@@ -5,50 +5,87 @@
   }
 }
 
-.page-likes {
+// ================
+// MASS LIKE UI ROW
+// ================
+.masslike.wrap-full-width {
+  min-height: 450px;
+  margin-top: 30px;
 
-  .switch-bar {
-    text-align: left;
-    p {
-      color: @color-white;
-      font-size: @type-base;
-      font-weight: 700;
-    }
+  padding-top: 20px;
+  padding-botom: 20px;
 
-    .description p {
-      color: @color-blue;
-      font-size: @type-smaller;
-      font-weight: 400;
-    }
+  background: @color-darkBlue0;
+  text-align: left;
 
-    .intro-el .cp-btn {
-      float: left;
-      display: block;
+  .transition(all 0.4s ease-out);
 
-      margin-top: 15px;
+  p {
+    color: @color-white;
+    font-size: @type-base;
+    font-weight: 700;
+  }
+}
 
-      background: @color-lightBlue1;
-      color: @color-lightBlue0;
+// ====================
+// INTRO MESSAGE COLUMN
+// ====================
 
-      &:hover {
-        background: @color-darkBlue1;
-        cursor: pointer;
-      }
-    }
+.masslike.wrap-full-width .description p {
+  color: @color-white;
+  opacity: 0.7;
+  font-size: @type-smaller;
+  font-weight: 400;
 
-    &.off {
-      p {
-        color: @color-darkBlue1;
-      }
-      .intro-el label {
-        color: @color-blue;
-      }
-      .intro-el textarea {
-        background: @color-blue;
-        color: #72A8E8;
-      }
+  .transition(all 0.4s ease-out);
+}
+
+.page-likes .intro {
+  text-align: left;
+
+  label {
+    .transition(all 0.4s ease-out);
+  }
+}
+
+.intro .intro-el {
+  .cp-btn {
+    float: left;
+    display: block;
+
+    margin-top: 15px;
+
+    background: @color-lightBlue1;
+    color: @color-lightBlue0;
+
+    .transition(all 0.4s ease-out);
+    &:hover {
+      background: @color-darkBlue1;
+      cursor: pointer;
     }
   }
+}
+
+.page-likes .intro.off {
+  p {
+    color: @color-darkBlue1;
+  }
+  .intro-el label {
+    color: @color-blue;
+  }
+  .intro-el textarea {
+    background: @color-blue;
+    color: #72A8E8;
+  }
+  .cp-btn {
+    background: @color-darkBlue1;
+    cursor: default;
+    color: @color-blue;
+  }
+}
+
+.page-likes {
+
 
   .row.desc {
     margin-top: 160px;
@@ -57,6 +94,8 @@
     label {
       width: 100%;
       display: block;
+
+      .transition(all 0.4s ease-out);
     }
     textarea {
       display: block;
@@ -75,6 +114,7 @@
       -moz-box-shadow: none;
       box-shadow: none;
 
+      .transition(all 0.4s ease-out);
     }
   }
 
@@ -118,11 +158,11 @@
     text-align: left;
   }
 
-  .action {
+  .masslike-intro {
     text-align: center;
   }
 
-  .action p.desc {
+  .masslike-intro p.desc {
     text-align: center;
     font-weight: 700;
     color: @color-darkBlue1;
@@ -131,7 +171,7 @@
     padding-bottom: 15px;
   }
 
-	.action .primary {
+	.masslike-intro .primary {
     display: block;
 
     margin-top: 10px;
@@ -165,7 +205,7 @@
 
   }
 
-  .action .secondary {
+  .masslike-intro .secondary {
     background: @color-lightBlue1;
     padding-top: 15px;
     padding-bottom: 15px;
@@ -178,7 +218,7 @@
     }
   }
 
-  .action-blocked {
+  .masslike-blocked {
     text-align: center;
     i {
       font-size: @type-largest;

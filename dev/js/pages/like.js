@@ -176,13 +176,13 @@ function LikeClass() {
   };
 
   this.activateIntros = function() {
-    $('.switch-bar').removeClass('off').addClass('on');
+    $('.js-switch-bar').removeClass('off').addClass('on');
     $('.js-intro-message-status').text('on');
     $('.js-if-intros-on').addClass('active');
     this.introsOn = true;
   };
   this.deactivateIntros = function() {
-    $('.switch-bar').removeClass('on').addClass('off');
+    $('.js-switch-bar').removeClass('on').addClass('off');
     $('.js-intro-message-status').text('off');
     $('.js-if-intros-on').removeClass('active');
     this.introsOn = false;
@@ -191,13 +191,13 @@ function LikeClass() {
   this.uiSwap = function(to_activate) {
     // to_activate: STR for "blocker" or "liking"
 
-    var to_hide = $('.action');
-    var to_show = $('.action-blocked');
+    var to_hide = $('.js-masslike-intro');
+    var to_show = $('.js-masslike-blocked');
     var show_slide_distance = 60;
 
     if(to_activate == 'liking') {
-      to_hide = $('.action-blocked');
-      to_show = $('.action');
+      to_hide = $('.js-masslike-blocked');
+      to_show = $('.js-masslike-intro');
       show_slide_distance = 20;
     }
 
