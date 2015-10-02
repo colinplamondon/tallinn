@@ -50,6 +50,7 @@ hr {
   background: #2878d7;
 }
 .icon span {
+  text-align: center;
   width: 100%;
   display: block;
 }
@@ -394,10 +395,11 @@ label {
   color: #0c62c8;
 }
 .nav .user-profile-pic {
-  float: left;
+  float: right;
   display: inline;
   width: 30px;
   height: 30px;
+  margin-right: 5px;
 }
 .nav .account-link {
   float: left;
@@ -490,6 +492,12 @@ h2 {
 .page-reg {
   padding-bottom: 200px;
 }
+.js-if-toggle {
+  display: none;
+}
+.js-if-toggle.active {
+  display: block;
+}
 .page-likes .switch-bar {
   text-align: left;
 }
@@ -503,6 +511,17 @@ h2 {
   font-size: 18px;
   font-weight: 400;
 }
+.page-likes .switch-bar .intro-el .cp-btn {
+  float: left;
+  display: block;
+  margin-top: 15px;
+  background: #6fa7eb;
+  color: #9ec5f4;
+}
+.page-likes .switch-bar .intro-el .cp-btn:hover {
+  background: #2878d7;
+  cursor: pointer;
+}
 .page-likes .switch-bar.off p {
   color: #2878d7;
 }
@@ -514,7 +533,7 @@ h2 {
   color: #72A8E8;
 }
 .page-likes .row.desc {
-  margin-top: 90px;
+  margin-top: 160px;
 }
 .page-likes .intro-el label {
   width: 100%;
@@ -572,9 +591,16 @@ h2 {
 .page-likes .action {
   text-align: center;
 }
+.page-likes .action p.desc {
+  text-align: center;
+  font-weight: 700;
+  color: #2878d7;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
 .page-likes .action .primary {
   display: block;
-  margin-top: 40px;
+  margin-top: 10px;
   background: #00c891;
   padding-top: 40px;
   padding-bottom: 40px;

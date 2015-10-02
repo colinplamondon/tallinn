@@ -12,8 +12,13 @@ function LikeClass() {
     this.recommendationRiverStart();
 
     this.introsOn = true;
-    $('.js-intro-message-status').text('on');
-    $('.js-intro-switch').prop('checked', true);
+    if(this.introsOn) {
+      $('.js-intro-switch').prop('checked', true);
+      this.activateIntros();
+    } else {
+      this.deactivateIntros();
+      $('.js-intro-switch').prop('checked', false);
+    }
   };
 
   this.installWatchers = function() {
@@ -115,9 +120,17 @@ function LikeClass() {
     $('.js-like').click(function(){
       if(!Global.likeInProgress) {
         var amount = Number($(this).data('like-num'));
-        var like_data = { "amount": amount };
-
         $('.js-mass-like-counter').text(amount);
+
+        var intro = false;
+        if(Like.introsOn) {
+          intro = $('.js-intro-input').val();
+        }
+
+        var like_data = {
+          "amount": amount,
+          "intro": intro
+        };
 
         self.uiSwap('blocker');
         $.ajax({
@@ -165,11 +178,13 @@ function LikeClass() {
   this.activateIntros = function() {
     $('.switch-bar').removeClass('off').addClass('on');
     $('.js-intro-message-status').text('on');
+    $('.js-if-intros-on').addClass('active');
     this.introsOn = true;
   };
   this.deactivateIntros = function() {
     $('.switch-bar').removeClass('on').addClass('off');
     $('.js-intro-message-status').text('off');
+    $('.js-if-intros-on').removeClass('active');
     this.introsOn = false;
   };
 

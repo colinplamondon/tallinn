@@ -1,5 +1,11 @@
-.page-likes {
+.js-if-toggle {
+  display:none;
+  &.active {
+    display:block;
+  }
+}
 
+.page-likes {
 
   .switch-bar {
     text-align: left;
@@ -13,6 +19,21 @@
       color: @color-blue;
       font-size: @type-smaller;
       font-weight: 400;
+    }
+
+    .intro-el .cp-btn {
+      float: left;
+      display: block;
+
+      margin-top: 15px;
+
+      background: @color-lightBlue1;
+      color: @color-lightBlue0;
+
+      &:hover {
+        background: @color-darkBlue1;
+        cursor: pointer;
+      }
     }
 
     &.off {
@@ -30,7 +51,7 @@
   }
 
   .row.desc {
-    margin-top: 90px;
+    margin-top: 160px;
   }
   .intro-el {
     label {
@@ -101,10 +122,19 @@
     text-align: center;
   }
 
+  .action p.desc {
+    text-align: center;
+    font-weight: 700;
+    color: @color-darkBlue1;
+
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
 	.action .primary {
     display: block;
 
-    margin-top: 40px;
+    margin-top: 10px;
 
     background: @color-darkGreen0;
     padding-top: 40px;
