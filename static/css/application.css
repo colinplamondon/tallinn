@@ -495,9 +495,19 @@ h2 {
   padding-bottom: 200px;
 }
 .js-if-toggle {
-  display: none;
+  opacity: 0;
+  -webkit-transition: all 0.4s ease-out;
+  -moz-transition: all 0.4s ease-out;
+  -ms-transition: all 0.4s ease-out;
+  -o-transition: all 0.4s ease-out;
 }
 .js-if-toggle.active {
+  opacity: 1;
+}
+.js-if-toggle.js-if-toggle-hide {
+  display: none;
+}
+.js-if-toggle.js-if-toggle-hide.active {
   display: block;
 }
 .page-likes {

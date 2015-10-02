@@ -1,8 +1,16 @@
 .js-if-toggle {
-  display:none;
+  opacity: 0;
+  .transition(all 0.4s ease-out);
   &.active {
-    display:block;
+    opacity: 1;
   }
+}
+.js-if-toggle.js-if-toggle-hide {
+  display: none;
+  &.active {
+    display: block;
+  }
+
 }
 
 .page-likes {
