@@ -13,3 +13,4 @@ TINDER MATCHES FOR ALL
 6) `grunt s` to start the server
 7) `/usr/local/sbin/rabbitmq-server`
 8) `node-dev worker/worker.coffee`
+9) `mongod --config /usr/local/etc/mongod.conf --fork`

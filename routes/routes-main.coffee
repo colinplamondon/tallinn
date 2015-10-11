@@ -2,6 +2,7 @@ express = require 'express'
 request = require 'request'
 Promise = require 'bluebird'
 tinder = require 'tinderjs'
+moment = require 'moment'
 url = require 'url'
 _ = require 'lodash'
 
@@ -316,5 +317,54 @@ router.post '/masslike', (req, res, next) ->
 router.get '/logout', (req, res, next) ->
   req.session.userId = null
   res.redirect '/'
+
+# #########
+# CHAT CODE
+
+router.get '/chat', (req, res, next) ->
+  if not req.user?
+    return res.redirect '/reg'
+  { tinderToken } = req.user
+
+  client.setAuthToken tinderToken
+
+  now = moment()
+
+  client.getProfileAsync()
+    .then ({pos: {lat, lon: lon}}) ->
+      console.log 'get profile async'
+      res.render('chat', { userId: req.user.id, location: {lat, lon} })
+    .error next
+
+router.post '/get_history', (req, res, next) ->
+  client.setAuthToken( req.user.tinderToken )
+
+  days_ago = parseInt(req.body.days_ago)
+  timeframe = moment().subtract(days_ago, 'days').format()
+
+  return_recent_messages(timeframe, (history) ->
+    if history?
+      res.json({"ok": true, "results": history })
+    else
+      res.json({"ok": false})
+  )
+
+
+return_recent_messages = (timeframe, callback) ->
+  client.getHistory(timeframe, (error, history) ->
+    if error?
+      console.log("Got error: ")
+      console.log error
+      callback([])
+
+    console.log(history['matches']?)
+    final_matches = []
+    if history['matches']?
+      for m in history['matches'] when m.person?.photos?[0]?
+        final_matches.push(m)
+      callback(final_matches)
+
+    callback([])
+  )
 
 module.exports = router

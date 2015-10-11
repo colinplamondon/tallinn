@@ -17,6 +17,17 @@ module.exports = function(grunt) {
       }
     },
 
+    babel: {
+        options: {
+            sourceMap: true
+        },
+        dist: {
+            files: {
+              'dev/js/pages/chat.js':'dev/js/pages/chat.jsx'
+            }
+        }
+    },
+
     // Concat JS and CSS
     concat: {
       options: {
@@ -26,14 +37,14 @@ module.exports = function(grunt) {
         src: ['dev/js/libs/*.js',
               'dev/js/global.js',
               'dev/js/components/*.js',
-              'dev/js/pages/*',
-              'dev/js/pages.js',
-              'dev/js/subpages.js'
+              'dev/js/pages/*.js',
               ],
         dest: 'static/js/application.js'
       }
     },
-
+    eslint: {
+      target: [ 'dev/js/pages/*.jsx' ]
+    },
     // Lint your JS
     jshint: {
       files: ['Gruntfile.js',
@@ -46,6 +57,8 @@ module.exports = function(grunt) {
         "bitwise": false,
         "strict": false,
         globals: {
+          ReactDOM: true,
+          React: true,
           Pages: true,
           Global: true,
           jQuery: true,
@@ -73,6 +86,10 @@ module.exports = function(grunt) {
 
     // Run 'grunt watch' to start listening for changes to files, and perform tasks like compiling LESS.
     watch: {
+      jsx: {
+        files: ['dev/js/pages/*.jsx'],
+        tasks: ['eslint', 'babel']
+      },
       js: {
         files: ['Gruntfile.js',
                 'dev/js/*.js',
@@ -102,6 +119,8 @@ module.exports = function(grunt) {
   });
 
   // Load plugins into Gruntfile
+  grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-babel');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -109,11 +128,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-exec');
 
   // Default tasks. Run this by typing 'grunt' on the command line
-  grunt.registerTask('default', ['less', 'jshint', 'concat']);
+  grunt.registerTask('default', ['less', 'jshint', 'babel', 'concat']);
 
   // Start server
   grunt.registerTask('s', ['exec:server']);
   grunt.registerTask('css', ['less']);
-  grunt.registerTask('js', ['jshint', 'concat']);
+  grunt.registerTask('js', ['jshint', 'babel', 'concat']);
 
 };
