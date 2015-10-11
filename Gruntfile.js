@@ -60,6 +60,7 @@ module.exports = function(grunt) {
           ReactDOM: true,
           React: true,
           Pages: true,
+          moment: true,
           Global: true,
           jQuery: true,
           $: true,

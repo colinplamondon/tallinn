@@ -898,3 +898,52 @@ h2 {
   background: #18d7a2;
   text-decoration: none;
 }
+.matchCell {
+  color: #ffffff;
+  height: 180px;
+  overflow: hidden;
+}
+.matchCell img {
+  height: auto;
+  float: left;
+}
+.matchCell:nth-child(even) {
+  background: #9ec5f4;
+}
+.matchCell:nth-child(odd) {
+  background: #6fa7eb;
+}
+.matchCell.active {
+  background: #00c891;
+}
+.matchCell span,
+.matchCell p {
+  display: block;
+  float: left;
+  width: 100%;
+  padding-left: 10px;
+  line-height: 1.1;
+  color: #ffffff;
+}
+.matchCell span.name {
+  padding-top: 20px;
+  font-size: 24px;
+  color: #ffffff;
+}
+.matchCell span.lastonline {
+  font-size: 20px;
+  color: #ffffff;
+  font-style: italic;
+}
+.matchCell span.lastonline span {
+  display: inline-block;
+  width: auto;
+  padding: 0;
+  padding-right: 5px;
+}
+.matchCell p {
+  font-style: italic;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.1;
+}

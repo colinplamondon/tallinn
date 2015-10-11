@@ -1,0 +1,58 @@
+.page-chat #match-list {
+
+}
+
+.matchCell {
+	img {
+		height: auto;
+		float:left;
+	}
+
+	color: @color-white;
+	height: 180px;
+	overflow: hidden;
+
+
+	&:nth-child(even) {
+		background: @color-lightBlue0;
+	}
+	&:nth-child(odd) {
+		background: @color-lightBlue1;
+	}
+	&.active {
+		background: @color-darkGreen0;
+	}
+
+	span, p {
+		display: block;
+		float: left;
+		width: 100%;
+		padding-left: 10px;
+		line-height: @lineHeight-tight;
+
+		color: @color-white;
+	}
+	span.name {
+		padding-top: 20px;
+		font-size: @type-base;
+		color: @color-white;
+	}
+	span.lastonline {
+		font-size: @type-small;
+		color: @color-white;
+		font-style: italic;
+		span {
+			display: inline-block;
+			width: auto;
+			padding: 0;
+			padding-right: 5px;
+		}
+	}
+
+	p {
+		font-style: italic;
+		font-size: @type-small;
+		color: rgba(255,255,255,0.75);
+		line-height: @lineHeight-tight;
+	}
+}
