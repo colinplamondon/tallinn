@@ -920,7 +920,7 @@ h2 {
 .matchCell:nth-child(odd) {
   background: #6fa7eb;
 }
-.matchCell.active {
+.matchCell[data-active="active"] {
   background: #00c891;
 }
 .matchCell span,

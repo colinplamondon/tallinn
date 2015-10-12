@@ -53,7 +53,13 @@ function ChatClass() {
         });
       },
       getInitialState: function getInitialState() {
-        return { data: [], convo: { 'messages': [{ 'from': '', 'message': '' }] } };
+        return {
+          data: [],
+          convo: {
+            "_id": "",
+            'messages': [{ 'from': '', 'message': '' }]
+          }
+        };
       },
       historyLooper: function historyLooper(callback) {
         var lookup = {
@@ -88,8 +94,26 @@ function ChatClass() {
             self.lastFetch = timestamp;
             self.initialFetch = timestamp;
             self.lastDayFetch = days_back;
-            this.setState({ data: historyData });
-            callback();
+
+            if (self.activeConvoNotSet) {
+              var currentreact = this;
+              $.each(historyData, function (idx, val) {
+                if (val.messages.length > 0) {
+                  self.activeConvoNotSet = false;
+
+                  currentreact.setState({
+                    data: historyData,
+                    convo: val
+                  });
+                }
+              });
+              if (self.activeConvoNotSet === true) {
+                this.setState({ data: historyData });
+              }
+              callback();
+            } else {
+              this.setState({ data: historyData });
+            }
           }).bind(this),
           error: (function (xhr, status, err) {
             console.error(this.props.url, status, err.toString());
@@ -112,7 +136,20 @@ function ChatClass() {
             self.lastFetch = timestamp;
             self.initialFetch = timestamp;
             self.lastDayFetch = 3;
-            this.setState({ data: historyData });
+            self.activeConvoNotSet = true;
+            $.each(historyData, function (idx, val) {
+              if (val.messages.length > 0) {
+                self.activeConvoNotSet = false;
+
+                this.setState({
+                  data: historyData,
+                  convo: val
+                });
+              }
+            });
+            if (self.activeConvoNotSet === true) {
+              this.setState({ data: historyData });
+            }
 
             var activereact = this;
             function loop() {
@@ -134,12 +171,10 @@ function ChatClass() {
         this.setState({ convo: match.match });
       },
       render: function render() {
-        console.log('rendering...');
-        console.log(this.state.convo);
         return React.createElement(
           "div",
           { className: "chatUI" },
-          React.createElement(MatchList, { data: this.state.data, setNewConvo: this.setNewConvo }),
+          React.createElement(MatchList, { data: this.state.data, activeConvo: this.state.convo, setNewConvo: this.setNewConvo }),
           React.createElement(ActiveConvo, { match: this.state.convo }),
           React.createElement(ConvoPhotos, { match: this.state.convo })
         );
@@ -150,12 +185,10 @@ function ChatClass() {
       displayName: "MatchList",
 
       matchChangeHandler: function matchChangeHandler(match, x) {
-        console.log('intermediary step...');
-        console.log(x);
-        console.log(match);
         this.props.setNewConvo({ match: x });
       },
       render: function render() {
+        var currentreact = this;
         var boundClick = this.matchChangeHandler.bind(null, this);
         var matchNodes = this.props.data.map(function (match) {
           var last_three_messages = match['messages'].slice(-3);
@@ -170,6 +203,10 @@ function ChatClass() {
           $.each(last_three_messages, function (idx, val) {
             messages_only.push(val['message']);
           });
+          var currently_active = '';
+          if (match._id == currentreact.props.activeConvo._id) {
+            currently_active = 'active';
+          }
           return React.createElement(MatchCell, { key: match._id,
             profile: match['person']['photos'][0]['url'],
             name: match['person']['name'],
@@ -179,7 +216,8 @@ function ChatClass() {
             last_online: last_online,
             match_id: match['_id'],
             match: match,
-            onMatchChange: boundClick });
+            onMatchChange: boundClick,
+            currently_active: currently_active });
         });
         return React.createElement(
           "div",
@@ -193,8 +231,6 @@ function ChatClass() {
       displayName: "MatchCell",
 
       handleClick: function handleClick(e) {
-        console.log(this.props.match);
-        console.log(this.props);
         this.props.onMatchChange(this.props.match);
       },
       render: function render() {
@@ -206,7 +242,7 @@ function ChatClass() {
         }
         return React.createElement(
           "div",
-          { className: "matchCell row", onClick: this.handleClick, match_id: this.props['match_id'], messaged: this.props['messaged'] },
+          { className: "matchCell row", "data-active": this.props.currently_active, onClick: this.handleClick, match_id: this.props['match_id'], messaged: this.props['messaged'] },
           React.createElement("img", { className: "col-md-4", src: this.props['profile'] }),
           React.createElement(
             "div",
@@ -253,18 +289,16 @@ function ChatClass() {
       displayName: "ConvoHistoryBox",
 
       render: function render() {
-        console.log('next is props');
-        console.log(this.props.match);
+
         var messages = this.props.match['messages'];
-        var m = null;
-        if (this.props.match.hasOwnProperty('person')) {
-          m = this.props.match;
-        }
+        var m = this.props.match;
         var started = 'false';
-        if (messages[0].from.length > 0) {
-          started = 'true';
+
+        if (messages.length > 0) {
+          if (messages[0].from.length > 0) {
+            started = 'true';
+          }
         }
-        console.log(messages);
         var messageNodes = messages.map(function (message, idx) {
           var from = Global.tinderId == message['from'] ? "me" : "them";
           var first = false;
@@ -276,11 +310,11 @@ function ChatClass() {
             first = messages[idx - 1]['from'] == Global.tinderId ? false : true;
           }
           var their_pic = '';
-          if (m) {
+          if (m.hasOwnProperty('person')) {
             their_pic = m.person.photos[0].processedFiles[2].url;
           }
-          console.log(started);
-          return React.createElement(MessageBubble, { from: from,
+          return React.createElement(MessageBubble, { key: message._id,
+            from: from,
             text: message['message'],
             first: first.toString(),
             their_pic: their_pic,
