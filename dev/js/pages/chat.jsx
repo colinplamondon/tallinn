@@ -3,7 +3,7 @@
 
 function ChatClass() {
   this.url = "/chat";
-  this.historyMaxDaysBack = 20;
+  this.historyMaxDaysBack = 14;
   this.init = function(){
     this.installObservers();
     this.createReact();
@@ -19,7 +19,7 @@ function ChatClass() {
   this.createReact = function() {
     var self = this;
 
-    var MatchSidebar = React.createClass({
+    var ChatUI = React.createClass({
       loadUpdates: function() {
         $.ajax({
           type: "POST",
@@ -41,7 +41,9 @@ function ChatClass() {
         });
       },
       getInitialState: function() {
-        return {data:[]};
+        return {data:[],convo:{'messages':[
+          {'from':'', 'message':''}
+        ]}};
       },
       historyLooper: function(callback) {
         var lookup = {
@@ -52,10 +54,8 @@ function ChatClass() {
 
         var current_history = parseInt(self.lastDayFetch);
         var next = lookup[current_history];
-        alert('next is '+next);
 
         if (next == 20) {
-          alert('start interval');
           setInterval(this.loadUpdates, 5000);
         }
 
@@ -80,6 +80,7 @@ function ChatClass() {
             self.initialFetch = timestamp;
             self.lastDayFetch = days_back;
             this.setState({data:historyData});
+            callback();
 
           }.bind(this),
           error: function(xhr, status, err) {
@@ -88,7 +89,6 @@ function ChatClass() {
         });
       },
       componentDidMount: function() {
-        alert('mounted.');
         console.log('mounted');
         $.ajax({
           type: "POST",
@@ -108,36 +108,45 @@ function ChatClass() {
 
             var activereact = this;
             function loop() {
-              console.log("last day fetch: "+ self.lastDayFetch);
-              console.log("history days back: "+ self.historyMaxDaysBack);
-              if(self.lastDayFetch < self.historyMaxDaysBack) {
+
+              if(self.lastDayFetch != self.historyMaxDaysBack) {
                 activereact.historyLooper(function(){
                   loop();
                 });
               }
             }
             loop();
-
-            console.log("NOW SETTING UPDATE INTERVAL");
-
           }.bind(this),
           error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
           }.bind(this)
         });
       },
+      setNewConvo: function(match) {
+        this.setState({convo:match.match});
+      },
       render: function() {
         console.log('rendering...');
+        console.log(this.state.convo);
         return (
-          <div className="matchSidebar">
-            <MatchList data={this.state.data} />
+          <div className="chatUI">
+            <MatchList data={this.state.data} setNewConvo={this.setNewConvo} />
+            <ActiveConvo match={this.state.convo} />
+            <ConvoPhotos match={this.state.convo} />
           </div>
         )
       }
     });
 
     var MatchList = React.createClass({
+      matchChangeHandler: function(match, x) {
+        console.log('intermediary step...');
+        console.log(x);
+        console.log(match);
+        this.props.setNewConvo({match:x});
+      },
       render: function() {
+        var boundClick = this.matchChangeHandler.bind(null, this);
         var matchNodes = this.props.data.map(function (match){
           var last_three_messages = match['messages'].slice(-3);
           var messaged = true;
@@ -159,11 +168,13 @@ function ChatClass() {
               messaged={messaged.toString()}
               last_messaged={last_messaged}
               last_online={last_online}
-              match_id={match['_id']} />
+              match_id={match['_id']}
+              match={match}
+              onMatchChange={boundClick} />
           );
         });
         return  (
-          <div className="matchList">
+          <div className="matchList col-md-4">
             {matchNodes}
           </div>
         )
@@ -172,13 +183,18 @@ function ChatClass() {
 
 
     var MatchCell = React.createClass({
+      handleClick: function(e) {
+        console.log(this.props.match);
+        console.log(this.props);
+        this.props.onMatchChange(this.props.match);
+      },
       render: function() {
         var messageExp = this.props.messaged === 'true' ? this.props['last_three_messages'] : 'no messages yet';
         function createMessage() { return {
           __html: messageExp
         };}
         return (
-          <div className="matchCell row" match_id={this.props['match_id']} messaged={this.props['messaged']}>
+          <div className="matchCell row" onClick={this.handleClick} match_id={this.props['match_id']} messaged={this.props['messaged']}>
             <img className="col-md-4" src={this.props['profile']} />
             <div className="col-md-8">
               <span className="name">{this.props['name']}</span>
@@ -190,78 +206,101 @@ function ChatClass() {
       }
     });
 
-    ReactDOM.render(
-      <MatchSidebar data={this.historyData} />,
-      document.getElementById('match-list')
-    );
-  }
-
-  this.renderConvo = function() {
-    var ConvoBox = React.renderClass({
+    var ActiveConvo = React.createClass({
+      handleMessageSubmit: function(message) {
+        //
+      },
+      // getInitialState: function() {
+      //   return {match: {
+      //     'messages':[{'from':'', 'message':''}]
+      //   }};
+      // },
       render: function() {
         return (
-          <div className="convoBox">
-            <ConvoHistoryBox match={this.props.data}/>
+          <div className="activeConvo col-md-6">
+            <ConvoHistoryBox match={this.props.match}/>
+            <MessageInput onMessageSubmit={this.handleMessageSubmit} />
           </div>
         )
       }
     })
 
-    var ConvoHistoryBox = React.renderClass({
+    var ConvoHistoryBox = React.createClass({
       render: function() {
+        console.log('next is props');
+        console.log(this.props.match)
+        var messages = this.props.match['messages'];
+        console.log(messages);
+        var messageNodes = messages.map(function(message, idx){
+          console.log('message text: ' +message['message']);
+          var from = Global.tinderId == message['from'] ? "me" :"them";
+          console.log('from: '+from);
+          var first = false;
+          if(idx === 0){
+            console.log('first, setting first to true');
+            first = true;
+          } else {
+            console.log('last message is:');
+            console.log(messages[idx-1]);
+            first = messages[idx-1]['from'] == Global.tinderId ? true : false;
+            console.log('first status is: '+first);
+          }
+
+          return (
+            <MessageBubble from={from}
+              text={message['message']}
+              first={first.toString()} />
+          );
+        });
         return (
-          <div className="convoHistoryBox"></div>
+          <div className="convoHistoryBox">
+            {messageNodes}
+          </div>
         )
       }
     });
 
-    var MessageBubble = React.renderClass({
+    var MessageBubble = React.createClass({
       render: function() {
+        // var me = Global.tinderId;
+        // var them = x._id;
+        // var from = me == from ? "me" :"them";
         return (
           <div className="messageBubble">
-            <div className="messageText">
-              {this.props.message_text}
+            <div className="messageText" dataFirst={this.props.first} dataFrom={this.props.from}>
+              {this.props.text}
             </div>
           </div>
         )
       }
+    });
+
+    var MessageInput = React.createClass({
+      render: function() {
+        return (
+          <div className="messageInput row">
+            <img className="col-md-2" />
+            <input className="col-md-7" placeholder="Enter your message here" type="text" />
+            <div className="submit col-md-3">send</div>
+          </div>
+        )
+      }
+    });
+
+    var ConvoPhotos = React.createClass({
+      render: function() {
+        return(
+            <div className="convoPhotos" />
+        )
+      }
     })
 
-    var active_match = this.historyData[0]
+    // REACT RENDER
+
     ReactDOM.render(
-      <ConvoBox data={active_match} />,
-      document.getElementById('active-convo')
-    );
-  };
-
-  this.getUpdates = function(timestamp, callback) {
-    $.ajax({
-        type: "POST",
-        url: '/get_history',
-        data: {
-          'timestamp': timestamp
-        },
-        dataType: 'json',
-        success: function(msg) {
-          callback(msg.results, msg.timestamp);
-        }
-      });
-  };
-
-  this.getHistory = function(days_ago, callback) {
-    console.log('get history');
-    $.ajax({
-        type: "POST",
-        url: '/get_history',
-        data: {
-          'days_ago': days_ago
-        },
-        dataType: 'json',
-        success: function(msg) {
-          callback(msg.results, msg.timestamp);
-        }
-      });
-  };
+      <ChatUI data={this.historyData} />,
+      document.getElementById('chat-ui')
+    );  };
 
 	this.installObservers = function(){
 	};

@@ -18,7 +18,7 @@
 
 <div class="page-chat">
   <div class='container-fluid'>
-    <div class="row">
+    <div id="chat-ui" class="row">
       <div id="match-list" class="col-md-4">
 
       </div>
@@ -48,6 +48,8 @@
       "lon": "{{location.lon}}",
       "lat": "{{location.lat}}"
   };
+
+  Global.tinderId = "{{tinderId}}";
 
   Global.currentPage = 'intros';
   Global.uid = "{{userId}}";
