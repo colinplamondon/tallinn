@@ -75,6 +75,24 @@
     height: 60vh;
     width: 900px;
     overflow: scroll;
+	&.noConvo {
+		text-align: center;
+	}
+	i.fa-spinner {
+		color: @color-white;
+		font-size: @type-largest;
+		text-align: center;
+		margin: 0 auto;
+		display: block;
+		margin-top: 250px;
+	}
+    h3.helptext {
+    	text-align:center;
+    	font-size: @type-larger;
+    	width: 40%;
+    	margin: 0 auto;
+    	padding-top: 100px;
+    }
 }
 .convoBox {
 	background: @color-darkBlue0;
@@ -105,6 +123,15 @@
 		    position: relative;
 		    top: 5px;
 		    left: -35px;
+		    span.messageTimestamp {
+		    	width: 100%;
+		    	display: block;
+		    	font-style: italic;
+				font-size: @type-smallest;
+				padding-top: 3px;
+				color: rgba(0,0,0,0.28);
+				line-height: 18px;
+		    }
 		}
 	}
 

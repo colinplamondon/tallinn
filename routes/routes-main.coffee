@@ -347,9 +347,7 @@ router.get '/chat', (req, res, next) ->
 
   client.getProfileAsync()
     .then (profile) ->
-      console.log profile
       _id = profile._id
-      console.log(profile.photos[0].processedFiles)
       profile_pic = profile.photos[0].processedFiles[2].url
       location = {
         'lat': profile.pos.lat,

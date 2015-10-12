@@ -962,6 +962,24 @@ h2 {
   width: 900px;
   overflow: scroll;
 }
+.convoHistoryBox.noConvo {
+  text-align: center;
+}
+.convoHistoryBox i.fa-spinner {
+  color: #ffffff;
+  font-size: 72px;
+  text-align: center;
+  margin: 0 auto;
+  display: block;
+  margin-top: 250px;
+}
+.convoHistoryBox h3.helptext {
+  text-align: center;
+  font-size: 48px;
+  width: 40%;
+  margin: 0 auto;
+  padding-top: 100px;
+}
 .convoBox {
   background: #0c62c8;
   padding-bottom: 200px;
@@ -990,6 +1008,15 @@ h2 {
   position: relative;
   top: 5px;
   left: -35px;
+}
+.messageBubble .messageText p span.messageTimestamp {
+  width: 100%;
+  display: block;
+  font-style: italic;
+  font-size: 14px;
+  padding-top: 3px;
+  color: rgba(0, 0, 0, 0.28);
+  line-height: 18px;
 }
 .messageBubble[data-started='true'] img {
   opacity: 0;

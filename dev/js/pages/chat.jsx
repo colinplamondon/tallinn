@@ -261,12 +261,31 @@ function ChatClass() {
       //   }};
       // },
       render: function() {
-        return (
+        if(!this.props.match.hasOwnProperty('person')){
+          return (
+            <div className="activeConvo noConvo col-md-6">
+              <div className="convoHistoryBox">
+                <i className="fa fa-spinner fa-spin"></i>
+              </div>
+            </div>
+          )
+        } else if (this.props.match.messages.length === 0 ) {
+          return (
+            <div className="activeConvo col-md-6">
+              <div className="convoHistoryBox">
+                <h3 className="helptext">Kick off the conversation below!</h3>
+              </div>
+              <MessageInput onMessageSubmit={this.handleMessageSubmit} />
+            </div>
+          )
+        } else {
+          return (
           <div className="activeConvo col-md-6">
             <ConvoHistoryBox match={this.props.match}/>
             <MessageInput onMessageSubmit={this.handleMessageSubmit} />
           </div>
         )
+        }
       }
     })
 
@@ -296,13 +315,21 @@ function ChatClass() {
           if (m.hasOwnProperty('person')) {
             their_pic = m.person.photos[0].processedFiles[2].url;
           }
+
+          var timestamp = ''
+          if(message.hasOwnProperty('sent_date')){
+            var ts = message.sent_date;
+            timestamp = moment(ts).fromNow();
+          }
+
           return (
             <MessageBubble key={message._id}
               from={from}
               text={message['message']}
               first={first.toString()}
               their_pic={their_pic}
-              started={started} />
+              started={started}
+              timestamp={timestamp} />
           );
         });
         return (
@@ -324,7 +351,10 @@ function ChatClass() {
               <img className="mePhoto img-circle" src={Global.profilePic} />
             </div>
             <div className="messageText col-md-8">
-              <p>{this.props.text}</p>
+              <p>
+                {this.props.text}
+                <span className="messageTimestamp">{this.props.timestamp}</span>
+              </p>
             </div>
             <div className="col-md-1">
               <img className="themPhoto img-circle" src={this.props.their_pic} />

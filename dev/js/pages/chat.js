@@ -276,12 +276,39 @@ function ChatClass() {
       //   }};
       // },
       render: function render() {
-        return React.createElement(
-          "div",
-          { className: "activeConvo col-md-6" },
-          React.createElement(ConvoHistoryBox, { match: this.props.match }),
-          React.createElement(MessageInput, { onMessageSubmit: this.handleMessageSubmit })
-        );
+        if (!this.props.match.hasOwnProperty('person')) {
+          return React.createElement(
+            "div",
+            { className: "activeConvo noConvo col-md-6" },
+            React.createElement(
+              "div",
+              { className: "convoHistoryBox" },
+              React.createElement("i", { className: "fa fa-spinner fa-spin" })
+            )
+          );
+        } else if (this.props.match.messages.length === 0) {
+          return React.createElement(
+            "div",
+            { className: "activeConvo col-md-6" },
+            React.createElement(
+              "div",
+              { className: "convoHistoryBox" },
+              React.createElement(
+                "h3",
+                { className: "helptext" },
+                "Kick off the conversation below!"
+              )
+            ),
+            React.createElement(MessageInput, { onMessageSubmit: this.handleMessageSubmit })
+          );
+        } else {
+          return React.createElement(
+            "div",
+            { className: "activeConvo col-md-6" },
+            React.createElement(ConvoHistoryBox, { match: this.props.match }),
+            React.createElement(MessageInput, { onMessageSubmit: this.handleMessageSubmit })
+          );
+        }
       }
     });
 
@@ -313,12 +340,20 @@ function ChatClass() {
           if (m.hasOwnProperty('person')) {
             their_pic = m.person.photos[0].processedFiles[2].url;
           }
+
+          var timestamp = '';
+          if (message.hasOwnProperty('sent_date')) {
+            var ts = message.sent_date;
+            timestamp = moment(ts).fromNow();
+          }
+
           return React.createElement(MessageBubble, { key: message._id,
             from: from,
             text: message['message'],
             first: first.toString(),
             their_pic: their_pic,
-            started: started });
+            started: started,
+            timestamp: timestamp });
         });
         return React.createElement(
           "div",
@@ -349,7 +384,12 @@ function ChatClass() {
             React.createElement(
               "p",
               null,
-              this.props.text
+              this.props.text,
+              React.createElement(
+                "span",
+                { className: "messageTimestamp" },
+                this.props.timestamp
+              )
             )
           ),
           React.createElement(
