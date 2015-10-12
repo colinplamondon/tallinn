@@ -69,7 +69,6 @@ function ChatClass() {
 
         var current_history = parseInt(self.lastDayFetch);
         var next = lookup[current_history];
-        alert(next);
         if (next == 14) {
           setInterval(this.loadUpdates, 5000);
         }
@@ -395,7 +394,6 @@ function ChatClass() {
       messageSubmit: function(e) {
         e.preventDefault();
         var msg = this.refs.msg.value.trim();
-        alert(msg);
         if(!msg) {
           return;
         }
