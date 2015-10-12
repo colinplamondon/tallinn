@@ -898,6 +898,13 @@ h2 {
   background: #18d7a2;
   text-decoration: none;
 }
+.page-chat .matchList {
+  position: fixed;
+  top: 240px;
+  left: 0;
+  height: 70vh;
+  overflow: scroll;
+}
 .matchCell {
   color: #ffffff;
   height: 180px;
@@ -946,4 +953,96 @@ h2 {
   font-size: 20px;
   color: rgba(255, 255, 255, 0.75);
   line-height: 1.1;
+}
+.convoHistoryBox {
+  position: fixed;
+  top: 240px;
+  left: 33%;
+  height: 60vh;
+  width: 900px;
+  overflow: scroll;
+}
+.convoBox {
+  background: #0c62c8;
+  padding-bottom: 200px;
+  padding-top: 50px;
+}
+.messageBubble {
+  width: 100%;
+  display: block;
+}
+.messageBubble img {
+  display: none;
+  width: 100%;
+  height: auto;
+  z-index: 3;
+  position: relative;
+}
+.messageBubble .messageText p {
+  font-size: 24px;
+  color: #000000;
+  line-height: 28px;
+  background: white;
+  padding: 10px;
+  width: auto;
+  display: block;
+  float: left;
+  position: relative;
+  top: 5px;
+  left: -35px;
+}
+.messageBubble[data-started='true'] img {
+  opacity: 0;
+  display: block;
+}
+.messageBubble[data-from="them"] {
+  float: right;
+  text-align: right;
+}
+.messageBubble[data-from="them"][data-first="true"] img.themPhoto {
+  opacity: 1;
+}
+.messageBubble[data-from="them"] p {
+  left: 35px;
+  float: right;
+  z-index: 1;
+}
+.messageBubble[data-from="me"] {
+  float: left;
+  text-align: left;
+}
+.messageBubble[data-from="me"][data-first="true"] img.mePhoto {
+  opacity: 1;
+}
+.messageInput {
+  height: 10vh;
+  position: fixed;
+  bottom: 40px;
+  left: 35%;
+  width: 900px;
+}
+.messageInput img {
+  height: auto;
+  padding-left: 0;
+  padding-right: 0;
+  width: 80px;
+}
+.messageInput input {
+  background: #ffffff;
+  color: #7A7A7A;
+  font-size: 24px;
+  padding: 20px;
+  border: 0;
+}
+.messageInput .submit {
+  background: #00c891;
+  color: #ffffff;
+  text-align: center;
+  font-size: 24px;
+  height: 75px;
+  padding-top: 20px;
+}
+.messageInput .submit:hover {
+  cursor: pointer;
+  background: #18d7a2;
 }

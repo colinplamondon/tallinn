@@ -21,12 +21,23 @@ router.get '/', (req, res, next) ->
   console.log "set token #{tinderToken}"
   client.setAuthToken tinderToken
   client.getProfileAsync()
-    .then ({_id, pos: {lat, lon: lon}}) ->
+    .then (profile) ->
+      console.log profile
+      _id = profile._id
+      console.log(profile.photos[0].processedFiles)
+      profile_pic = profile.photos[0].processedFiles[2].url
+      location = {
+        'lat': profile.pos.lat,
+        'lon': profile.pos.lon
+      }
+
       console.log 'get profile async'
       res.render('like', {
-        tinderId:_id,
+        tinderId: _id,
         userId: req.user.id,
-        location: {lat, lon} })
+        location: location,
+        photo: profile_pic
+      })
     .error next
 
 router.get('/login', (req, res, next) ->
@@ -335,12 +346,22 @@ router.get '/chat', (req, res, next) ->
   now = moment()
 
   client.getProfileAsync()
-    .then ({_id, pos: {lat, lon: lon}}) ->
+    .then (profile) ->
+      console.log profile
+      _id = profile._id
+      console.log(profile.photos[0].processedFiles)
+      profile_pic = profile.photos[0].processedFiles[2].url
+      location = {
+        'lat': profile.pos.lat,
+        'lon': profile.pos.lon
+      }
+
       console.log 'get profile async'
       res.render('chat', {
         tinderId: _id,
         userId: req.user.id,
-        location: {lat, lon}
+        location: location,
+        photo: profile_pic
       })
     .error next
 

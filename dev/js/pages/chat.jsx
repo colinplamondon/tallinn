@@ -1,6 +1,15 @@
 /*jshint sub:true*/
 /*jshint -W030 */
 
+// ChatUI
+//   MatchList
+//     MatchCell
+//   ActiveConvo
+//     ConvoHistoryBox
+//       MessageBubble
+//     MessageInput
+//   ConvoPhotos
+
 function ChatClass() {
   this.url = "/chat";
   this.historyMaxDaysBack = 14;
@@ -230,26 +239,36 @@ function ChatClass() {
         console.log('next is props');
         console.log(this.props.match)
         var messages = this.props.match['messages'];
+        var m = null;
+        if (this.props.match.hasOwnProperty('person')) {
+          m = this.props.match;
+        }
+        var started = 'false';
+        if(messages[0].from.length > 0) {
+          started = 'true';
+        }
         console.log(messages);
         var messageNodes = messages.map(function(message, idx){
-          console.log('message text: ' +message['message']);
           var from = Global.tinderId == message['from'] ? "me" :"them";
-          console.log('from: '+from);
           var first = false;
           if(idx === 0){
-            console.log('first, setting first to true');
             first = true;
-          } else {
-            console.log('last message is:');
-            console.log(messages[idx-1]);
-            first = messages[idx-1]['from'] == Global.tinderId ? true : false;
-            console.log('first status is: '+first);
+          } else if(from == 'them') {
+            first = messages[idx-1]['from'] == m.person._id ? false : true;
+          } else if (from == 'me') {
+            first = messages[idx-1]['from'] == Global.tinderId ? false : true;
           }
-
+          var their_pic = ''
+          if (m) {
+            their_pic = m.person.photos[0].processedFiles[2].url;
+          }
+          console.log(started);
           return (
             <MessageBubble from={from}
               text={message['message']}
-              first={first.toString()} />
+              first={first.toString()}
+              their_pic={their_pic}
+              started={started} />
           );
         });
         return (
@@ -266,9 +285,15 @@ function ChatClass() {
         // var them = x._id;
         // var from = me == from ? "me" :"them";
         return (
-          <div className="messageBubble">
-            <div className="messageText" dataFirst={this.props.first} dataFrom={this.props.from}>
-              {this.props.text}
+          <div className="messageBubble row" data-first={this.props.first} data-from={this.props.from} data-started={this.props.started}>
+            <div className="col-md-1 col-md-offset-1">
+              <img className="mePhoto img-circle" src={Global.profilePic} />
+            </div>
+            <div className="messageText col-md-8">
+              <p>{this.props.text}</p>
+            </div>
+            <div className="col-md-1">
+              <img className="themPhoto img-circle" src={this.props.their_pic} />
             </div>
           </div>
         )
@@ -279,7 +304,7 @@ function ChatClass() {
       render: function() {
         return (
           <div className="messageInput row">
-            <img className="col-md-2" />
+            <img className="col-md-2" src={Global.profilePic} />
             <input className="col-md-7" placeholder="Enter your message here" type="text" />
             <div className="submit col-md-3">send</div>
           </div>
