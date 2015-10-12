@@ -70,8 +70,8 @@ function ChatClass() {
 
         var current_history = parseInt(self.lastDayFetch);
         var next = lookup[current_history];
-
-        if (next == 20) {
+        alert(next);
+        if (next == 14) {
           setInterval(this.loadUpdates, 5000);
         }
 
@@ -122,6 +122,7 @@ function ChatClass() {
       },
       componentDidMount: function componentDidMount() {
         console.log('mounted');
+        var currentreact = this;
         $.ajax({
           type: "POST",
           url: '/get_history',
@@ -141,14 +142,14 @@ function ChatClass() {
               if (val.messages.length > 0) {
                 self.activeConvoNotSet = false;
 
-                this.setState({
+                currentreact.setState({
                   data: historyData,
                   convo: val
                 });
               }
             });
             if (self.activeConvoNotSet === true) {
-              this.setState({ data: historyData });
+              currentreact.setState({ data: historyData });
             }
 
             var activereact = this;
@@ -268,7 +269,28 @@ function ChatClass() {
       displayName: "ActiveConvo",
 
       handleMessageSubmit: function handleMessageSubmit(message) {
-        //
+        this.setState({ 'submitting': true });
+        var currentreact = this;
+        var DONOTSEND = true;
+
+        if (!DONOTSEND) {
+          $.ajax({
+            type: "POST",
+            url: '/send_message',
+            data: {
+              'message': message,
+              "match_id": this.props.match._id
+            },
+            dataType: 'json',
+            success: (function (msg) {
+              currentreact.setState({ 'submitting': false });
+            }).bind(this),
+            error: (function (xhr, status, err) {
+              alert(err.toString());
+              console.error(this.props.url, status, err.toString());
+            }).bind(this)
+          });
+        }
       },
       // getInitialState: function() {
       //   return {match: {
@@ -279,10 +301,10 @@ function ChatClass() {
         if (!this.props.match.hasOwnProperty('person')) {
           return React.createElement(
             "div",
-            { className: "activeConvo noConvo col-md-6" },
+            { className: "activeConvo col-md-6" },
             React.createElement(
               "div",
-              { className: "convoHistoryBox" },
+              { className: "convoHistoryBox noConvo" },
               React.createElement("i", { className: "fa fa-spinner fa-spin" })
             )
           );
@@ -299,14 +321,18 @@ function ChatClass() {
                 "Kick off the conversation below!"
               )
             ),
-            React.createElement(MessageInput, { onMessageSubmit: this.handleMessageSubmit })
+            React.createElement(MessageInput, { onMessageSubmit: this.handleMessageSubmit,
+              submitting: "",
+              placeholder: "Enter your message here." })
           );
         } else {
           return React.createElement(
             "div",
             { className: "activeConvo col-md-6" },
             React.createElement(ConvoHistoryBox, { match: this.props.match }),
-            React.createElement(MessageInput, { onMessageSubmit: this.handleMessageSubmit })
+            React.createElement(MessageInput, { onMessageSubmit: this.handleMessageSubmit,
+              submitting: "",
+              placeholder: "Enter your message here." })
           );
         }
       }
@@ -404,16 +430,28 @@ function ChatClass() {
     var MessageInput = React.createClass({
       displayName: "MessageInput",
 
+      messageSubmit: function messageSubmit(e) {
+        e.preventDefault();
+        var msg = this.refs.msg.value.trim();
+        alert(msg);
+        if (!msg) {
+          return;
+        }
+        this.props.onMessageSubmit(msg);
+        this.props.submitting = 'submitting';
+        this.props.placeholder = 'submitting';
+        return;
+      },
       render: function render() {
         return React.createElement(
           "div",
           { className: "messageInput row" },
           React.createElement("img", { className: "col-md-2", src: Global.profilePic }),
-          React.createElement("input", { className: "col-md-7", placeholder: "Enter your message here", type: "text" }),
           React.createElement(
-            "div",
-            { className: "submit col-md-3" },
-            "send"
+            "form",
+            { className: "messageForm", onSubmit: this.messageSubmit },
+            React.createElement("input", { type: "text", "data-submitting": this.props.submitting, ref: "msg", className: "col-md-7", placeholder: this.props.placeholder }),
+            React.createElement("input", { type: "submit", value: "send", className: "submit col-md-3" })
           )
         );
       }

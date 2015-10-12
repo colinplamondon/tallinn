@@ -69,8 +69,8 @@ function ChatClass() {
 
         var current_history = parseInt(self.lastDayFetch);
         var next = lookup[current_history];
-
-        if (next == 20) {
+        alert(next);
+        if (next == 14) {
           setInterval(this.loadUpdates, 5000);
         }
 
@@ -123,6 +123,7 @@ function ChatClass() {
       },
       componentDidMount: function() {
         console.log('mounted');
+        var currentreact = this;
         $.ajax({
           type: "POST",
           url: '/get_history',
@@ -142,14 +143,14 @@ function ChatClass() {
               if(val.messages.length>0) {
                 self.activeConvoNotSet = false;
 
-                this.setState({
+                currentreact.setState({
                   data:historyData,
                   convo:val
                 })
               }
             });
             if(self.activeConvoNotSet === true) {
-              this.setState({data:historyData});
+              currentreact.setState({data:historyData});
             }
 
             var activereact = this;
@@ -253,7 +254,28 @@ function ChatClass() {
 
     var ActiveConvo = React.createClass({
       handleMessageSubmit: function(message) {
-        //
+        this.setState({'submitting': true});
+        var currentreact = this;
+        var DONOTSEND = true;
+
+        if(!DONOTSEND) {
+          $.ajax({
+            type: "POST",
+            url: '/send_message',
+            data: {
+              'message': message,
+              "match_id": this.props.match._id
+            },
+            dataType: 'json',
+            success: function(msg) {
+              currentreact.setState({'submitting':false})
+            }.bind(this),
+            error: function(xhr, status, err) {
+              alert(err.toString());
+              console.error(this.props.url, status, err.toString());
+            }.bind(this)
+          });
+        }
       },
       // getInitialState: function() {
       //   return {match: {
@@ -263,8 +285,8 @@ function ChatClass() {
       render: function() {
         if(!this.props.match.hasOwnProperty('person')){
           return (
-            <div className="activeConvo noConvo col-md-6">
-              <div className="convoHistoryBox">
+            <div className="activeConvo col-md-6">
+              <div className="convoHistoryBox noConvo">
                 <i className="fa fa-spinner fa-spin"></i>
               </div>
             </div>
@@ -275,14 +297,18 @@ function ChatClass() {
               <div className="convoHistoryBox">
                 <h3 className="helptext">Kick off the conversation below!</h3>
               </div>
-              <MessageInput onMessageSubmit={this.handleMessageSubmit} />
+              <MessageInput onMessageSubmit={this.handleMessageSubmit}
+                submitting=''
+                placeholder="Enter your message here."/>
             </div>
           )
         } else {
           return (
           <div className="activeConvo col-md-6">
             <ConvoHistoryBox match={this.props.match}/>
-            <MessageInput onMessageSubmit={this.handleMessageSubmit} />
+            <MessageInput onMessageSubmit={this.handleMessageSubmit}
+              submitting=''
+              placeholder="Enter your message here." />
           </div>
         )
         }
@@ -365,12 +391,28 @@ function ChatClass() {
     });
 
     var MessageInput = React.createClass({
+
+      messageSubmit: function(e) {
+        e.preventDefault();
+        var msg = this.refs.msg.value.trim();
+        alert(msg);
+        if(!msg) {
+          return;
+        }
+        this.props.onMessageSubmit(msg);
+        this.props.submitting = 'submitting';
+        this.props.placeholder = 'submitting';
+        return;
+      },
       render: function() {
         return (
           <div className="messageInput row">
             <img className="col-md-2" src={Global.profilePic} />
-            <input className="col-md-7" placeholder="Enter your message here" type="text" />
-            <div className="submit col-md-3">send</div>
+
+            <form className="messageForm" onSubmit={this.messageSubmit}>
+              <input type="text" data-submitting={this.props.submitting} ref="msg" className="col-md-7" placeholder={this.props.placeholder} />
+              <input type="submit" value="send" className="submit col-md-3" />
+            </form>
           </div>
         )
       }

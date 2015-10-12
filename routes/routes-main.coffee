@@ -363,6 +363,25 @@ router.get '/chat', (req, res, next) ->
       })
     .error next
 
+router.post '/send_message', (req, res, next) ->
+  client.setAuthToken( req.user.tinderToken )
+
+  if !req.body.match_id?
+    res.json({"ok": false, "msg":"needs match_id"})
+    return
+  if !req.body.message?
+    res.json({"ok": false, "msg":"needs message"})
+    return
+
+  console.log('match id is: '+req.body.match_id)
+  console.log('message is: '+req.body.message)
+  client.sendMessage(req.body.match_id, req.body.message, (error, result) ->
+    if result?
+      res.json({"ok": true, "results": result})
+    else
+      res.json({"ok": false})
+  )
+
 router.post '/get_history', (req, res, next) ->
   client.setAuthToken( req.user.tinderToken )
 
