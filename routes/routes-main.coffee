@@ -339,12 +339,15 @@ router.get '/chat', (req, res, next) ->
 router.post '/get_history', (req, res, next) ->
   client.setAuthToken( req.user.tinderToken )
 
-  days_ago = parseInt(req.body.days_ago)
-  timeframe = moment().subtract(days_ago, 'days').format()
+  if req.body.days_ago?
+    days_ago = parseInt(req.body.days_ago)
+    timeframe = moment().subtract(days_ago, 'days').format()
+  if req.body.timestamp?
+    timeframe = moment(req.body.timestamp).format()
 
   return_recent_messages(timeframe, (history) ->
     if history?
-      res.json({"ok": true, "results": history })
+      res.json({"ok": true, "results": history,"timestamp": timeframe})
     else
       res.json({"ok": false})
   )
@@ -363,8 +366,8 @@ return_recent_messages = (timeframe, callback) ->
       for m in history['matches'] when m.person?.photos?[0]?
         final_matches.push(m)
       callback(final_matches)
-
-    callback([])
+    else
+      callback([])
   )
 
 module.exports = router

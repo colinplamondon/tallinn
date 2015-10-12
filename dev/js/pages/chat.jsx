@@ -1,33 +1,175 @@
 /*jshint sub:true*/
+/*jshint -W030 */
 
 function ChatClass() {
   this.url = "/chat";
-
+  this.historyMaxDaysBack = 20;
   this.init = function(){
-    console.log('chat init');
     this.installObservers();
-    var self = this;
-    this.getHistory(function(historyData){
-      console.log(historyData);
-      self.historyData = historyData;
-      self.createReact();
-      self.renderConvo();
-    });
+    this.createReact();
 	};
 
+  this.sortByDateProp = function(target_list, prop) {
+    return target_list.sort(function(a, b){
+      return Date.parse(b[prop]) - Date.parse(a[prop]);
+    })
+
+  };
+
   this.createReact = function() {
+    var self = this;
+
     var MatchSidebar = React.createClass({
+      loadUpdates: function() {
+        $.ajax({
+          type: "POST",
+          url: '/get_history',
+          data: {
+            'timestamp': self.initialFetch
+          },
+          dataType: 'json',
+          success: function(msg) {
+            var timestamp = msg.timestamp;
+            var historyData = self.sortByDateProp(msg.results, 'last_activity_date');
+
+            this.setState({data:historyData});
+            self.lastFetch = timestamp;
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+          }.bind(this)
+        });
+      },
+      getInitialState: function() {
+        return {data:[]};
+      },
+      historyLooper: function(callback) {
+        var lookup = {
+          "3": 7,
+          "7": 14,
+          "14":20,
+        };
+
+        var current_history = parseInt(self.lastDayFetch);
+        var next = lookup[current_history];
+        alert('next is '+next);
+
+        if (next == 20) {
+          alert('start interval');
+          setInterval(this.loadUpdates, 5000);
+        }
+
+        this.collectHistory(next, function(){
+          callback();
+        });
+
+      },
+      collectHistory: function(days_back, callback) {
+        $.ajax({
+          type: "POST",
+          url: '/get_history',
+          data: {
+            'days_ago': parseInt(days_back)
+          },
+          dataType: 'json',
+          success: function(msg) {
+            var timestamp = msg.timestamp;
+            var historyData = self.sortByDateProp(msg.results, 'last_activity_date');
+
+            self.lastFetch = timestamp;
+            self.initialFetch = timestamp;
+            self.lastDayFetch = days_back;
+            this.setState({data:historyData});
+
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+          }.bind(this)
+        });
+      },
+      componentDidMount: function() {
+        alert('mounted.');
+        console.log('mounted');
+        $.ajax({
+          type: "POST",
+          url: '/get_history',
+          data: {
+            'days_ago': 3
+          },
+          dataType: 'json',
+          success: function(msg) {
+            var timestamp = msg.timestamp;
+            var historyData = msg.results;
+
+            self.lastFetch = timestamp;
+            self.initialFetch = timestamp;
+            self.lastDayFetch = 3;
+            this.setState({data:historyData});
+
+            var activereact = this;
+            function loop() {
+              console.log("last day fetch: "+ self.lastDayFetch);
+              console.log("history days back: "+ self.historyMaxDaysBack);
+              if(self.lastDayFetch < self.historyMaxDaysBack) {
+                activereact.historyLooper(function(){
+                  loop();
+                });
+              }
+            }
+            loop();
+
+            console.log("NOW SETTING UPDATE INTERVAL");
+
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+          }.bind(this)
+        });
+      },
       render: function() {
+        console.log('rendering...');
         return (
           <div className="matchSidebar">
-            <MatchList data={this.props.data} />
+            <MatchList data={this.state.data} />
           </div>
         )
       }
     });
 
-// <img className="matchPic" src={match['person']['photos'][0]['url']}/>
-// <h3 className="matchName">{match['person']}</h3>
+    var MatchList = React.createClass({
+      render: function() {
+        var matchNodes = this.props.data.map(function (match){
+          var last_three_messages = match['messages'].slice(-3);
+          var messaged = true;
+          if(match['messages'].length === 0) {
+            messaged = false
+          }
+          var last_messaged = moment(match.last_activity_date).fromNow();
+          var last_online = moment(match.person.ping_time).fromNow();
+
+          var messages_only = [];
+          $.each(last_three_messages, function(idx, val){
+            messages_only.push(val['message']);
+          });
+          return (
+            <MatchCell key={match._id}
+              profile={match['person']['photos'][0]['url']}
+              name={match['person']['name']}
+              last_three_messages={messages_only.join('<br />')}
+              messaged={messaged.toString()}
+              last_messaged={last_messaged}
+              last_online={last_online}
+              match_id={match['_id']} />
+          );
+        });
+        return  (
+          <div className="matchList">
+            {matchNodes}
+          </div>
+        )
+      }
+    });
+
 
     var MatchCell = React.createClass({
       render: function() {
@@ -48,44 +190,8 @@ function ChatClass() {
       }
     });
 
-    var MatchList = React.createClass({
-      render: function() {
-        var x = 0;
-        var matchNodes = this.props.data.map(function (match){
-          x++;
-          console.log(x);
-
-          var last_three_messages = match['messages'].slice(-3);
-          var messaged = true;
-          if(match['messages'].length === 0) {
-            messaged = false
-          }
-          var last_online = moment(match.last_activity_date).fromNow();
-
-          var messages_only = [];
-          $.each(last_three_messages, function(idx, val){
-            messages_only.push(val['message']);
-          });
-          return (
-            <MatchCell key={match._id}
-              profile={match['person']['photos'][0]['url']}
-              name={match['person']['name']}
-              last_three_messages={messages_only.join('<br />')}
-              messaged={messaged.toString()}
-              last_online={last_online}
-              match_id={match['_id']} />
-          );
-        });
-        return  (
-          <div className="matchList">
-            {matchNodes}
-          </div>
-        )
-      }
-    });
-
     ReactDOM.render(
-      <MatchList data={this.historyData} />,
+      <MatchSidebar data={this.historyData} />,
       document.getElementById('match-list')
     );
   }
@@ -128,17 +234,31 @@ function ChatClass() {
     );
   };
 
-  this.getHistory = function(callback) {
+  this.getUpdates = function(timestamp, callback) {
+    $.ajax({
+        type: "POST",
+        url: '/get_history',
+        data: {
+          'timestamp': timestamp
+        },
+        dataType: 'json',
+        success: function(msg) {
+          callback(msg.results, msg.timestamp);
+        }
+      });
+  };
+
+  this.getHistory = function(days_ago, callback) {
     console.log('get history');
     $.ajax({
         type: "POST",
         url: '/get_history',
         data: {
-          'days_ago': 6
+          'days_ago': days_ago
         },
         dataType: 'json',
         success: function(msg) {
-          callback(msg.results);
+          callback(msg.results, msg.timestamp);
         }
       });
   };

@@ -113,7 +113,7 @@ module.exports = function(grunt) {
     // Command line helpers
     exec: {
       server: {
-        cmd: "supervisor -e 'js|node|coffee|html' ./bin/www"
+        cmd: "supervisor -e 'node|coffee|html' ./bin/www"
       }
     }
 
