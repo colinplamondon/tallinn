@@ -1100,3 +1100,27 @@ h2 {
   background: #2878D7;
   cursor: default;
 }
+.convoPhotos {
+  position: absolute;
+  right: 0;
+  width: 20%;
+  height: 70vh;
+  position: fixed;
+  top: 250px;
+  overflow-y: scroll;
+}
+.convoPhotos p {
+  width: 80%;
+  display: block;
+  /* Joanna, 22: */
+  opacity: 0.59;
+  font-style: italic;
+  font-size: 20px;
+  color: #FFFFFF;
+  line-height: 20px;
+}
+.convoPhotos p.matchName {
+  opacity: .8;
+  font-style: normal;
+  font-size: 24px;
+}

@@ -14,7 +14,7 @@
 
 function ChatClass() {
   this.url = "/chat";
-  this.historyMaxDaysBack = 14;
+  this.historyMaxDaysBack = 20;
   this.init = function () {
     this.installObservers();
     this.createReact();
@@ -68,7 +68,10 @@ function ChatClass() {
           data: [],
           convo: {
             "_id": "",
-            'messages': [{ 'from': '', 'message': '' }]
+            'messages': [{ 'from': '', 'message': '' }],
+            "person": {
+              "photos": [{ "processedFiles": [{ 'url': '' }, { 'url': '' }, { 'url': '' }] }]
+            }
           }
         };
       },
@@ -519,7 +522,37 @@ function ChatClass() {
       displayName: "ConvoPhotos",
 
       render: function render() {
-        return React.createElement("div", { className: "convoPhotos" });
+        var photoNodes = this.props.match['person']['photos'].map(function (photo) {
+          var sized_p = photo.processedFiles[1].url;
+          return React.createElement(
+            "div",
+            { className: "matchPhoto" },
+            React.createElement("img", { src: sized_p })
+          );
+        });
+        return React.createElement(
+          "div",
+          { className: "convoPhotos" },
+          React.createElement(
+            "div",
+            { className: "matchInfo" },
+            React.createElement(
+              "p",
+              { className: "matchName" },
+              this.props.match.person['name']
+            ),
+            React.createElement(
+              "p",
+              null,
+              this.props.match.person['bio']
+            )
+          ),
+          React.createElement(
+            "div",
+            { className: "matchPhotos" },
+            photoNodes
+          )
+        );
       }
     });
 

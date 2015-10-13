@@ -12,7 +12,7 @@
 
 function ChatClass() {
   this.url = "/chat";
-  this.historyMaxDaysBack = 14;
+  this.historyMaxDaysBack = 20;
   this.init = function(){
     this.installObservers();
     this.createReact();
@@ -67,7 +67,10 @@ function ChatClass() {
             "_id":"",
             'messages':[
               {'from':'', 'message':''}
-            ]
+            ],
+            "person": {
+              "photos": [{"processedFiles":[{'url':''},{'url':''},{'url':''}]}]
+            }
           }
         };
       },
@@ -471,13 +474,31 @@ function ChatClass() {
 
     var ConvoPhotos = React.createClass({
       render: function() {
+        var photoNodes = this.props.match['person']['photos'].map(function(photo) {
+          var sized_p = photo.processedFiles[1].url
+          return (
+            <div className="matchPhoto">
+              <img src={sized_p} />
+            </div>
+          )
+        });
         return(
-            <div className="convoPhotos" />
+            <div className="convoPhotos" >
+              <div className="matchInfo">
+                <p className="matchName">{this.props.match.person['name']}</p>
+                <p>{this.props.match.person['bio']}</p>
+              </div>
+              <div className="matchPhotos">
+                {photoNodes}
+              </div>
+            </div>
         )
       }
     })
 
     // REACT RENDER
+
+
 
     ReactDOM.render(
       <ChatUI data={this.historyData} />,

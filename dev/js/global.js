@@ -28,8 +28,8 @@ function GlobalClass() {
         case "likes":
           window.location.href = Like.url;
           break;
-        case "intros":
-          window.location.href = Intros.url;
+        case "chat":
+          window.location.href = Chat.url;
           break;
         default:
           window.location.href = Like.url;
