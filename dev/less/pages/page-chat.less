@@ -16,6 +16,10 @@
 	height: 180px;
 	overflow: hidden;
 
+	&:hover {
+		cursor: pointer;
+		opacity:0.95;
+	}
 
 	&:nth-child(even) {
 		background: @color-lightBlue0;
@@ -188,19 +192,59 @@
 		background: @color-white;
 		color:#7A7A7A;
 		font-size: @type-base;
-		padding:20px;
+		padding:23px;
 		border: 0;
+
+		&[type="text"] {
+			::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+			    color:    #909;
+			}
+			:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+			   color:    #909;
+			   opacity:  1;
+			}
+			::-moz-placeholder { /* Mozilla Firefox 19+ */
+			   color:    #909;
+			   opacity:  1;
+			}
+			:-ms-input-placeholder { /* Internet Explorer 10-11 */
+			   color:    #909;
+			}
+		}
 	}
 	.submit {
 		background: @color-darkGreen0;
 		color: @color-white;
 		text-align: center;
 		font-size: @type-base;
-		height: 75px;
-		padding-top: 20px;
+		height: 79px;
+		padding-top: 5px;
+		border: 0;
 		&:hover {
 			cursor: pointer;
 			background: @color-darkGreen1;
+		}
+		span {
+			width: 100%;
+			text-align: center;
+			display: block;
+		}
+		i {
+			display: none;
+		}
+		&[disabled] {
+			background: #2878D7;
+			i {
+				display: block;
+				font-size: @type-larger;
+			}
+			span {
+				display: none;
+			}
+			&:hover {
+				background: #2878D7;
+				cursor: default;
+			}
 		}
 	}
 }

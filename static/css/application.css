@@ -190,24 +190,6 @@ hr {
   margin-top: 40px;
   min-height: 50px;
 }
-::-webkit-input-placeholder {
-  /* WebKit, Blink, Edge */
-  color: #ffffff;
-}
-:-moz-placeholder {
-  /* Mozilla Firefox 4 to 18 */
-  color: #ffffff;
-  opacity: 1;
-}
-::-moz-placeholder {
-  /* Mozilla Firefox 19+ */
-  color: #ffffff;
-  opacity: 1;
-}
-:-ms-input-placeholder {
-  /* Internet Explorer 10-11 */
-  color: #ffffff;
-}
 .switch {
   display: inline-block;
   vertical-align: top;
@@ -914,6 +896,10 @@ h2 {
   height: auto;
   float: left;
 }
+.matchCell:hover {
+  cursor: pointer;
+  opacity: 0.95;
+}
 .matchCell:nth-child(even) {
   background: #9ec5f4;
 }
@@ -1058,18 +1044,59 @@ h2 {
   background: #ffffff;
   color: #7A7A7A;
   font-size: 24px;
-  padding: 20px;
+  padding: 23px;
   border: 0;
+}
+.messageInput input[type="text"] ::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: #909;
+}
+.messageInput input[type="text"] :-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #909;
+  opacity: 1;
+}
+.messageInput input[type="text"] ::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #909;
+  opacity: 1;
+}
+.messageInput input[type="text"] :-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #909;
 }
 .messageInput .submit {
   background: #00c891;
   color: #ffffff;
   text-align: center;
   font-size: 24px;
-  height: 75px;
-  padding-top: 20px;
+  height: 79px;
+  padding-top: 5px;
+  border: 0;
 }
 .messageInput .submit:hover {
   cursor: pointer;
   background: #18d7a2;
+}
+.messageInput .submit span {
+  width: 100%;
+  text-align: center;
+  display: block;
+}
+.messageInput .submit i {
+  display: none;
+}
+.messageInput .submit[disabled] {
+  background: #2878D7;
+}
+.messageInput .submit[disabled] i {
+  display: block;
+  font-size: 48px;
+}
+.messageInput .submit[disabled] span {
+  display: none;
+}
+.messageInput .submit[disabled]:hover {
+  background: #2878D7;
+  cursor: default;
 }

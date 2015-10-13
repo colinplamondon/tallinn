@@ -43,6 +43,17 @@ function ChatClass() {
 
             this.setState({data:historyData});
             self.lastFetch = timestamp;
+            var currentreact = this;
+
+            if (!self.activeConvoNotSet) {
+              var target_match = this.state.convo['_id'];
+              $.each(historyData, function(idx, val){
+                if(val['_id'] == target_match) {
+                  currentreact.setState({'convo':val});
+                  return false;
+                }
+              });
+            }
           }.bind(this),
           error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
@@ -69,9 +80,6 @@ function ChatClass() {
 
         var current_history = parseInt(self.lastDayFetch);
         var next = lookup[current_history];
-        if (next == 14) {
-          setInterval(this.loadUpdates, 5000);
-        }
 
         this.collectHistory(next, function(){
           callback();
@@ -120,6 +128,9 @@ function ChatClass() {
           }.bind(this)
         });
       },
+      quickFetch: function() {
+        this.loadUpdates();
+      },
       componentDidMount: function() {
         console.log('mounted');
         var currentreact = this;
@@ -152,6 +163,8 @@ function ChatClass() {
               currentreact.setState({data:historyData});
             }
 
+            setInterval(this.loadUpdates, 5000);
+
             var activereact = this;
             function loop() {
 
@@ -175,7 +188,7 @@ function ChatClass() {
         return (
           <div className="chatUI">
             <MatchList data={this.state.data} activeConvo={this.state.convo} setNewConvo={this.setNewConvo} />
-            <ActiveConvo match={this.state.convo} />
+            <ActiveConvo triggerHistory={this.quickFetch} match={this.state.convo} />
             <ConvoPhotos match={this.state.convo} />
           </div>
         )
@@ -255,7 +268,7 @@ function ChatClass() {
       handleMessageSubmit: function(message) {
         this.setState({'submitting': true});
         var currentreact = this;
-        var DONOTSEND = true;
+        var DONOTSEND = false;
 
         if(!DONOTSEND) {
           $.ajax({
@@ -267,7 +280,12 @@ function ChatClass() {
             },
             dataType: 'json',
             success: function(msg) {
-              currentreact.setState({'submitting':false})
+              console.log('sent message succesfully');
+              currentreact.setState({
+                'submitting':false,
+                "last_message": message
+              });
+              currentreact.props.triggerHistory();
             }.bind(this),
             error: function(xhr, status, err) {
               alert(err.toString());
@@ -276,11 +294,11 @@ function ChatClass() {
           });
         }
       },
-      // getInitialState: function() {
-      //   return {match: {
-      //     'messages':[{'from':'', 'message':''}]
-      //   }};
-      // },
+      getInitialState: function() {
+        return {
+          "last_message": ""
+        };
+      },
       render: function() {
         if(!this.props.match.hasOwnProperty('person')){
           return (
@@ -296,7 +314,8 @@ function ChatClass() {
               <div className="convoHistoryBox">
                 <h3 className="helptext">Kick off the conversation below!</h3>
               </div>
-              <MessageInput onMessageSubmit={this.handleMessageSubmit}
+              <MessageInput last_message={this.state.last_message}
+                onMessageSubmit={this.handleMessageSubmit}
                 submitting=''
                 placeholder="Enter your message here."/>
             </div>
@@ -305,7 +324,8 @@ function ChatClass() {
           return (
           <div className="activeConvo col-md-6">
             <ConvoHistoryBox match={this.props.match}/>
-            <MessageInput onMessageSubmit={this.handleMessageSubmit}
+            <MessageInput last_message={this.state.last_message}
+              onMessageSubmit={this.handleMessageSubmit}
               submitting=''
               placeholder="Enter your message here." />
           </div>
@@ -390,16 +410,46 @@ function ChatClass() {
     });
 
     var MessageInput = React.createClass({
-
+      getInitialState: function(){
+        return({
+          "is_disabled": "",
+          "submitting": "",
+          "message_input": "",
+          "placeholder": "Enter your message.",
+          "already_reset_for": "",
+          "attempted_send": ""
+        });
+      },
+      componentWillReceiveProps: function() {
+        if(this.props.last_message==this.state.attempted_send) {
+          if (this.props.last_message != this.state.already_reset_for) {
+            this.setState(this.getInitialState());
+            this.setState({
+              "already_reset_for": this.state.last_message
+            })
+          }
+        }
+      },
+      handleChange: function(event) {
+        this.setState({message_input: event.target.value});
+      },
       messageSubmit: function(e) {
         e.preventDefault();
         var msg = this.refs.msg.value.trim();
+
         if(!msg) {
           return;
         }
+        this.setState({
+          "submitting": "submitting",
+          "message_input": "",
+          "placeholder": "submitting...",
+          "is_disabled": "disabled",
+          "attempted_send": msg
+        });
+
         this.props.onMessageSubmit(msg);
-        this.props.submitting = 'submitting';
-        this.props.placeholder = 'submitting';
+
         return;
       },
       render: function() {
@@ -408,8 +458,11 @@ function ChatClass() {
             <img className="col-md-2" src={Global.profilePic} />
 
             <form className="messageForm" onSubmit={this.messageSubmit}>
-              <input type="text" data-submitting={this.props.submitting} ref="msg" className="col-md-7" placeholder={this.props.placeholder} />
-              <input type="submit" value="send" className="submit col-md-3" />
+              <input disabled={this.state.is_disabled} value={this.state.message_input} type="text" onChange={this.handleChange} ref="msg" className="col-md-7" placeholder={this.state.placeholder} />
+              <button disabled={this.state.is_disabled} type="submit" value="" className="submit col-md-3">
+                <span className="default">submit</span>
+                <i className="fa fa-spinner fa-spin"></i>
+              </button>
             </form>
           </div>
         )
