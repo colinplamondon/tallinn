@@ -283,17 +283,20 @@ hr {
 .placeholder-color(@color) {
   &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
       color:    @color;
+      opacity: 0.6;
   }
   &::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
      color:    @color;
      opacity:  1;
+     opacity: 0.6;
   }
   &::-moz-placeholder { /* Mozilla Firefox 19+ */
      color:    @color;
-     opacity:  1;
+     opacity: 0.6;
   }
   &::-ms-input-placeholder { /* Internet Explorer 10-11 */
      color:    @color;
+     opacity: 0.6;
   }
 }
 
