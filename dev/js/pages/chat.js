@@ -522,6 +522,7 @@ function ChatClass() {
       displayName: "ConvoPhotos",
 
       render: function render() {
+        var age = moment().diff(this.props.match.person.birth_date, 'years');
         var photoNodes = this.props.match['person']['photos'].map(function (photo) {
           var sized_p = photo.processedFiles[1].url;
           return React.createElement(
@@ -539,7 +540,9 @@ function ChatClass() {
             React.createElement(
               "p",
               { className: "matchName" },
-              this.props.match.person['name']
+              this.props.match.person['name'],
+              ", ",
+              age
             ),
             React.createElement(
               "p",

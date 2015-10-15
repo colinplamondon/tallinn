@@ -48,6 +48,7 @@
 	padding: 5px;
 	padding-left: 15px;
 
+	.placeholder-color(@color-white);
 }
 
 .page-reg .email-input, .page-reg .fb-login {
@@ -85,6 +86,9 @@
 	&:hover {
 		background: @color-darkGreen1;
 		text-decoration: none;
+	}
+	&.inactive {
+		background: @color-darkGreen0;
 	}
 }
 
