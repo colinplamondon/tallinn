@@ -40,7 +40,6 @@ function RiverUI() {
     this.installWatchers(socketioParams);
     this.installObservers();
 
-    var self = this;
     // Colin, there is probably a smarter way to do this. Talk to me.
     /*
     self.queueJob = setInterval(function(){
@@ -50,6 +49,7 @@ function RiverUI() {
   };
 
   this.returnMaxElementsInRow = function() {
+    console.log(this);
     var viewport_width = $(window).width();
     var bar_width = $(this.parentObject).width();
 

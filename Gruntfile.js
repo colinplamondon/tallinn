@@ -22,9 +22,13 @@ module.exports = function(grunt) {
             sourceMap: true
         },
         dist: {
-            files: {
-              'dev/js/pages/chat.js':'dev/js/pages/chat.jsx'
-            }
+            files: [{
+              "expand": true,
+              "cwd": 'dev/js/components',
+              'src': '**/*/*.jsx',
+              'dest': 'dev/js/jsx-build',
+              'ext': '.js'
+            }]
         }
     },
 
@@ -38,12 +42,14 @@ module.exports = function(grunt) {
               'dev/js/global.js',
               'dev/js/components/*.js',
               'dev/js/pages/*.js',
+              'dev/js/jsx-build/*.js',
+              'dev/js/jsx-build/*/*.js'
               ],
         dest: 'static/js/application.js'
       }
     },
     eslint: {
-      target: [ 'dev/js/pages/*.jsx' ]
+      target: [ 'dev/js/pages/*.jsx', 'dev/components/*.jsx' ]
     },
     // Lint your JS
     jshint: {
@@ -88,8 +94,8 @@ module.exports = function(grunt) {
     // Run 'grunt watch' to start listening for changes to files, and perform tasks like compiling LESS.
     watch: {
       jsx: {
-        files: ['dev/js/pages/*.jsx'],
-        tasks: ['eslint', 'babel']
+        files: ['dev/js/pages/*.jsx', 'dev/js/components/*.jsx', 'dev/js/components/*/*.jsx'],
+        tasks: ['eslint', 'babel', 'js'],
       },
       js: {
         files: ['Gruntfile.js',

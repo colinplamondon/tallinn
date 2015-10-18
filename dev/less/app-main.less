@@ -7,6 +7,12 @@ a {
   text-decoration: inherit;
 }
 
+.mainPage {
+	display:none;
+	&[data-active='true'] {
+		display: block;
+	}
+}
 // PAGE IMPORTS HERE
 // @import "pages/page-results.less";
 @import "pages/page-reg.less";

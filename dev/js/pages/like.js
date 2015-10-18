@@ -5,11 +5,21 @@ function LikeClass() {
     this.originalHovercardY = $('.match-hovercard').css('top');
     this.blurEls = $(".nav, .like-ui, .rec-bar-wrap, .footer");
 
+
+    var target = $('#react-hook').get();
+
+    ReactDOM.render(
+      React.createElement(NavBoxes, {"page":"like"}),
+      document.getElementById('js-nav-react')
+    );
+
+    ReactDOM.render(
+      React.createElement(WingmanApp, {"page":"like"}),
+      document.getElementById('react-hook')
+    );
+
     this.installObservers();
     this.installWatchers();
-
-    this.matchRiverStart();
-    this.recommendationRiverStart();
 
     this.introsOn = true;
     if(this.introsOn) {
@@ -19,6 +29,9 @@ function LikeClass() {
       this.deactivateIntros();
       $('.js-intro-switch').prop('checked', false);
     }
+
+    this.matchRiverStart();
+    this.recommendationRiverStart();
   };
 
   this.installWatchers = function() {

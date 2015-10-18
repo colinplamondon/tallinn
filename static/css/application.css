@@ -325,6 +325,27 @@ label {
   color: #9ec5f4;
   font-size: 20px;
 }
+.nav input.city-filter::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: #ffffff;
+  opacity: 0.6;
+}
+.nav input.city-filter::-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #ffffff;
+  opacity: 1;
+  opacity: 0.6;
+}
+.nav input.city-filter::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #ffffff;
+  opacity: 0.6;
+}
+.nav input.city-filter::-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #ffffff;
+  opacity: 0.6;
+}
 .nav input.city-filter:active,
 .nav input.city-filter:focus {
   outline: none;
@@ -380,11 +401,11 @@ label {
   font-size: 28px;
   font-weight: 700;
 }
-.nav-box.active {
+.nav-box[data-active='true'] {
   background: #00c891;
   color: #ffffff;
 }
-.nav-box.likes {
+.nav-box[data-page='likes'] {
   margin-left: 50px;
 }
 .nav-box:hover {
@@ -426,6 +447,12 @@ label {
 }
 a {
   text-decoration: inherit;
+}
+.mainPage {
+  display: none;
+}
+.mainPage[data-active='true'] {
+  display: block;
 }
 .page-reg h1,
 h2 {
@@ -547,7 +574,7 @@ h2 {
 .js-if-toggle.js-if-toggle-hide.active {
   display: block;
 }
-.page-likes {
+.likeUI {
   padding-bottom: 100px;
 }
 .masslike.wrap-full-width {
@@ -567,16 +594,16 @@ h2 {
   font-size: 24px;
   font-weight: 700;
 }
-.page-likes .intro {
+.likeUI .intro {
   text-align: left;
 }
-.page-likes .intro label {
+.likeUI .intro label {
   -webkit-transition: all 0.4s ease-out;
   -moz-transition: all 0.4s ease-out;
   -ms-transition: all 0.4s ease-out;
   -o-transition: all 0.4s ease-out;
 }
-.page-likes .intro .description p {
+.likeUI .intro .description p {
   color: #ffffff;
   opacity: 0.7;
   font-size: 18px;
@@ -628,23 +655,23 @@ h2 {
   background: #2878d7;
   cursor: pointer;
 }
-.page-likes .intro.off .description p {
+.likeUI .intro.off .description p {
   color: #2878d7;
 }
-.page-likes .intro.off p.status {
+.likeUI .intro.off p.status {
   opacity: 0.7;
 }
-.page-likes .intro.off .intro-el label {
+.likeUI .intro.off .intro-el label {
   color: #4a90e2;
 }
-.page-likes .intro.off .intro-el textarea {
+.likeUI .intro.off .intro-el textarea {
   background: #4a90e2;
   color: #72A8E8;
 }
-.page-likes .intro.off .intro-el textarea:hover {
+.likeUI .intro.off .intro-el textarea:hover {
   cursor: default;
 }
-.page-likes .intro.off .cp-btn {
+.likeUI .intro.off .cp-btn {
   background: #2878d7;
   cursor: default;
   color: #4a90e2;
@@ -677,7 +704,7 @@ h2 {
   background: #00c891;
   color: #ffffff;
 }
-.page-likes .DataBox {
+.likeUI .DataBox {
   margin-top: 30px;
 }
 .masslike p.desc {

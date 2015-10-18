@@ -16,6 +16,7 @@
   color: @color-lightBlue0;
   font-size: @type-small;
 
+  .placeholder-color(@color-white);
   &:active, &:focus {
     outline: none;
     border: 2px solid @color-lightBlue1;
@@ -89,12 +90,12 @@
 
   }
 
-  &.active {
+  &[data-active='true'] {
     background: @color-darkGreen0;
     color: @color-white;
   }
 
-  &.likes {
+  &[data-page='likes']{
     margin-left: 50px;
   }
   &:hover {

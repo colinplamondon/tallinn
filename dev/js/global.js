@@ -1,5 +1,6 @@
 function GlobalClass() {
   this.init = function(){
+    this.PagePubSub =
     this.installObservers();
     if (this.hasOwnProperty('uid')) {
       this.locationSearch();
@@ -21,20 +22,20 @@ function GlobalClass() {
       $(this).select();
     });
 
-    $('.nav-box').click(function(){
-      var target_page = $(this).data('page');
+    // $('.nav-box').click(function(){
+    //   var target_page = $(this).data('page');
 
-      switch(target_page) {
-        case "likes":
-          window.location.href = Like.url;
-          break;
-        case "chat":
-          window.location.href = Chat.url;
-          break;
-        default:
-          window.location.href = Like.url;
-      }
-    });
+    //   switch(target_page) {
+    //     case "likes":
+    //       window.location.href = Like.url;
+    //       break;
+    //     case "chat":
+    //       window.location.href = Chat.url;
+    //       break;
+    //     default:
+    //       window.location.href = Like.url;
+    //   }
+    // });
   };
 
   this.returnCurrentCity = function(callback) {
@@ -185,7 +186,14 @@ function GlobalClass() {
         txtarea.focus();
     }
     txtarea.scrollTop = scrollPos;
-};
+  };
+
+  this.sortByDateProp = function(target_list, prop) {
+    return target_list.sort(function(a, b){
+      return Date.parse(b[prop]) - Date.parse(a[prop]);
+    });
+  };
+
 
 }
 

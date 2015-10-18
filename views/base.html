@@ -30,7 +30,6 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
   <script src="/js/application.js"></script>
-  <script type="text/babel"  src="/js/application.jsx"></script>
   {% block header_extra %}{% endblock %}
 
 </head>
@@ -61,31 +60,7 @@
 
       <div class="col-md-6">
         <div class="row">
-          <div class="likes nav-box" data-page="likes">
-            <span class="number">403</span>
-            <span>likes</span>
-          </div>
-          <div class="flow-arrow">
-            <i class="fa fa-arrow-right"></i>
-          </div>
-          <div class="matches nav-box" data-page="chat">
-            <span class="number">80</span>
-            <spam>matches</span>
-          </div>
-          <div class="flow-arrow">
-            <i class="fa fa-arrow-right"></i>
-          </div>
-          <div class="convos nav-box" data-page="convos">
-            <span class="number">4</span>
-            <span>convos</span>
-          </div>
-          <div class="flow-arrow">
-            <i class="fa fa-arrow-right"></i>
-          </div>
-          <div class="dates nav-box" data-page="dates">
-            <span class="number">2</span>
-            <span>dates</span>
-          </div>
+          <div id="js-nav-react"></div>
         </div>
       </div>
 
@@ -96,14 +71,13 @@
         </div>
         <div class="account row">
           <img src="{{photo}}" class="img-circle user-profile-pic" />
-          <a href="#" class="account-link">My Account</a>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="main-wrapper">
+<div class="main-wrapper" id="react-hook">
   {% block content %}{% endblock %}
 </div>
 
