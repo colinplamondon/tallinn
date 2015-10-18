@@ -17,6 +17,8 @@ NavBoxes = React.createClass({
     PubSub.publish('page_pubsub', page);
   },
   componentDidMount: function() {
+    this.setState({"page":this.props.page});
+
     var currentreact = this;
     var page_sub = function( msg, data ){
       if(data !== currentreact.props.page) {
