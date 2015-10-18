@@ -20,9 +20,11 @@ function ChatClass() {
       document.getElementById('js-nav-react')
     );
 
-    ReactDOM.render(React.createElement(WingmanApp, {"page":"chat"} ,
-    	document.getElementById('react-hook')));
-	};
+    ReactDOM.render(
+      React.createElement(WingmanApp, {"page":"chat"}),
+      document.getElementById('react-hook')
+    );
+  };
 
 	this.installObservers = function(){
 	};

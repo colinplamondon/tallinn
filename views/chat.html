@@ -2,46 +2,6 @@
 
 {% block content %}
 
-<div class="container-fluid match-bar-wrap">
-  <div class="col-md-1">
-    <div class="icon">
-      <i class="fa fa-heart"></i>
-      <span class="js-queue-length"></span>
-      <span class="js-queue-state"></span>
-    </div>
-  </div>
-  <div class="match-river UIRiver col-md-11">
-    <div class="matches el-wrap">
-    </div>
-  </div>
-</div>
-
-<div class="page-chat">
-  <div class='container-fluid'>
-    <div id="chat-ui" class="row">
-      <div id="match-list" class="col-md-4">
-
-      </div>
-      <div id="active-convo" class="col-md-6">
-      </div>
-      <div id="match-photos" class="col-md-2">
-
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="container-fluid rec-bar-wrap">
-  <div class="rec-river UIRiver col-md-12">
-    <div class="recommendations el-wrap">
-    </div>
-  </div>
-</div>
-
-<div class="black-overlay" style="display:none;">
-</div>
-
 <script>
   var socket;
   Global.currentCoords = {

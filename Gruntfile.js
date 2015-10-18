@@ -49,7 +49,7 @@ module.exports = function(grunt) {
       }
     },
     eslint: {
-      target: [ 'dev/js/pages/*.jsx', 'dev/components/*.jsx' ]
+      target: ['dev/js/components/*.jsx' ]
     },
     // Lint your JS
     jshint: {

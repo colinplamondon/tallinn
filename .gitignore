@@ -1,3 +1,3 @@
 node_modules
 static/js/
-dev/jsx-build/*
+jsx-build/

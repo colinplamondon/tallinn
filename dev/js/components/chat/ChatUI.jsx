@@ -14,7 +14,7 @@ var ChatUI = React.createClass({
       dataType: 'json',
       success: function(msg) {
         var timestamp = msg.timestamp;
-        var historyData = self.sortByDateProp(msg.results, 'last_activity_date');
+        var historyData = Global.sortByDateProp(msg.results, 'last_activity_date');
 
         this.setState({data:historyData});
         self.lastFetch = timestamp;
@@ -41,7 +41,7 @@ var ChatUI = React.createClass({
       convo: {
         "_id":"",
         'messages':[
-          {'from':'', 'message':''}
+          {'from':'', "_id":"", 'message':''}
         ],
         "person": {
           "photos": [{"processedFiles":[{'url':''},{'url':''},{'url':''}]}]
@@ -110,7 +110,6 @@ var ChatUI = React.createClass({
     this.loadUpdates();
   },
   componentDidMount: function() {
-    console.log('mounted');
     var currentreact = this;
     $.ajax({
       type: "POST",
@@ -146,7 +145,7 @@ var ChatUI = React.createClass({
         var activereact = this;
         function loop() {
 
-          if(this.props.lastDayFetch != this.props.historyMaxDaysBack) {
+          if(activereact.props.lastDayFetch != activereact.props.historyMaxDaysBack) {
             activereact.historyLooper(function(){
               loop();
             });

@@ -33,7 +33,7 @@ NavBoxes = React.createClass({
     var currentreact = this;
     var navNodes = pages.map(function(page, idx){
       return (
-        <NavBox activeP={currentreact.state.page} page={page} pageChange={currentreact.pageChange}/>
+        <NavBox key={page.page} activeP={currentreact.state.page} page={page} pageChange={currentreact.pageChange}/>
       )
     });
 		return (

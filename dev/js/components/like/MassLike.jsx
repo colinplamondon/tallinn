@@ -8,9 +8,9 @@ MassLike = React.createClass({
                 <i className="fa fa-circle-o-notch fa-spin" />
               </div>
               <div className="col-md-6 col-md-offset-3">
-                <span>Easy there tiger. Still got <span className="js-mass-like-counter" style={{display: 'inline'}}>20</span> girls left to like.</span>
+                <p>Easy there tiger. Still got <span className="js-mass-like-counter" style={{display: 'inline'}}>20</span> girls left to like.</p>
                 <br />
-                <span>In the meantime, work on <a href="#" className="js-goto-openers">your openers</a>, or <a href="#" className="js-goto-chat">chat with someone</a> you have already matched with.</span>
+                <p>In the meantime, work on <a href="#" className="js-goto-openers">your openers</a>, or <a href="#" className="js-goto-chat">chat with someone</a> you have already matched with.</p>
               </div>
             </div> {/* ./masslike-blocked */}
             <div className="row masslike-intro js-masslike-intro">
@@ -27,7 +27,7 @@ MassLike = React.createClass({
                 </div>
                 <div className="row intro-el">
                   <label>Your intro:</label>
-                  <textarea className="js-intro-input" data-intro-num={1} id="intro-input-1" val value={"{first_name}! how's life"} />
+                  <textarea className="js-intro-input" data-intro-num={1} id="intro-input-1" />
                   <div className="js-add-intro-token js-intro-token cp-btn" data-token="{first_name}" data-target-area="intro-input-1">insert first name</div>
                 </div>
               </div> {/* /.intro */}

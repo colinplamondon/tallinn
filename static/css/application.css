@@ -405,8 +405,8 @@ label {
   background: #00c891;
   color: #ffffff;
 }
-.nav-box[data-page='likes'] {
-  margin-left: 50px;
+.nav-box[data-page='chat'] {
+  margin-left: 15px;
 }
 .nav-box:hover {
   cursor: pointer;
@@ -581,7 +581,7 @@ h2 {
   min-height: 470px;
   margin-top: 30px;
   padding-top: 20px;
-  padding-botom: 20px;
+  padding-bottom: 20px;
   background: #0c62c8;
   text-align: left;
   -webkit-transition: all 0.4s ease-out;
@@ -589,7 +589,7 @@ h2 {
   -ms-transition: all 0.4s ease-out;
   -o-transition: all 0.4s ease-out;
 }
-.masslike.wrap-full-width p {
+.masslike-intro p {
   color: #ffffff;
   font-size: 24px;
   font-weight: 700;
@@ -740,9 +740,11 @@ h2 {
   padding-bottom: 40px;
   padding-top: 40px;
 }
+.masslike-blocked p {
+  font-weight: 400;
+}
 .masslike-blocked span {
-  width: 100%;
-  display: block;
+  display: inline;
   text-align: center;
 }
 .masslike-blocked a {
@@ -962,7 +964,7 @@ h2 {
   background: #18d7a2;
   text-decoration: none;
 }
-.page-chat .matchList {
+.matchList {
   position: fixed;
   top: 240px;
   left: 0;

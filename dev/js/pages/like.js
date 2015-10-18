@@ -9,12 +9,12 @@ function LikeClass() {
     var target = $('#react-hook').get();
 
     ReactDOM.render(
-      React.createElement(NavBoxes, {"page":"like"}),
+      React.createElement(NavBoxes, {"page":"likes"}),
       document.getElementById('js-nav-react')
     );
 
     ReactDOM.render(
-      React.createElement(WingmanApp, {"page":"like"}),
+      React.createElement(WingmanApp, {"page":"likes"}),
       document.getElementById('react-hook')
     );
 
@@ -99,6 +99,8 @@ function LikeClass() {
 
   this.installObservers = function() {
     var self = this;
+    $('.js-intro-input').val("{first_name}! how's life");
+
     $('.matches').on('click', ".match-el", function(){
       var match_id = $(this).attr('id');
       var match_data = self.matchRiver.elementInfo[match_id];

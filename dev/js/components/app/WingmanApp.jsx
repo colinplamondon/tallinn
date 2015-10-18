@@ -1,10 +1,12 @@
 WingmanApp = React.createClass({
   getInitialState: function() {
-    return (
-      {'page': 'likes'}
-    )
+    return({'page':'like'})
   },
-  componentDidMount: function() {
+  componentWillMount: function() {
+    this.setState({
+      "page": this.props.page
+    });
+
     var currentreact = this;
     var page_change = function(msg, data) {
       console.log('page change in wingmanapp');
@@ -19,7 +21,7 @@ WingmanApp = React.createClass({
 
   },
   render: function() {
-
+    console.log(this.state.page);
     return (
       <div className="wingmanApp" data-page={this.state.page}>
         <MatchBar />

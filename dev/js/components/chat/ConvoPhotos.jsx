@@ -4,7 +4,7 @@ var ConvoPhotos = React.createClass({
     var photoNodes = this.props.match['person']['photos'].map(function(photo) {
       var sized_p = photo.processedFiles[1].url
       return (
-        <div className="matchPhoto">
+        <div key={sized_p} className="matchPhoto">
           <img src={sized_p} />
         </div>
       )

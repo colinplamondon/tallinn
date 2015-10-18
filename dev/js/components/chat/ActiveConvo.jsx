@@ -34,7 +34,7 @@ var ActiveConvo = React.createClass({
     };
   },
   render: function() {
-    if(!this.props.match.hasOwnProperty('person')){
+    if(!this.props.match.person.hasOwnProperty('name')){
       return (
         <div className="activeConvo col-md-6">
           <div className="convoHistoryBox noConvo">
