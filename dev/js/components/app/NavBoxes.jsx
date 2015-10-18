@@ -1,7 +1,6 @@
 NavBoxes = React.createClass({
   getInitialState: function() {
     return ({
-      page: 'likes',
       pages: [
         {
           'page': 'likes',
@@ -19,13 +18,11 @@ NavBoxes = React.createClass({
   componentDidMount: function() {
     this.setState({"page":this.props.page});
 
-    var currentreact = this;
+    var activereact = this;
     var page_sub = function( msg, data ){
-      if(data !== currentreact.props.page) {
-        currentreact.setState({
-          'page': data
-        });
-      }
+      activereact.setState({
+        'page': data
+      });
     };
     var token = PubSub.subscribe('page_pubsub', page_sub);
 
