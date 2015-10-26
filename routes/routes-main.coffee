@@ -22,16 +22,13 @@ router.get '/', (req, res, next) ->
   client.setAuthToken tinderToken
   client.getProfileAsync()
     .then (profile) ->
-      console.log profile
       _id = profile._id
-      console.log(profile.photos[0].processedFiles)
       profile_pic = profile.photos[0].processedFiles[2].url
       location = {
         'lat': profile.pos.lat,
         'lon': profile.pos.lon
       }
 
-      console.log 'get profile async'
       res.render('like', {
         tinderId: _id,
         userId: req.user.id,
@@ -65,8 +62,6 @@ router.post('/reg', (req, res, next) ->
   if not fbId?
     return res.json({error: "No fbId"})
   User.find({facebookId: fbId}).exec().then ([user]) ->
-    console.log "user"
-    console.log user
     if user?
       req.session.userId = user._id
       return res.json({ok: true})
@@ -279,7 +274,6 @@ showRecommendationsHandler = (req, res, next) ->
       client.getRecommendationsAsync 30
     .then (data) ->
       { results } = data
-      console.log data
       console.log "sending #{results.length} recs"
       return res.render 'recommendations', { recommendations: results }
     .catch tinder.AuthError, (error) ->

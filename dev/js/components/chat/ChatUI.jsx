@@ -59,6 +59,16 @@ var ChatUI = React.createClass({
           this.findStartingConvo(historyData);
         }
 
+        var currentreact = this;
+        if (!self.activeConvoNotSet) {
+          var target_match = this.state.convo['_id'];
+          $.each(historyData, function(idx, val){
+            if(val['_id'] == target_match) {
+              currentreact.setState({'convo':val});
+              return false;
+            }
+          });
+        }
         if(type==='startup') {
           console.log('in startup');
           console.log(this);
@@ -67,9 +77,9 @@ var ChatUI = React.createClass({
             "lastDayFetch": 3
           });
 
-          // setInterval(function(){
-          //   currentreact.getUpdates('poll')
-          // }, 5000);
+          setInterval(function(){
+            currentreact.getUpdates('poll')
+          }, 5000);
           var backup_max = 6;
           var count = 0;
           console.log(this.state);
@@ -145,7 +155,7 @@ var ChatUI = React.createClass({
     }
   },
   quickFetch: function() {
-    this.loadUpdates();
+    this.getUpdates('poll');
   },
   componentDidMount: function() {
     var currentreact = this;
