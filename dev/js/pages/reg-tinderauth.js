@@ -11,6 +11,9 @@ function TinderAuthClass() {
 
   this.bindAccessKeyBtns = function() {
     $('.js-get-access-key').click(function(){
+      if ($('.js-get-access-key').hasClass('inactive')) {
+        return;
+      }
       $('.js-get-access-key').transition({
         "opacity":0.7,
         "background-color": "#0C62C8"
@@ -31,6 +34,7 @@ function TinderAuthClass() {
       setTimeout(function(){
         $('.lookatme').removeClass('lookatme');
         $('.submit-form').removeClass('disabled');
+        $('.js-submit-tinderkey').removeClass('inactive');
       }, 150);
     });
   };
