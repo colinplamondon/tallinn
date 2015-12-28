@@ -118,7 +118,6 @@ router.get('/like/:xAuthToken', (req, res, next) ->
 
 router.post '/change-location', (req, res, next) ->
   client.setAuthToken( req.user.tinderToken )
-
   newLon = parseFloat(req.body.new_lon)
   newLat = parseFloat(req.body.new_lat)
 

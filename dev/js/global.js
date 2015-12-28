@@ -97,9 +97,11 @@ function GlobalClass() {
         return;
       }
 
-      var coord_lat = place.geometry.location.H;
-      var coord_lon = place.geometry.location.L;
-      console.log(coord_lon);
+      var coord_lat = place.geometry.location.lat();
+      var coord_lon = place.geometry.location.lng();
+      console.log("place geometry is...");
+      console.log('long: ' + coord_lon);
+      console.log('lat: ' + coord_lat);
       $.ajax({
           type: "POST",
           url: '/change-location',
